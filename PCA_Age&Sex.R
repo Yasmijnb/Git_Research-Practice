@@ -29,7 +29,7 @@ data <- read.csv("Data/Lipids_age_sex.csv", check.names = FALSE)
 group <- NULL
 for (sample in 1:nrow(data)) {
   # Men
-  if (data$Gender[sample] == 1) {
+  if (data$Gender[sample] == 'man') {
     if (data$Age[sample] < 35) {
       group <- c(group, 'young man')
     } else 
@@ -39,7 +39,7 @@ for (sample in 1:nrow(data)) {
         group <- c(group, 'man')
   }
   # Women
-  if (data$Gender[sample] == 2) {
+  if (data$Gender[sample] == 'woman') {
     if (data$Age[sample] < 37) {
       group <- c(group, 'young woman')
     } else 
@@ -50,14 +50,12 @@ for (sample in 1:nrow(data)) {
   }
 }
 
-data$Gender <- as.factor(data$Gender)
-
 data$Groups <- group
 
 # Perform PCA analysis
 pca <- prcomp(data[,5:118])
-# Create plot
 
+# Create plot
 autoplot(pca, data = data, colour = 'Gender')
 autoplot(pca, data = data, colour = 'Age')
 autoplot(pca, data = data, colour = 'Groups')

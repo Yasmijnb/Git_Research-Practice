@@ -29,14 +29,14 @@ data <- read.csv("Data/Lipids_age_sex.csv", check.names = FALSE)
 # (figure 1 of Vignoli et. al. 2017)
 
 # Women
-hist(data$Age[which(data$Gender == 2)], 
-     breaks = length(unique(data$Age[which(data$Gender == 2)])), 
+hist(data$Age[which(data$Gender == 'woman')], 
+     breaks = length(unique(data$Age[which(data$Gender == 'woman')])), 
      xlab = 'Age (years)', ylab = 'Number of individuals', col = 'magenta',
      main = 'Age distribution of women')
 abline(v = 37, col = 'blue')
 abline(v = 48, col = 'blue')
 
-ggplot(data[which(data$Gender == 2),], aes(x = Age)) + 
+ggplot(data[which(data$Gender == 'woman'),], aes(x = Age)) + 
   geom_histogram(binwidth = 1, color = 'white', fill = 'magenta') + 
   labs(title = "Age distribution of women",
        x = "Age (years)", y = "Number of individuals") + 
@@ -48,14 +48,14 @@ ggplot(data[which(data$Gender == 2),], aes(x = Age)) +
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 # Men
-hist(data$Age[which(data$Gender == 1)], 
-     breaks = length(unique(data$Age[which(data$Gender == 1)])), 
+hist(data$Age[which(data$Gender == 'man')], 
+     breaks = length(unique(data$Age[which(data$Gender == 'man')])), 
      xlab = 'Age (years)', ylab = 'Number of individuals', col = 'blue',
      main = 'Age distribution of men')
 abline(v = 35, col = 'red')
 abline(v = 45, col = 'red')
 
-ggplot(data[which(data$Gender == 1),], aes(x = Age)) + 
+ggplot(data[which(data$Gender == 'man'),], aes(x = Age)) + 
   geom_histogram(binwidth = 1, color = 'white', fill = 'cyan') + 
   labs(title = "Age distribution of men",
        x = "Age (years)", y = "Number of individuals") + 
@@ -71,11 +71,11 @@ ggplot(data[which(data$Gender == 1),], aes(x = Age)) +
 # Find groups for young and old using quantiles
 
 # Women
-quantile(data$Age[which(data$Gender == 2)], probs = seq(0, 1, 1/3))
+quantile(data$Age[which(data$Gender == 'woman')], probs = seq(0, 1, 1/3))
 # Young < 37
 # Old   > 48
 
 # Men
-quantile(data$Age[which(data$Gender == 1)], probs = seq(0, 1, 1/3))
+quantile(data$Age[which(data$Gender == 'man')], probs = seq(0, 1, 1/3))
 # Young < 35
 # Old   > 45

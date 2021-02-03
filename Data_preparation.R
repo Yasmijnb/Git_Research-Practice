@@ -35,6 +35,9 @@ for (column in c(2:14,18:42)) {
 }
 # Change a colname
 colnames(clinic)[which(colnames(clinic) == '...1')] <- 'ID'
+# Change gender to factor with man and woman
+clinic$Gender <- as.factor(clinic$Gender)
+levels(clinic$Gender) <- c('man', 'woman')
 
 ###############################################################################
 
