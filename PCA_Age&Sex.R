@@ -55,6 +55,9 @@ data$Groups <- group
 # Perform PCA analysis
 pca <- prcomp(data[,5:118])
 
+# Percentage of variance explained
+summary(pca)$importance[2:3,1:3]*100
+
 # Create plot
 autoplot(pca, data = data, colour = 'Gender')
 autoplot(pca, data = data, colour = 'Age')
