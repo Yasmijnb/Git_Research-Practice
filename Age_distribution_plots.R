@@ -79,3 +79,39 @@ quantile(data$Age[which(data$Gender == 'woman')], probs = seq(0, 1, 1/3))
 quantile(data$Age[which(data$Gender == 'man')], probs = seq(0, 1, 1/3))
 # Young < 35
 # Old   > 45
+
+###############################################################################
+
+# Women total
+women.number <- length(which(data$Gender == 'woman'))
+women.age <- median(data[which(data$Gender == 'woman'),'Age'])
+
+# Women young
+y.women.number <- length(which(data$Gender == 'woman' & data$Age < 37))
+y.women.age <- median(data[which(data$Gender == 'woman' & data$Age < 37),'Age'])
+
+# Women old
+o.women.number <- length(which(data$Gender == 'woman' & data$Age > 48))
+o.women.age <- median(data[which(data$Gender == 'woman' & data$Age > 48),'Age'])
+
+# Men total
+men.number <- length(which(data$Gender == 'man'))
+men.age <- median(data[which(data$Gender == 'man'),'Age'])
+
+# Men young
+y.men.number <- length(which(data$Gender == 'man' & data$Age < 35))
+y.men.age <- median(data[which(data$Gender == 'man' & data$Age < 35),'Age'])
+
+# Men old
+o.men.number <- length(which(data$Gender == 'man' & data$Age > 45))
+o.men.age <- median(data[which(data$Gender == 'man' & data$Age > 45),'Age'])
+
+women.number; women.age
+y.women.number; y.women.age
+o.women.number; o.women.age
+men.number; men.age
+y.men.number; y.men.age
+o.men.number; o.men.age
+
+
+
