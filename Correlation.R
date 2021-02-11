@@ -27,9 +27,9 @@ data[,1] <- NULL
 Chol.cor <- cor(data$Chol, data$`Main Parameters, Cholesterol, Chol`, use = 'complete.obs')
 
 plot(data$Chol, data$`Main Parameters, Cholesterol, Chol`,
-     main = paste0('Correlation between measured and estimated Cholesterol \n(',
+     main = paste0('Correlation between measured and estimated Total Cholesterol \n(',
                    round(Chol.cor, 2), ')'),
-     xlab = 'Estimated', ylab = 'Measured')
+     xlab = 'Direct Enzymatic Essay', ylab = 'NMR', xlim = c(0,450), ylim = c(0,450))
 # abline(0, Chol.cor, col = 'red')
 
 ########################################
@@ -38,9 +38,9 @@ plot(data$Chol, data$`Main Parameters, Cholesterol, Chol`,
 TG.cor <- cor(data$TG, data$`Main Parameters, Triglycerides, TG`, use = 'complete.obs')
 
 plot(data$TG, data$`Main Parameters, Triglycerides, TG`,
-     main = paste0('Correlation between measured and estimated TG \n(',
+     main = paste0('Correlation between measured and estimated Triglycerides \n(',
                    round(TG.cor, 2), ')'),
-     xlab = 'Estimated', ylab = 'Measured')
+     xlab = 'Direct Enzymatic Essay', ylab = 'NMR', xlim = c(0, 600), ylim = c(0, 600))
 # abline(0, 1, col = 'red')
 
 ########################################
@@ -51,9 +51,9 @@ HDL.cor <- cor(data$`HDL-Chol`,
 
 plot(data$`HDL-Chol`, 
      data$`Main Parameters, HDL Cholesterol, HDL-Chol`,
-     main = paste0('Correlation between measured and estimated HDL-Chol \n(',
+     main = paste0('Correlation between measured and estimated HDL\n(',
                    round(HDL.cor, 2), ')'),
-     xlab = 'Estimated', ylab = 'Measured')
+     xlab = 'Direct Enzymatic Essay', ylab = 'NMR', xlim = c(0, 131), ylim = c(0, 131))
 # abline(0, 1, col = 'red')
 
 ########################################
@@ -64,9 +64,9 @@ LDL.cor <- cor(data$`LDL-Chol`,
 
 plot(data$`LDL-Chol`, 
      data$`Main Parameters, LDL Cholesterol, LDL-Chol`,
-     main = paste0('Correlation between measured and estimated LDL-Chol \n(',
+     main = paste0('Correlation between measured and estimated LDL\n(',
                    round(LDL.cor, 2), ')'),
-     xlab = 'Estimated', ylab = 'Measured')
+     xlab = 'Direct Enzymatic Essay', ylab = 'NMR', xlim = c(0, 410), ylim = c(0, 410))
 # abline(0, 1, col = 'red')
 
 ###############################################################################
@@ -79,9 +79,9 @@ data[which(is.na(data), arr.ind = T)] <- 0
 Chol.cor <- cor(data$Chol, data$`Main Parameters, Cholesterol, Chol`)
 
 plot(data$Chol, data$`Main Parameters, Cholesterol, Chol`,
-     main = paste0('Correlation between measured and estimated Cholesterol \n(',
+     main = paste0('Correlation between measured and estimated Total Cholesterol \n(',
                    round(Chol.cor, 2), ')'),
-     xlab = 'Estimated', ylab = 'Measured')
+     xlab = 'Direct Enzymatic Essay', ylab = 'NMR', xlim = c(0,450), ylim = c(0,450))
 
 ########################################
 
@@ -89,9 +89,9 @@ plot(data$Chol, data$`Main Parameters, Cholesterol, Chol`,
 TG.cor <- cor(data$TG, data$`Main Parameters, Triglycerides, TG`)
 
 plot(data$TG, data$`Main Parameters, Triglycerides, TG`,
-     main = paste0('Correlation between measured and estimated TG \n(',
+     main = paste0('Correlation between measured and estimated Triglycerides \n(',
                    round(TG.cor, 2), ')'),
-     xlab = 'Estimated', ylab = 'Measured')
+     xlab = 'Direct Enzymatic Essay', ylab = 'NMR', xlim = c(0, 600), ylim = c(0, 600))
 
 ########################################
 
@@ -101,9 +101,9 @@ HDL.cor <- cor(data$`HDL-Chol`,
 
 plot(data$`HDL-Chol`, 
      data$`Main Parameters, HDL Cholesterol, HDL-Chol`,
-     main = paste0('Correlation between measured and estimated HDL-Chol \n(',
+     main = paste0('Correlation between measured and estimated HDL \n(',
                    round(HDL.cor, 2), ')'),
-     xlab = 'Estimated', ylab = 'Measured')
+     xlab = 'Direct Enzymatic Essay', ylab = 'NMR')
 
 ########################################
 
@@ -113,6 +113,7 @@ LDL.cor <- cor(data$`LDL-Chol`,
 
 plot(data$`LDL-Chol`, 
      data$`Main Parameters, LDL Cholesterol, LDL-Chol`,
-     main = paste0('Correlation between measured and estimated LDL-Chol \n(',
+     main = paste0('Correlation between measured and estimated LDL\n(',
                    round(LDL.cor, 2), ')'),
-     xlab = 'Estimated', ylab = 'Measured')
+     xlab = 'Direct Enzymatic Essay', ylab = 'NMR')
+
