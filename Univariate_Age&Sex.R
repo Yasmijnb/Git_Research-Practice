@@ -27,9 +27,6 @@ setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
 data <- read.csv("Data/Lipids_age_sex.csv", check.names = FALSE)
 data[,1] <- NULL
 
-# Set different working directory to save results
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results")
-
 ###############################################################################
 
 # Initiate a vector to store all p.values
@@ -138,5 +135,7 @@ length(which(adjusted.P.values <= 0.05))
 plot(P.values, adjusted.P.values)
 abline(h = 0.05, col = 'red'); abline(v = 0.05, col = 'red')
 
+# Set different working directory results
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results")
 # Write the summary to csv file
 write.csv(wilcoxon.summary, file = 'Wilcoxon_results.csv')
