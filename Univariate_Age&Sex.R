@@ -116,8 +116,9 @@ adjusted.P.values <- p.adjust(P.values, method = 'bonferroni')
 
 # Make a vector with the directions of the shifts
 directions <- rep('', length(adjusted.P.values))
-directions[which(adjusted.P.values <= 0.05 & shifts > 0)] <- '+'
-directions[which(adjusted.P.values <= 0.05 & shifts < 0)] <- '-'
+# + means a higher value for women (Sex), old (Age, Women, Men)
+directions[which(adjusted.P.values <= 0.05 & shifts < 0)] <- '+' # Reverse is intentional!!!
+directions[which(adjusted.P.values <= 0.05 & shifts > 0)] <- '-' # Reverse is intentional!!!
 
 # Make an empty dataframe to store the results
 wilcoxon.summary <- matrix(ncol = 4, nrow = 114)
