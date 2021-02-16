@@ -19,6 +19,7 @@ library(minet)
 library(qgraph)             # Used to create the network
 library(igraph)             # Used to create the network
 library(RCy3)               # Used to open the network in cytoscape
+library(stringr)
 
 
 ###############################################################################
@@ -294,44 +295,107 @@ data[,1] <- NULL
 men <- data[which(data$Gender=='man'),]
 women <- data[which(data$Gender=='woman'),]
 
+# Make groups of the type of measurements
+measure_type <- NULL
+for (colnum in 4:ncol(men)) {
+  measure_type <- c(measure_type, str_split(colnames(men)[colnum], ',')[[1]][1])
+}
+measure_type[41:114] <- 'Subfractions'
+# Turn them into shapes
+geo <- c('circle', 'square', 'Triangle', 'Diamond')
+shapes <- NULL
+for (number in 1:length(unique(measure_type))) {
+  shapes[which(measure_type == unique(measure_type)[number])] <- geo[number]
+}
+# Make groups of the lipids
+groups <- c('TG', 'Chol', 'LDL', 'HDL', 'Apo-A1', 'Apo-A2', 'Apo-B100', 
+            rep('?',33), rep('VLDL', 20), rep('LDL', 30), rep('HDL', 24))
+# Turn them into colours
+colours <- NULL
+pallet <- c('red', 'orange', 'yellow', 'green', 'cyan', 'lightblue', 'darkblue', 'pink', 'purple')
+for (number in 1:length(unique(groups))) {
+  colours[which(groups == unique(groups)[number])] <- pallet[number]
+}
+
+# Perform PCLRC + ggm
 pclrc <- Diff.Conn.PCLRC.gmm(men[,4:ncol(men)], women[,4:ncol(women)], verbose = TRUE)
 
 ###############################################################################
 
-# Make network
+# Make network for men
 
-adj_matrix <- pclrc$AdjMat1
-colnames(adj_matrix) <- rownames(adj_matrix) <- c(colnames(data))
+# Retrieve the adjacency matrices
+men_adj <- pclrc$AdjMat1
+colnames(men_adj) <- rownames(men_adj) <- c(colnames(data))
+
 # Remove disconnected nodes
-disconnected.nodes <- which(apply(adj_matrix, 1, function(x){all(x==0)}))
+disconnected.nodes <- which(apply(men_adj, 1, function(x){all(x==0)}))
 if (length(disconnected.nodes)!=0) {
-  adj_matrix <- adj_matrix[-disconnected.nodes,-disconnected.nodes]
-  # groups <- groups[-disconnected.nodes]
-  # shapes <- shapes[-disconnected.nodes]
-  # colours <- colours[-disconnected.nodes]
+  men_adj <- men_adj[-disconnected.nodes,-disconnected.nodes]
+  groups <- groups[-disconnected.nodes]
+  shapes <- shapes[-disconnected.nodes]
+  colours <- colours[-disconnected.nodes]
 }
+
 # Create a qgraph with layout options
-qgraph_adj_mat <- qgraph(input=adj_matrix,
-                         labels=colnames(adj_matrix),
-                         # groups=groups,
+men_qgraph <- qgraph(input=men_adj,
+                         labels=colnames(men_adj),
+                         groups=groups,
                          DoNotPlot=TRUE,
                          borders=FALSE,
                          palette="colorblind",
                          label.font='sans',
                          posCol="#009E73",  # colour of positive edges
                          negCol="#D55E00",  # colour of negative edges
-                         # color=colours,     # colour of groups
-                         # shape=shapes,      # shapes of groups
+                         color=colours,     # colour of groups
+                         shape=shapes,      # shapes of groups
                          fade=FALSE,        # edge transparency based on weight
                          esize=2)
 
 # Convert qgraph to igraph object
-igraph_adj <- as.igraph(qgraph_adj_mat, attributes = TRUE)
-V(igraph_adj)$name <- colnames(adj_matrix)
+men_igraph <- as.igraph(men_qgraph, attributes = TRUE)
+V(men_igraph)$name <- colnames(men_adj)
 
 # Connect to cytoscape (Make sure cytoscape is opened)
 cytoscapePing()
 # Create the network
-createNetworkFromIgraph(igraph = igraph_adj,
-                        title=paste0("Men vs. Women"),
-                        collection="PCLRC")
+createNetworkFromIgraph(igraph = men_igraph,
+                        title=paste0("Men"),
+                        collection="PCLRC Men vs. Women")
+
+###############################################################################
+
+# Make network for women
+
+women_adj <- pclrc$AdjMat2
+colnames(women_adj) <- rownames(women_adj) <- c(colnames(data))
+
+disconnected.nodes <- which(apply(women_adj, 1, function(x){all(x==0)}))
+if (length(disconnected.nodes)!=0) {
+  women_adj <- women_adj[-disconnected.nodes,-disconnected.nodes]
+  groups <- groups[-disconnected.nodes]
+  shapes <- shapes[-disconnected.nodes]
+  colours <- colours[-disconnected.nodes]
+}
+
+women_qgraph <- qgraph(input=women_adj,
+                       labels=colnames(women_adj),
+                       groups=groups,
+                       DoNotPlot=TRUE,
+                       borders=FALSE,
+                       palette="colorblind",
+                       label.font='sans',
+                       posCol="#009E73",  # colour of positive edges
+                       negCol="#D55E00",  # colour of negative edges
+                       color=colours,     # colour of groups
+                       shape=shapes,      # shapes of groups
+                       fade=FALSE,        # edge transparency based on weight
+                       esize=2)
+
+women_igraph <- as.igraph(women_qgraph, attributes = TRUE)
+V(women_igraph)$name <- colnames(women_adj)
+
+createNetworkFromIgraph(igraph = women_igraph,
+                        title=paste0("Women"),
+                        collection="PCLRC Men vs. Women")
+
