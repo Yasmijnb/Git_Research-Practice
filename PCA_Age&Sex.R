@@ -53,6 +53,8 @@ for (sample in 1:nrow(data)) {
 
 data$Groups <- group
 
+###############################################################################
+
 # Perform PCA analysis
 pca <- prcomp(data[,5:118])
 
@@ -68,3 +70,21 @@ autoplot(pca, data = data, colour = 'Gender')
 autoplot(pca, data = data, colour = 'Age')
 autoplot(pca, data = data, colour = 'Groups')
 
+###############################################################################
+
+# Use only main fractions
+
+# Perform PCA analysis
+pca <- prcomp(data[,23:43])
+
+# Percentage of variance explained
+summary(pca)$importance[2:3,1:4]*100
+
+# Loadings of first two components
+pca$rotation[,1]^2
+pca$rotation[,2]^2
+
+# Create plot
+autoplot(pca, data = data, colour = 'Gender')
+autoplot(pca, data = data, colour = 'Age')
+autoplot(pca, data = data, colour = 'Groups')
