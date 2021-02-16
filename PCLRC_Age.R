@@ -3,7 +3,7 @@
 # Yasmijn Balder
 # 11-02-2021
 
-# PCLRC and GGM comparing young to old
+# PCLRC and GGM comparing young to old using main fractions
 
 # Output
 # Opens a network in cytoscape
@@ -294,7 +294,7 @@ data[,1] <- NULL
 young <- data[which(data$Age < quantile(data$Age, probs = 1/3)),]
 old <- data[which(data$Age > quantile(data$Age, probs = 2/3)),]
 
-pclrc <- Diff.Conn.PCLRC.gmm(young[,4:ncol(young)], old[,4:ncol(old)], verbose = TRUE)
+pclrc <- Diff.Conn.PCLRC.gmm(young[,23:43], old[,23:43], verbose = TRUE)
 
 ###############################################################################
 

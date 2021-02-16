@@ -3,7 +3,7 @@
 # Yasmijn Balder
 # 12-02-2021
 
-# Perform random forest to distinguish sex and age
+# Perform random forest to distinguish sex and age using main fractions
 
 # Output
 # 
@@ -252,21 +252,20 @@ require(caTools)      # colAUC
 ###############################################################################
 
 ## Sex
-# small.sex.forest <- randomForest(as.factor(data$Gender) ~ ., data = data[,4:117])
-
-sex.forest <- RForest(x.data = data[,4:117], y.class = data$Gender)
+small.sex.forest <- randomForest(as.factor(data$Gender) ~ ., data = data[,4:117])
+sex.forest <- RForest(x.data = data[,23:43], y.class = as.factor(data$Gender), max.perm = 10)
 
 ###############################################################################
 
 ## Age
-age.forest <- RForest(x.data = data[,4:117], y.class = data$Age)
+age.forest <- RForest(x.data = data[,23:43], y.class = data$Age)
 
 ###############################################################################
 
 ## Women
-women.forest <- RForest(x.data = data[which(data$Gender == 'woman'),4:117], y.class = data$Age)
+women.forest <- RForest(x.data = data[which(data$Gender == 'woman'),23:43], y.class = data$Age)
 
 ###############################################################################
 
 ## Men
-men.forest <- RForest(x.data = data[which(data$Gender == 'man'),4:117], y.class = data$Age)
+men.forest <- RForest(x.data = data[which(data$Gender == 'man'),23:43], y.class = data$Age)

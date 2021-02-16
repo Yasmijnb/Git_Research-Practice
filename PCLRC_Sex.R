@@ -3,7 +3,7 @@
 # Yasmijn Balder
 # 11-02-2021
 
-# PCLRC and GGM comparing (all) men to (all) women
+# PCLRC and GGM comparing (all) men to (all) women using main fractions
 
 # Output
 # Opens a network in cytoscape
@@ -295,30 +295,8 @@ data[,1] <- NULL
 men <- data[which(data$Gender=='man'),]
 women <- data[which(data$Gender=='woman'),]
 
-# Make groups of the type of measurements
-measure_type <- NULL
-for (colnum in 4:ncol(men)) {
-  measure_type <- c(measure_type, str_split(colnames(men)[colnum], ',')[[1]][1])
-}
-measure_type[41:114] <- 'Subfractions'
-# Turn them into shapes
-geo <- c('circle', 'square', 'Triangle', 'Diamond')
-shapes <- NULL
-for (number in 1:length(unique(measure_type))) {
-  shapes[which(measure_type == unique(measure_type)[number])] <- geo[number]
-}
-# Make groups of the lipids
-groups <- c('TG', 'Chol', 'LDL', 'HDL', 'Apo-A1', 'Apo-A2', 'Apo-B100', 
-            rep('?',33), rep('VLDL', 20), rep('LDL', 30), rep('HDL', 24))
-# Turn them into colours
-colours <- NULL
-pallet <- c('red', 'orange', 'yellow', 'green', 'cyan', 'lightblue', 'darkblue', 'pink', 'purple')
-for (number in 1:length(unique(groups))) {
-  colours[which(groups == unique(groups)[number])] <- pallet[number]
-}
-
 # Perform PCLRC + ggm
-pclrc <- Diff.Conn.PCLRC.gmm(men[,4:ncol(men)], women[,4:ncol(women)], verbose = TRUE)
+pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE)
 
 ###############################################################################
 
@@ -332,23 +310,23 @@ colnames(men_adj) <- rownames(men_adj) <- c(colnames(data))
 disconnected.nodes <- which(apply(men_adj, 1, function(x){all(x==0)}))
 if (length(disconnected.nodes)!=0) {
   men_adj <- men_adj[-disconnected.nodes,-disconnected.nodes]
-  groups <- groups[-disconnected.nodes]
-  shapes <- shapes[-disconnected.nodes]
-  colours <- colours[-disconnected.nodes]
+  # groups <- groups[-disconnected.nodes]
+  # shapes <- shapes[-disconnected.nodes]
+  # colours <- colours[-disconnected.nodes]
 }
 
 # Create a qgraph with layout options
 men_qgraph <- qgraph(input=men_adj,
                          labels=colnames(men_adj),
-                         groups=groups,
+                         # groups=groups,
                          DoNotPlot=TRUE,
                          borders=FALSE,
                          palette="colorblind",
                          label.font='sans',
                          posCol="#009E73",  # colour of positive edges
                          negCol="#D55E00",  # colour of negative edges
-                         color=colours,     # colour of groups
-                         shape=shapes,      # shapes of groups
+                         # color=colours,     # colour of groups
+                         # shape=shapes,      # shapes of groups
                          fade=FALSE,        # edge transparency based on weight
                          esize=2)
 
@@ -373,22 +351,22 @@ colnames(women_adj) <- rownames(women_adj) <- c(colnames(data))
 disconnected.nodes <- which(apply(women_adj, 1, function(x){all(x==0)}))
 if (length(disconnected.nodes)!=0) {
   women_adj <- women_adj[-disconnected.nodes,-disconnected.nodes]
-  groups <- groups[-disconnected.nodes]
-  shapes <- shapes[-disconnected.nodes]
-  colours <- colours[-disconnected.nodes]
+  # groups <- groups[-disconnected.nodes]
+  # shapes <- shapes[-disconnected.nodes]
+  # colours <- colours[-disconnected.nodes]
 }
 
 women_qgraph <- qgraph(input=women_adj,
                        labels=colnames(women_adj),
-                       groups=groups,
+                       # groups=groups,
                        DoNotPlot=TRUE,
                        borders=FALSE,
                        palette="colorblind",
                        label.font='sans',
                        posCol="#009E73",  # colour of positive edges
                        negCol="#D55E00",  # colour of negative edges
-                       color=colours,     # colour of groups
-                       shape=shapes,      # shapes of groups
+                       # color=colours,     # colour of groups
+                       # shape=shapes,      # shapes of groups
                        fade=FALSE,        # edge transparency based on weight
                        esize=2)
 

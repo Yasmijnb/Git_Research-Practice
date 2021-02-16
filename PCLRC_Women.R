@@ -3,7 +3,7 @@
 # Yasmijn Balder
 # 11-02-2021
 
-# PCLRC and GGM comparing young women to old women
+# PCLRC and GGM comparing young women to old women using main fractions
 
 # Output
 # Opens a network in cytoscape
@@ -295,7 +295,7 @@ women <- data[which(data$Gender=='woman'),]
 young.women <- women[women$Age < quantile(women$Age, probs = 1/3),]
 old.women <- women[women$Age > quantile(women$Age, probs = 2/3),]
 
-pclrc <- Diff.Conn.PCLRC.gmm(young.women[,4:ncol(young.women)], old.women[,4:ncol(old.women)], verbose = TRUE)
+pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43], verbose = TRUE)
 
 ###############################################################################
 
