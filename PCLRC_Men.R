@@ -296,13 +296,13 @@ young.men <- men[men$Age < quantile(men$Age, probs = 1/3),]
 old.men <- men[men$Age > quantile(men$Age, probs = 2/3),]
 
 
-pclrc <- Diff.Conn.PCLRC.gmm(young.men[,23:43], old.men[,23:43], verbose = TRUE)
+men.pclrc <- Diff.Conn.PCLRC.gmm(young.men[,23:43], old.men[,23:43], verbose = TRUE)
 
 ###############################################################################
 
 # Make network for young men
 
-young_adj <- pclrc$AdjMat1
+young_adj <- men.pclrc$AdjMat1
 colnames(young_adj) <- rownames(young_adj) <- c(colnames(data))
 # Remove disconnected nodes
 disconnected.nodes <- which(apply(young_adj, 1, function(x){all(x==0)}))
@@ -342,7 +342,7 @@ createNetworkFromIgraph(igraph = young_igraph,
 
 # Make network for old men
 
-old_adj <- pclrc$AdjMat2
+old_adj <- men.pclrc$AdjMat2
 colnames(old_adj) <- rownames(old_adj) <- c(colnames(data))
 # Remove disconnected nodes
 disconnected.nodes <- which(apply(old_adj, 1, function(x){all(x==0)}))
