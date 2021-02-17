@@ -19,7 +19,7 @@ library(minet)
 library(qgraph)             # Used to create the network
 library(igraph)             # Used to create the network
 library(RCy3)               # Used to open the network in cytoscape
-library(stringr)
+library(openxlsx)           # Used to write excel files
 
 
 ###############################################################################
@@ -296,14 +296,28 @@ men <- data[which(data$Gender=='man'),]
 women <- data[which(data$Gender=='woman'),]
 
 # Perform PCLRC + ggm
-pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE)
+sex.pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE)
+
+###############################################################################
+
+# Create figures
+
+diff_conn <- cbind(sex.pclrc$Diff_Conn, sex.pclrc$Pval_adj)
+colnames(diff_conn) <- c('Differential connectivity', 'Adjusted P-values')
+diff_conn <- as.data.frame(diff_conn)
+
+plot(rownames(diff_conn), diff_conn$`Adjusted P-values`, 
+     xlab = 'Lipid main fractions', 
+     ylab = 'Adjusted P-value of differential connectivity', 
+     main = 'Differential connectivity of lipids between men and women')
+abline(0, 0.05, col = 'red')
 
 ###############################################################################
 
 # Make network for men
 
 # Retrieve the adjacency matrices
-men_adj <- pclrc$AdjMat1
+men_adj <- sex.pclrc$AdjMat1
 colnames(men_adj) <- rownames(men_adj) <- c(colnames(data))
 
 # Remove disconnected nodes
@@ -345,7 +359,7 @@ createNetworkFromIgraph(igraph = men_igraph,
 
 # Make network for women
 
-women_adj <- pclrc$AdjMat2
+women_adj <- sex.pclrc$AdjMat2
 colnames(women_adj) <- rownames(women_adj) <- c(colnames(data))
 
 disconnected.nodes <- which(apply(women_adj, 1, function(x){all(x==0)}))
@@ -377,3 +391,4 @@ createNetworkFromIgraph(igraph = women_igraph,
                         title=paste0("Women"),
                         collection="PCLRC Men vs. Women")
 
+###############################################################################
