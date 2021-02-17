@@ -302,15 +302,10 @@ sex.pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE)
 
 # Create figures
 
-diff_conn <- cbind(sex.pclrc$Diff_Conn, sex.pclrc$Pval_adj)
-colnames(diff_conn) <- c('Differential connectivity', 'Adjusted P-values')
-diff_conn <- as.data.frame(diff_conn)
-
-plot(rownames(diff_conn), diff_conn$`Adjusted P-values`, 
-     xlab = 'Lipid main fractions', 
-     ylab = 'Adjusted P-value of differential connectivity', 
-     main = 'Differential connectivity of lipids between men and women')
-abline(0, 0.05, col = 'red')
+barplot(sex.pclrc$Pval_adj, xlab = 'Lipid main fractions', 
+        ylab = 'Adjusted P-value of differential connectivity', 
+        main = 'Differential connectivity of lipids between men and women')
+abline(0.05, 0, col = 'red')
 
 ###############################################################################
 

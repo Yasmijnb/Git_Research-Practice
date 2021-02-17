@@ -299,6 +299,15 @@ women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43], verbo
 
 ###############################################################################
 
+# Create figures
+
+barplot(sex.pclrc$Pval_adj, xlab = 'Lipid main fractions', 
+        ylab = 'Adjusted P-value of differential connectivity', 
+        main = 'Differential connectivity of lipids between men and women')
+abline(0.05, 0, col = 'red')
+
+###############################################################################
+
 # Make network for young women
 
 young_adj <- women.pclrc$AdjMat1

@@ -295,8 +295,16 @@ men <- data[which(data$Gender=='man'),]
 young.men <- men[men$Age < quantile(men$Age, probs = 1/3),]
 old.men <- men[men$Age > quantile(men$Age, probs = 2/3),]
 
-
 men.pclrc <- Diff.Conn.PCLRC.gmm(young.men[,23:43], old.men[,23:43], verbose = TRUE)
+
+###############################################################################
+
+# Create figures
+
+barplot(sex.pclrc$Pval_adj, xlab = 'Lipid main fractions', 
+        ylab = 'Adjusted P-value of differential connectivity', 
+        main = 'Differential connectivity of lipids between men and women')
+abline(0.05, 0, col = 'red')
 
 ###############################################################################
 
