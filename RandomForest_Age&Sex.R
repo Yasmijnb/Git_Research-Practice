@@ -252,20 +252,60 @@ require(caTools)      # colAUC
 ###############################################################################
 
 ## Sex
-small.sex.forest <- randomForest(as.factor(data$Gender) ~ ., data = data[,4:117])
-sex.forest <- RForest(x.data = data[,23:43], y.class = as.factor(data$Gender), max.perm = 10)
+# small.sex.forest <- randomForest(as.factor(data$Gender) ~ ., data = data[,4:117])
+sex.forest <- RForest(x.data = data[,23:43], y.class = as.factor(data$Gender))
+sex.forest$ModelStatistics
 
 ###############################################################################
 
 ## Age
-age.forest <- RForest(x.data = data[,23:43], y.class = data$Age)
+
+# Make young and old groups
+age_groups <- rep(0, nrow(data))
+age_groups[which(data$Age < quantile(data$Age, probs = 1/3))] <- 'young'
+age_groups[which(data$Age > quantile(data$Age, probs = 2/3))] <- 'old'
+
+# Use only young and old, not the middle
+age.data <- data[which(age_groups == 'young' | age_groups == 'old'),]
+group.data <- age_groups[which(age_groups == 'young' | age_groups == 'old')]
+
+age.forest <- RForest(x.data = age.data[,23:43], y.class = group.data)
+age.forest$ModelStatistics
 
 ###############################################################################
 
 ## Women
-women.forest <- RForest(x.data = data[which(data$Gender == 'woman'),23:43], y.class = data$Age)
+
+# Use only women
+women <- data[which(data$Gender == 'woman'),]
+
+# Make young and old groups
+women.age_groups <- rep(0, nrow(data))
+women.age_groups[which(women$Age < quantile(women$Age, probs = 1/3))] <- 'young'
+women.age_groups[which(women$Age > quantile(women$Age, probs = 2/3))] <- 'old'
+
+# Use only young and old, not the middle
+women.age.data <- data[which(women.age_groups == 'young' | women.age_groups == 'old'),]
+women.group.data <- women.age_groups[which(women.age_groups == 'young' | women.age_groups == 'old')]
+
+women.forest <- RForest(x.data = women[,23:43], y.class = women.group.data)
+women.forest$ModelStatistics
 
 ###############################################################################
 
 ## Men
-men.forest <- RForest(x.data = data[which(data$Gender == 'man'),23:43], y.class = data$Age)
+
+# Use only women
+men <- data[which(data$Gender == 'man'),]
+
+# Make young and old groups
+men.age_groups <- rep(0, nrow(data))
+men.age_groups[which(men$Age < quantile(men$Age, probs = 1/3))] <- 'young'
+men.age_groups[which(men$Age > quantile(men$Age, probs = 2/3))] <- 'old'
+
+# Use only young and old, not the middle
+men.age.data <- data[which(men.age_groups == 'young' | men.age_groups == 'old'),]
+men.group.data <- men.age_groups[which(men.age_groups == 'young' | men.age_groups == 'old')]
+
+men.forest <- RForest(x.data = men[,23:43], y.class = men.group.data)
+men.forest$ModelStatistics
