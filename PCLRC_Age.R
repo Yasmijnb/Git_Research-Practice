@@ -19,7 +19,8 @@ library(minet)
 library(qgraph)             # Used to create the network
 library(igraph)             # Used to create the network
 library(RCy3)               # Used to open the network in cytoscape
-
+library(stringr)            # Used to split and shorten the lipid names
+library(ggplot2)            # Used to make pretty plots
 
 ###############################################################################
 
@@ -298,12 +299,36 @@ age.pclrc <- Diff.Conn.PCLRC.gmm(young[,23:43], old[,23:43], verbose = TRUE)
 
 ###############################################################################
 
-# Create figures
+# Create figure
 
-barplot(sex.pclrc$Pval_adj, xlab = 'Lipid main fractions', 
-        ylab = 'Adjusted P-value of differential connectivity', 
-        main = 'Differential connectivity of lipids between men and women')
-abline(0.05, 0, col = 'red')
+# Create a dataframe with the adjusted p-values
+adjusted.pvalues <- as.data.frame(age.pclrc$Pval_adj)
+# Change the name of the p-values column
+colnames(adjusted.pvalues)[1] <- 'P.values'
+# Shorten the names of the lipids
+short.names <- NULL
+for (long.name in rownames(adjusted.pvalues)) {
+  short.name <- str_split(long.name, ', ')[[1]][2:3]
+  combined <- paste(short.name, collapse = ' & ')
+  short.names <- c(short.names, combined)
+}
+# Add the lipid names as a column
+adjusted.pvalues$lipids <- short.names
+# Add the differential connectivity as a column
+adjusted.pvalues$diffcon <- age.pclrc$Diff_Conn
+# Create a column with significance based on the adjusted p-values
+adjusted.pvalues$sig <- rep("Not significant", 21)
+adjusted.pvalues$sig[which(adjusted.pvalues$P.values <= 0.05)] <- 'Significant'
+
+# Create a bar plot
+ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) + 
+  geom_bar(stat = "identity") +
+  # Use nicer colours
+  scale_fill_manual(values = c("orange", "steelblue")) + 
+  # Change the axis labels
+  xlab('Differenrial connectivity') + ylab('Lipoprotein Main Fractions') + 
+  # Remove the legend title
+  theme(legend.title = element_blank())
 
 ###############################################################################
 
