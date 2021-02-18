@@ -56,7 +56,7 @@ data$Groups <- group
 ###############################################################################
 
 # Perform PCA analysis
-pca <- prcomp(data[,5:118])
+pca <- prcomp(data[,4:117])
 
 # Percentage of variance explained
 summary(pca)$importance[2:3,1:3]*100
