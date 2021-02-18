@@ -288,7 +288,7 @@ women.age_groups[which(women$Age > quantile(women$Age, probs = 2/3))] <- 'old'
 women.age.data <- data[which(women.age_groups == 'young' | women.age_groups == 'old'),]
 women.group.data <- women.age_groups[which(women.age_groups == 'young' | women.age_groups == 'old')]
 
-women.forest <- RForest(x.data = women[,23:43], y.class = women.group.data)
+women.forest <- RForest(x.data = women.age.data[,23:43], y.class = women.group.data)
 women.forest$ModelStatistics
 
 ###############################################################################
@@ -307,5 +307,6 @@ men.age_groups[which(men$Age > quantile(men$Age, probs = 2/3))] <- 'old'
 men.age.data <- data[which(men.age_groups == 'young' | men.age_groups == 'old'),]
 men.group.data <- men.age_groups[which(men.age_groups == 'young' | men.age_groups == 'old')]
 
-men.forest <- RForest(x.data = men[,23:43], y.class = men.group.data)
+men.forest <- RForest(x.data = men.age.data[,23:43], y.class = men.group.data)
 men.forest$ModelStatistics
+
