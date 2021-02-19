@@ -19,6 +19,7 @@ library(minet)
 library(qgraph)             # Used to create the network
 library(igraph)             # Used to create the network
 library(RCy3)               # Used to open the network in cytoscape
+library(openxlsx)           # Used to write excel files
 library(stringr)            # Used to split and shorten the lipid names
 library(ggplot2)            # Used to make pretty plots
 
@@ -334,8 +335,13 @@ ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) +
 
 # Make network for young
 
+# Retrieve the adjacency matrix
 young_adj <- age.pclrc$AdjMat1
-colnames(young_adj) <- rownames(young_adj) <- c(colnames(data))
+
+# Save the adjacency matrix for COVSCA
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
+write.xlsx(young_adj, 'Adjacency_matrix_young.xlsx')
+
 # Remove disconnected nodes
 disconnected.nodes <- which(apply(young_adj, 1, function(x){all(x==0)}))
 if (length(disconnected.nodes)!=0) {
@@ -374,8 +380,13 @@ createNetworkFromIgraph(igraph = young_igraph,
 
 # Make network for old
 
+# Retrieve the adjacency matrix
 old_adj <- age.pclrc$AdjMat2
-colnames(old_adj) <- rownames(old_adj) <- c(colnames(data))
+
+# Save the adjacency matrix for COVSCA
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
+write.xlsx(old_adj, 'Adjacency_matrix_old.xlsx')
+
 # Remove disconnected nodes
 disconnected.nodes <- which(apply(old_adj, 1, function(x){all(x==0)}))
 if (length(disconnected.nodes)!=0) {
