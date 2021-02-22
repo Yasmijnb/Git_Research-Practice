@@ -340,7 +340,7 @@ ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) +
 young_adj <- men.pclrc$AdjMat1
 
 # Save the adjacency matrix for COVSCA
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
 write.xlsx(young_adj, 'Adjacency_matrix_young_men.xlsx')
 
 # Remove disconnected nodes
@@ -385,7 +385,7 @@ createNetworkFromIgraph(igraph = young_igraph,
 old_adj <- men.pclrc$AdjMat2
 
 # Save the adjacency matrix for COVSCA
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
 write.xlsx(old_adj, 'Adjacency_matrix_old_men.xlsx')
 
 # Remove disconnected nodes

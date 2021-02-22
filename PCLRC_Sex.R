@@ -340,7 +340,7 @@ ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) +
 men_adj <- sex.pclrc$AdjMat1
 
 # Save the adjacency matrix for COVSCA
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
 write.xlsx(men_adj, 'Adjacency_matrix_men.xlsx')
 
 # Remove disconnected nodes
@@ -386,7 +386,7 @@ createNetworkFromIgraph(igraph = men_igraph,
 women_adj <- sex.pclrc$AdjMat2
 
 # Save the adjacency matrix for COVSCA
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
 write.xlsx(women_adj, 'Adjacency_matrix_women.xlsx')
 
 disconnected.nodes <- which(apply(women_adj, 1, function(x){all(x==0)}))
