@@ -25,7 +25,8 @@ library(randomForest)
 library(Rmisc)
 
 # Functions
-RForest = function(x.data, y.class, unbalance = TRUE, perc.unbal = 0.85, n.resamp = 100, max.perm = 1000, verbose = T){
+RForest = function(x.data, y.class, unbalance = TRUE, perc.unbal = 0.85, 
+                   n.resamp = 100, max.perm = 1000, verbose = T){
   
   # Inputs:
   #
@@ -52,7 +53,7 @@ RForest = function(x.data, y.class, unbalance = TRUE, perc.unbal = 0.85, n.resam
     print('Correction and resampling for unbalance performed')
     
     # Find unique class values
-    class.values =   unique(y.class)
+    class.values = unique(y.class)
     print(class.values)
     
     # Check number of classes. Must be 2
@@ -73,13 +74,14 @@ RForest = function(x.data, y.class, unbalance = TRUE, perc.unbal = 0.85, n.resam
     
     # Random Forest on original data
     for(k in 1 : n.resamp){
-      rf <- randomForest(as.factor(y.class) ~ ., data=x.data, strata = y.class, sampsize = c(nsize,nsize), replace = F)
+      rf <- randomForest(as.factor(y.class) ~ ., data=x.data, strata = y.class, 
+                         sampsize = c(nsize,nsize), replace = F)
       print('done')
-      #Extract predicted y
+      # Extract predicted y
       y.pred = as.factor(rf$predicted)
       
-      #  xtab <- table(as.numeric(y.pred), as.numeric(y.class))
-      #  conf.mat = confusionMatrix(xtab)
+      # xtab <- table(as.numeric(y.pred), as.numeric(y.class))
+      # conf.mat = confusionMatrix(xtab)
       
       conf.mat = confusionMatrix(as.factor(y.pred), as.factor(y.class))
       
@@ -139,12 +141,15 @@ RForest = function(x.data, y.class, unbalance = TRUE, perc.unbal = 0.85, n.resam
       auc.perm = NULL
       
       for(k in 1 : n.resamp){
-        rf.perm <- randomForest(as.factor(y.class.perm) ~ ., data= x.data, strata = y.class.perm, sampsize = c(nsize,nsize), replace=F)
+        rf.perm <- randomForest(as.factor(y.class.perm) ~ ., data= x.data, 
+                                strata = y.class.perm, 
+                                sampsize = c(nsize,nsize), replace=F)
         y.pred.perm = as.factor(rf.perm$predicted)
         
         #xtab.perm <- table(as.numeric(y.pred.perm), as.numeric(y.class.perm))
         
-        conf.mat.perm = confusionMatrix(as.factor(y.pred.perm), as.factor(y.class.perm))
+        conf.mat.perm = confusionMatrix(as.factor(y.pred.perm), 
+                                        as.factor(y.class.perm))
         
         acc.perm[k] = conf.mat.perm$overall["Accuracy"]
         sens.perm[k] = conf.mat.perm$byClass["Sensitivity"]
@@ -173,7 +178,11 @@ RForest = function(x.data, y.class, unbalance = TRUE, perc.unbal = 0.85, n.resam
     colnames(STAT) = c('Mean','95%CI Lower','95%CI Upper','P-val')
     rownames(STAT) = c('Accuracy','Specificity','Sensitivity','AUC')
 
-    RF.models = list(ModelStatistics = STAT, RFaccuracy = ACCURACY, RFspecificity = SPECIFICITY, RFsensitivity = SENSITIVITY, RFaccuracyPerm = ACCURACY.perm, RFspecificityPerm = SPECIFICITY.perm, RFsensitivityPerm = SENSITIVITY.perm, RFaucPerm = AUC.perm )
+    RF.models = list(ModelStatistics = STAT, RFaccuracy = ACCURACY, 
+                     RFspecificity = SPECIFICITY, RFsensitivity = SENSITIVITY, 
+                     RFaccuracyPerm = ACCURACY.perm, 
+                     RFspecificityPerm = SPECIFICITY.perm, 
+                     RFsensitivityPerm = SENSITIVITY.perm, RFaucPerm = AUC.perm)
   }
   
   ## Modelling if BALANCED
@@ -206,7 +215,8 @@ RForest = function(x.data, y.class, unbalance = TRUE, perc.unbal = 0.85, n.resam
       y.pred.perm = as.factor(rf.perm$predicted)
       #    xtab.perm <- table(as.numeric(y.pred.perm), as.numeric(y.class.perm))
       # conf.mat.perm = confusionMatrix(xtab.perm)
-      conf.mat.perm = confusionMatrix(as.factor(y.pred.perm), as.factor(y.class.perm))
+      conf.mat.perm = confusionMatrix(as.factor(y.pred.perm), 
+                                      as.factor(y.class.perm))
       acc.perm = conf.mat.perm$overall["Accuracy"]
       sens.perm = conf.mat.perm$byClass["Sensitivity"]
       spec.perm = conf.mat$.perm$byClass["Specificity"]
@@ -242,7 +252,11 @@ RForest = function(x.data, y.class, unbalance = TRUE, perc.unbal = 0.85, n.resam
     colnames(STAT) = c('Mean','P-val')
     rownames(STAT) = c('Accuracy','Specificity','Sensitivity','AUC')
     
-    RF.models = list(ModelStatistics = STAT, RFaccuracy = model.acc, RFspecificity = model.spec, RFsensitivity = model.sens, RFaccuracyPerm = ACCURACY.perm, RFspecificityPerm = SPECIFICITY.perm, RFsensitivityPerm = SENSITIVITY.perm, RFaucPerm = AUC.perm )
+    RF.models = list(ModelStatistics = STAT, RFaccuracy = model.acc, 
+                     RFspecificity = model.spec, RFsensitivity = model.sens, 
+                     RFaccuracyPerm = ACCURACY.perm, 
+                     RFspecificityPerm = SPECIFICITY.perm, 
+                     RFsensitivityPerm = SENSITIVITY.perm, RFaucPerm = AUC.perm)
   }
   return(RF.models)
 }
@@ -252,7 +266,6 @@ require(caTools)      # colAUC
 ###############################################################################
 
 ## Sex
-# small.sex.forest <- randomForest(as.factor(data$Gender) ~ ., data = data[,4:117])
 sex.forest <- RForest(x.data = data[,23:43], y.class = as.factor(data$Gender))
 sex.forest$ModelStatistics
 
