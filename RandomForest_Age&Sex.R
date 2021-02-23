@@ -3,10 +3,12 @@
 # Yasmijn Balder
 # 12-02-2021
 
-# Perform random forest to distinguish sex and age using main fractions
+# Perform random forest to distinguish sex and age using main fractions. Four
+# models are created: men vs. women, young vs. old, young men vs. old men, young
+# women vs. old women
 
 # Output
-# 
+# The accuracy, sentivitiy, specificity, and AUC of each model
 
 ###############################################################################
 
