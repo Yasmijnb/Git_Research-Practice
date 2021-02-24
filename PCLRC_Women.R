@@ -321,7 +321,7 @@ adjusted.pvalues$lipids <- short.names
 adjusted.pvalues$diffcon <- women.pclrc$Diff_Conn
 # Create a column with significance based on the adjusted p-values
 adjusted.pvalues$sig <- rep("Not significant", 21)
-adjusted.pvalues$sig[which(adjusted.pvalues$P.values <= 0.05)] <- 'Significant'
+adjusted.pvalues$sig[which(adjusted.pvalues$P.values <= 0.01)] <- 'Significant'
 
 # Create a bar plot
 ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) + 
