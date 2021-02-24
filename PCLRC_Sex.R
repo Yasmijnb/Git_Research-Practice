@@ -297,7 +297,8 @@ men <- data[which(data$Gender=='man'),]
 women <- data[which(data$Gender=='woman'),]
 
 # Perform PCLRC + ggm
-sex.pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE)
+sex.pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE, 
+                                 adjust.diff = 'bonferroni')
 
 ###############################################################################
 

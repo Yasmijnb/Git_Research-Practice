@@ -297,7 +297,8 @@ women <- data[which(data$Gender=='woman'),]
 young.women <- women[women$Age < quantile(women$Age, probs = 1/3),]
 old.women <- women[women$Age > quantile(women$Age, probs = 2/3),]
 
-women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43], verbose = TRUE)
+women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43], 
+                                   verbose = TRUE, adjust.diff = 'bonferroni')
 
 ###############################################################################
 
