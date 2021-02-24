@@ -12,7 +12,7 @@
 
 # Load packages
 library(GeneNet)
-library(cropcor)
+library(corpcor)
 library(longitudinal)
 library(fdrtool)
 library(minet)
@@ -22,6 +22,7 @@ library(RCy3)               # Used to open the network in cytoscape
 library(openxlsx)           # Used to write excel files
 library(stringr)            # Used to split and shorten the lipid names
 library(ggplot2)            # Used to make pretty plots
+library(dplyr)
 
 ###############################################################################
 
@@ -281,6 +282,157 @@ Diff.Conn.PCLRC.gmm <- function(X1, X2, corr.type = 'pearson',
   return(results)
   
 }
+# Function from Sanjee
+VisualiseNetwork <- function(A, Group = TRUE, G, type = 1) {
+  
+  #Require(dplyr)
+  while(inherits(A, "data.frame") == TRUE || inherits(A, "matrix") == TRUE){A <- list(A)}
+  
+  AdjMatrix = NULL
+  NodesNetwork = NULL
+  EdgesNetwork = NULL
+  
+  for (matrix in 1:length(A)) {
+    
+    Adjacency = NULL
+    NodeTable = NULL
+    EdgeTable = NULL    
+    
+    Adjacency = as.data.frame(A[matrix])
+    
+    if(ncol(Adjacency) != nrow(Adjacency)) stop("Adjacency matrix should be a square matrix with equal number of rows and columns")
+    if(nrow(Adjacency) != length(G)) stop("The number of nodes/variables in the groups table should be the same as in the adjacency matrix")
+    
+    if(Group == FALSE){
+      Adj <- Adjacency
+      Node <- as.vector(colnames(Adj))
+      Node <- as.data.frame(Node)
+      Groups <- as.vector(rep("A", nrow(Adj)))
+      NodeTable <- as.data.frame(cbind(Node, Groups))
+    } else {
+      Groups = as.vector(G)
+      Adj <- Adjacency
+      Node <- as.vector(colnames(Adj))
+      Node <- as.data.frame(Node)
+      NodeTable <- as.data.frame(cbind(Node, Groups))
+    }
+    #NodeTable <- left_join(Node, Node_Group, by = NULL,  copy = FALSE, suffix=c(".n",".g"))
+    NodeTable <- with(NodeTable, NodeTable[order(NodeTable$Groups) , ])
+    
+    diag(Adj) = 0
+    Adj[lower.tri(Adj, diag=TRUE)] <- 0
+    
+    Source = NULL
+    Target = NULL
+    Weight = NULL
+    for (row in 1:nrow(Adj)) {
+      for (col in 1:ncol(Adj)) {
+        if (Adj[row, col] != 0) {
+          Source <- as.vector(append(Source, rownames(Adj[row, ])))
+          Target <- as.vector(append(Target, colnames(Adj[col])))
+          Weight <- as.vector(append(Weight, as.numeric(Adj[row, col])))
+        } else {}
+      }
+    }
+    Interaction <- as.vector(rep("interacts", length(Weight)))
+    EdgeTable <- as.data.frame(cbind(Source, Target, Weight, Interaction))
+    EdgeTable$Weight <- as.numeric(as.character(EdgeTable$Weight))
+    
+    X = NULL
+    Y = NULL
+    R = round(nrow(Adj)/10, 0) * (100)
+    
+    for (i in 0:(nrow(Adj) - 1)) {
+      print(i)
+      x = R*cos((i*2*3.14159265359)/(nrow(Adj)))
+      X <- as.vector(append(X, x)) 
+      y = R*sin((i*2*3.14159265359)/(nrow(Adj)))
+      Y <- as.vector(append(Y, y))
+    }
+    pos <- as.data.frame(cbind(X,Y))
+    
+    NodeTable <- cbind(NodeTable, pos)
+    
+    frac = as.vector(c(2, 3, 4, 6, 10, 15, 24, 36))
+    E = nrow(EdgeTable)
+    M = NULL
+    for (i in 1:length(frac)) {
+      f = frac[i]
+      mes = NULL
+      mes = round((f * E)/100, 0)
+      M <- as.vector(append(M, mes))
+    }
+    diff = (sum(M)) - (nrow(EdgeTable))
+    ifelse(diff == 0, print("perfect!"), M[8] <- M[8] - diff)
+    
+    wids <- as.vector(c(10, 8, 4, 2, 1, 0.5, 0.25, 0.25))
+    wid = NULL
+    for (j in 1:length(M)) {
+      times = M[j]
+      value = wids[j]
+      wid <- as.vector(append(wid, c(rep(value, times))))
+    }
+    
+    ifelse(type == 1, EdgeTable <- mutate(EdgeTable, width = ifelse(Weight > 0.5, 10, ifelse(Weight < -0.5, 10, ifelse(Weight < 0.5 & Weight > 0.4, 8, ifelse(Weight > -0.5 & Weight < -0.4, 8, ifelse(Weight < 0.4 & Weight > 0.3, 4, ifelse(Weight > -0.4 & Weight < -0.3, 4, ifelse(Weight < 0.3 & Weight > 0.2, 2, ifelse(Weight > -0.3 & Weight < -0.2, 2, ifelse(Weight < 0.2 & Weight > 0.15, 1, ifelse(Weight > -0.2 & Weight < -0.15, 1, ifelse(Weight < 0.15 & Weight > 0.1, 0.5, ifelse(Weight > -0.15 & Weight < -0.1, 0.5, 0.25))))))))))))), ifelse(type == 2, EdgeTable <- mutate(EdgeTable, width = ifelse(Weight > 0.9, 10, ifelse(Weight < -0.9, 10, ifelse(Weight < 0.9 & Weight > 0.8, 8, ifelse(Weight > -0.9 & Weight < -0.8, 8, ifelse(Weight < 0.8 & Weight > 0.7, 4, ifelse(Weight > -0.8 & Weight < -0.7, 4, ifelse(Weight < 0.7 & Weight > 0.6, 2, ifelse(Weight > -0.7 & Weight < -0.6, 2, ifelse(Weight < 0.6 & Weight > 0.5, 1, ifelse(Weight > -0.6 & Weight < -0.15, 1, ifelse(Weight < 0.5 & Weight > 0.4, 0.5, ifelse(Weight > -0.5 & Weight < -0.4, 0.5, 0.25))))))))))))), if(type == 3){
+      wid <- as.data.frame(wid)
+      EdgeTable <- EdgeTable[sort(abs(EdgeTable$Weight), decreasing=T, index.return=T)[[2]],]
+      EdgeTable <- cbind(EdgeTable, wid)
+      colnames(EdgeTable)[5] <- "width"
+    } else{
+      print("type not selected")}))
+    
+    ifelse(type == 1, EdgeTable <- mutate(EdgeTable, Stroke = ifelse(Weight > 0.5, "#DC1C13", ifelse(Weight < -0.5, "#1F1FFF", ifelse(Weight < 0.5 & Weight > 0.4, "#EA4C46", ifelse(Weight > -0.5 & Weight < -0.4, "#4949FF", ifelse(Weight < 0.4 & Weight > 0.3, "#F07470", ifelse(Weight > -0.4 & Weight < -0.3, "#7879FF", ifelse(Weight < 0.3 & Weight > 0.2, "#F1959B", ifelse(Weight > -0.3 & Weight < -0.2, "#A3A3FF", ifelse(Weight < 0.2 & Weight > 0.15, "#F6BDC0", ifelse(Weight > -0.2 & Weight < -0.15, "#BFBFFF", ifelse(Weight < 0.15 & Weight > 0.1, "#F6BDC0", ifelse(Weight > -0.15 & Weight < -0.1, "#BFBFFF", "#A6A6A6"))))))))))))), ifelse(type == 2, EdgeTable <- mutate(EdgeTable, Stroke = ifelse(Weight > 0.9, "#DC1C13", ifelse(Weight < -0.9, "#1F1FFF", ifelse(Weight < 0.9 & Weight > 0.8, "#EA4C46", ifelse(Weight > -0.9 & Weight < -0.8, "#4949FF", ifelse(Weight < 0.8 & Weight > 0.7, "#F07470", ifelse(Weight > -0.8 & Weight < -0.7, "#7879FF", ifelse(Weight < 0.7 & Weight > 0.6, "#F1959B", ifelse(Weight > -0.7 & Weight < -0.6, "#A3A3FF", ifelse(Weight < 0.6 & Weight > 0.5, "#F6BDC0", ifelse(Weight > -0.6 & Weight < -0.5, "#BFBFFF", ifelse(Weight < 0.5 & Weight > 0.4, "#F6BDC0", ifelse(Weight > -0.5 & Weight < -0.4, "#BFBFFF", "#A6A6A6"))))))))))))), ifelse(type == 3, EdgeTable <- mutate(EdgeTable, Stroke = ifelse(width == 10 & Weight > 0, "#DC1C13", ifelse(width == 10 & Weight < 0, "#1F1FFF", ifelse(width == 8 & Weight > 0, "#EA4C46", ifelse(width == 8 & Weight < 0, "#4949FF", ifelse(width == 4 & Weight > 0, "#F07470", ifelse(width == 4 & Weight < 0, "#7879FF", ifelse(width == 2 & Weight > 0, "#F1959B", ifelse(width == 2 & Weight < 0, "#A3A3FF", ifelse(width == 1 & Weight > 0, "#F6BDC0", ifelse(width == 1 & Weight < 0, "#BFBFFF", ifelse(width == 0.5 & Weight > 0, "#F6BDC0", ifelse(width == 0.5 & Weight < 0, "#BFBFFF", "#A6A6A6"))))))))))))), "type not selected")))
+    
+    EdgeTable$sharedname <- paste(EdgeTable$Source, "(interacts)", EdgeTable$Target)
+    
+    Network_name = sprintf("Visual_Network_%i", matrix)
+    Network_Collection = sprintf("Visual_Networks_%i", matrix)
+    
+    nodes = NULL
+    edges = NULL
+    
+    nodes <- data.frame(id=as.vector(NodeTable$Node), group=as.vector(NodeTable$Groups), stringsAsFactors = FALSE)
+    edges <- data.frame(source=as.vector(EdgeTable$Source), target=as.vector(EdgeTable$Target), interaction=as.vector(EdgeTable$Interaction), weight=as.vector(EdgeTable$Weight), stringsAsFactors = FALSE)
+    
+    createNetworkFromDataFrames(nodes, edges, title=Network_name, collection=Network_Collection, style.name = "SanjeeNetworkStyle")
+    
+    Colour_palette <- as.vector(c("#0073C2", "#EFC000", "#868686", "#CD534C", "#7AA6DC", "#003C6799", "#8F7700", "#3B3B3B", "#A73030", "#4A6990"))
+    
+    style.name = "SanjeeNetworkStyle"
+    defaults <- list(NODE_SHAPE="Ellipse", NODE_SIZE=25.0, EDGE_TRANSPARENCY=255 , NODE_LABEL_POSITION="W,E,c,0.00,0.00", NODE_BORDER_PAINT="#FFFFFF")
+    nodeLabels <- mapVisualProperty("Node Label", "id", "p")
+    nodecolour <- mapVisualProperty("Node Fill Color", "group", "d", as.vector(unique(NodeTable$Groups)), as.vector(Colour_palette[1:length(unique(NodeTable$Groups))]))
+    nodeXlocation <- mapVisualProperty("Node X Location", "id", "d", as.vector(NodeTable$Node), as.vector(NodeTable$X))
+    nodeYlocation <- mapVisualProperty("Node Y Location", "id", "d", as.vector(NodeTable$Node), as.vector(NodeTable$Y))
+    edgeline <- mapVisualProperty("Edge Line Type", "interaction", "d", as.vector(unique(EdgeTable$Interaction)), as.vector(c("Solid")))
+    edgewidth <- mapVisualProperty("Edge Width", "shared name", "d", as.vector(EdgeTable$sharedname), as.vector(EdgeTable$width))
+    edgestroke <- mapVisualProperty("Edge Stroke Unselected Paint", "shared name", "d", as.vector(EdgeTable$sharedname), as.vector(EdgeTable$Stroke))
+    
+    createVisualStyle(style.name, defaults, list(nodeLabels, nodecolour, nodeXlocation, nodeYlocation, edgeline, edgewidth, edgestroke))
+    setVisualStyle("SanjeeNetworkStyle")
+    
+    fitContent(selected.only = FALSE)
+    fitContent(selected.only = FALSE)
+    fitContent(selected.only = FALSE)
+    
+    Network_out = sprintf("Network_Image_%i", matrix)
+    
+    full.path = paste(getwd(), Network_out, sep="/")
+    exportImage(full.path, "PNG", units="pixels", width=3600, height=1771)
+    
+    #Network files for building network using some other software
+    AdjMatrix <- list(AdjMatrix, Adjacency)
+    NodesNetwork <- list(NodesNetwork, NodeTable)
+    EdgesNetwork <- list(EdgesNetwork, EdgeTable)
+    
+    Network_save = sprintf("Cytoscape_Network_%i", matrix)
+    full.path.cps = paste(getwd(), Network_save, sep="/")
+    closeSession(save.before.closing = TRUE, filename = full.path.cps)
+  }
+  Network = list(AdjMatrix, NodesNetwork, EdgesNetwork)
+  
+  return(Network)
+}
 
 ###############################################################################
 
@@ -341,100 +493,133 @@ summary.table$Age[which(adjusted.pvalues$sig == 'Significant' & adjusted.pvalues
 
 ###############################################################################
 
-# Make network for men
+# Make groups of lipoprotein main fractions
+groups <- as.vector(c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
+                      rep('FreeCholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5)))
 
 # Retrieve the adjacency matrix
-men_adj <- sex.pclrc$AdjMat1
+men_adj <- as.data.frame(sex.pclrc$AdjMat1)
+women_adj <- as.data.frame(sex.pclrc$AdjMat2)
+rownames(men_adj) <- colnames(men_adj) <- 
+  rownames(women_adj) <- colnames(women_adj) <- c("Triglycerides_VLDL", 
+                                                  "Triglycerides_IDL", 
+                                                  "Triglycerides_LDL", 
+                                                  "Triglycerides_HDL", 
+                                                  "Cholesterol_VLDL", 
+                                                  "Cholesterol_IDL", 
+                                                  "Cholesterol_LDL",
+                                                  "Cholesterol_HDL",
+                                                  "FreeCholesterol_VLDL",
+                                                  "FreeCholesterol_IDL",
+                                                  "FreeCholesterol_LDL",
+                                                  "FreeCholesterol_HDL",
+                                                  "Phospholipids_VLDL",
+                                                  "Phospholipids_IDL",
+                                                  "Phospholipids_LDL",
+                                                  "Phospholipids_HDL",
+                                                  "ApoA1_HDL","ApoA2_HDL",
+                                                  "ApoB_VLDL","ApoB_IDL",        
+                                                  "ApoB_LDL")
 
-# Save the adjacency matrix for COVSCA
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
-write.xlsx(men_adj, 'Adjacency_matrix_men.xlsx')
-
-# Make groups of lipoprotein main fractions
-groups <- c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
-            rep('Free Cholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5))
-colours <- c(rep('red', 4), rep('blue', 4), rep('cyan', 4), rep ('green', 4), 
-             rep ('grey', 5))
-
-# Remove disconnected nodes
-disconnected.nodes <- which(apply(men_adj, 1, function(x){all(x==0)}))
-if (length(disconnected.nodes)!=0) {
-  men_adj <- men_adj[-disconnected.nodes,-disconnected.nodes]
-  groups <- groups[-disconnected.nodes]
-  # shapes <- shapes[-disconnected.nodes]
-  colours <- colours[-disconnected.nodes]
-}
-
-# Create a qgraph with layout options
-men_qgraph <- qgraph(input=men_adj,
-                         labels=colnames(men_adj),
-                         groups=groups,
-                         DoNotPlot=TRUE,
-                         borders=FALSE,
-                         palette="colorblind",
-                         label.font='sans',
-                         posCol="#009E73",  # colour of positive edges
-                         negCol="#D55E00",  # colour of negative edges
-                         color=colours,     # colour of groups
-                         # shape=shapes,      # shapes of groups
-                         fade=FALSE,        # edge transparency based on weight
-                         esize=2)
-
-# Convert qgraph to igraph object
-men_igraph <- as.igraph(men_qgraph, attributes = TRUE)
-V(men_igraph)$name <- colnames(men_adj)
-
-# Connect to cytoscape (Make sure cytoscape is opened)
-cytoscapePing()
-# Create the network
-createNetworkFromIgraph(igraph = men_igraph,
-                        title=paste0("Men"),
-                        collection="PCLRC Men vs. Women")
+men_network <- VisualiseNetwork(A = men_adj, Group = TRUE, G = groups)
+women_network <- VisualiseNetwork(A = women_adj, Group = TRUE, G = groups)
 
 ###############################################################################
-
-# Make network for women
-
-# Retrieve the adjancy matrix
-women_adj <- sex.pclrc$AdjMat2
-
-# Save the adjacency matrix for COVSCA
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
-write.xlsx(women_adj, 'Adjacency_matrix_women.xlsx')
-
-# Make groups of lipoprotein main fractions
-groups <- c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
-            rep('Free Cholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5))
-colours <- c(rep('red', 4), rep('blue', 4), rep('cyan', 4), rep ('green', 4), 
-             rep ('grey', 5))
-
-disconnected.nodes <- which(apply(women_adj, 1, function(x){all(x==0)}))
-if (length(disconnected.nodes)!=0) {
-  women_adj <- women_adj[-disconnected.nodes,-disconnected.nodes]
-  groups <- groups[-disconnected.nodes]
-  # shapes <- shapes[-disconnected.nodes]
-  colours <- colours[-disconnected.nodes]
-}
-
-women_qgraph <- qgraph(input=women_adj,
-                       labels=colnames(women_adj),
-                       groups=groups,
-                       DoNotPlot=TRUE,
-                       borders=FALSE,
-                       palette="colorblind",
-                       label.font='sans',
-                       posCol="#009E73",  # colour of positive edges
-                       negCol="#D55E00",  # colour of negative edges
-                       color=colours,     # colour of groups
-                       # shape=shapes,      # shapes of groups
-                       fade=FALSE,        # edge transparency based on weight
-                       esize=2)
-
-women_igraph <- as.igraph(women_qgraph, attributes = TRUE)
-V(women_igraph)$name <- colnames(women_adj)
-
-createNetworkFromIgraph(igraph = women_igraph,
-                        title=paste0("Women"),
-                        collection="PCLRC Men vs. Women")
-
-###############################################################################
+# 
+# # Make network for men
+# 
+# # Retrieve the adjacency matrix
+# men_adj <- sex.pclrc$AdjMat1
+# 
+# # Save the adjacency matrix for COVSCA
+# setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
+# write.xlsx(men_adj, 'Adjacency_matrix_men.xlsx')
+# 
+# # Make groups of lipoprotein main fractions
+# groups <- c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
+#             rep('Free Cholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5))
+# colours <- c(rep('red', 4), rep('blue', 4), rep('cyan', 4), rep ('green', 4), 
+#              rep ('grey', 5))
+# 
+# # Remove disconnected nodes
+# disconnected.nodes <- which(apply(men_adj, 1, function(x){all(x==0)}))
+# if (length(disconnected.nodes)!=0) {
+#   men_adj <- men_adj[-disconnected.nodes,-disconnected.nodes]
+#   groups <- groups[-disconnected.nodes]
+#   # shapes <- shapes[-disconnected.nodes]
+#   colours <- colours[-disconnected.nodes]
+# }
+# 
+# # Create a qgraph with layout options
+# men_qgraph <- qgraph(input=men_adj,
+#                          labels=colnames(men_adj),
+#                          groups=groups,
+#                          DoNotPlot=TRUE,
+#                          borders=FALSE,
+#                          palette="colorblind",
+#                          label.font='sans',
+#                          posCol="#009E73",  # colour of positive edges
+#                          negCol="#D55E00",  # colour of negative edges
+#                          color=colours,     # colour of groups
+#                          # shape=shapes,      # shapes of groups
+#                          fade=FALSE,        # edge transparency based on weight
+#                          esize=2)
+# 
+# # Convert qgraph to igraph object
+# men_igraph <- as.igraph(men_qgraph, attributes = TRUE)
+# V(men_igraph)$name <- colnames(men_adj)
+# 
+# # Connect to cytoscape (Make sure cytoscape is opened)
+# cytoscapePing()
+# # Create the network
+# createNetworkFromIgraph(igraph = men_igraph,
+#                         title=paste0("Men"),
+#                         collection="PCLRC Men vs. Women")
+# 
+# ###############################################################################
+# 
+# # Make network for women
+# 
+# # Retrieve the adjancy matrix
+# women_adj <- sex.pclrc$AdjMat2
+# 
+# # Save the adjacency matrix for COVSCA
+# setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
+# write.xlsx(women_adj, 'Adjacency_matrix_women.xlsx')
+# 
+# # Make groups of lipoprotein main fractions
+# groups <- c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
+#             rep('Free Cholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5))
+# colours <- c(rep('red', 4), rep('blue', 4), rep('cyan', 4), rep ('green', 4), 
+#              rep ('grey', 5))
+# 
+# disconnected.nodes <- which(apply(women_adj, 1, function(x){all(x==0)}))
+# if (length(disconnected.nodes)!=0) {
+#   women_adj <- women_adj[-disconnected.nodes,-disconnected.nodes]
+#   groups <- groups[-disconnected.nodes]
+#   # shapes <- shapes[-disconnected.nodes]
+#   colours <- colours[-disconnected.nodes]
+# }
+# 
+# women_qgraph <- qgraph(input=women_adj,
+#                        labels=colnames(women_adj),
+#                        groups=groups,
+#                        DoNotPlot=TRUE,
+#                        borders=FALSE,
+#                        palette="colorblind",
+#                        label.font='sans',
+#                        posCol="#009E73",  # colour of positive edges
+#                        negCol="#D55E00",  # colour of negative edges
+#                        color=colours,     # colour of groups
+#                        # shape=shapes,      # shapes of groups
+#                        fade=FALSE,        # edge transparency based on weight
+#                        esize=2)
+# 
+# women_igraph <- as.igraph(women_qgraph, attributes = TRUE)
+# V(women_igraph)$name <- colnames(women_adj)
+# 
+# createNetworkFromIgraph(igraph = women_igraph,
+#                         title=paste0("Women"),
+#                         collection="PCLRC Men vs. Women")
+# 
+# ###############################################################################
