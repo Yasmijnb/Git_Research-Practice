@@ -333,6 +333,12 @@ ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) +
   # Remove the legend title
   theme(legend.title = element_blank())
 
+# Create table
+summary.table <- data.frame(row.names = short.names)
+summary.table$Age <- rep('', 21)
+summary.table$Age[which(adjusted.pvalues$sig == 'Significant' & adjusted.pvalues$diffcon > 0)] <- '+'
+summary.table$Age[which(adjusted.pvalues$sig == 'Significant' & adjusted.pvalues$diffcon < 0)] <- '-'
+
 ###############################################################################
 
 # Make network for men
@@ -344,26 +350,32 @@ men_adj <- sex.pclrc$AdjMat1
 setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
 write.xlsx(men_adj, 'Adjacency_matrix_men.xlsx')
 
+# Make groups of lipoprotein main fractions
+groups <- c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
+            rep('Free Cholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5))
+colours <- c(rep('red', 4), rep('blue', 4), rep('cyan', 4), rep ('green', 4), 
+             rep ('grey', 5))
+
 # Remove disconnected nodes
 disconnected.nodes <- which(apply(men_adj, 1, function(x){all(x==0)}))
 if (length(disconnected.nodes)!=0) {
   men_adj <- men_adj[-disconnected.nodes,-disconnected.nodes]
-  # groups <- groups[-disconnected.nodes]
+  groups <- groups[-disconnected.nodes]
   # shapes <- shapes[-disconnected.nodes]
-  # colours <- colours[-disconnected.nodes]
+  colours <- colours[-disconnected.nodes]
 }
 
 # Create a qgraph with layout options
 men_qgraph <- qgraph(input=men_adj,
                          labels=colnames(men_adj),
-                         # groups=groups,
+                         groups=groups,
                          DoNotPlot=TRUE,
                          borders=FALSE,
                          palette="colorblind",
                          label.font='sans',
                          posCol="#009E73",  # colour of positive edges
                          negCol="#D55E00",  # colour of negative edges
-                         # color=colours,     # colour of groups
+                         color=colours,     # colour of groups
                          # shape=shapes,      # shapes of groups
                          fade=FALSE,        # edge transparency based on weight
                          esize=2)
@@ -390,24 +402,30 @@ women_adj <- sex.pclrc$AdjMat2
 setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
 write.xlsx(women_adj, 'Adjacency_matrix_women.xlsx')
 
+# Make groups of lipoprotein main fractions
+groups <- c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
+            rep('Free Cholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5))
+colours <- c(rep('red', 4), rep('blue', 4), rep('cyan', 4), rep ('green', 4), 
+             rep ('grey', 5))
+
 disconnected.nodes <- which(apply(women_adj, 1, function(x){all(x==0)}))
 if (length(disconnected.nodes)!=0) {
   women_adj <- women_adj[-disconnected.nodes,-disconnected.nodes]
-  # groups <- groups[-disconnected.nodes]
+  groups <- groups[-disconnected.nodes]
   # shapes <- shapes[-disconnected.nodes]
-  # colours <- colours[-disconnected.nodes]
+  colours <- colours[-disconnected.nodes]
 }
 
 women_qgraph <- qgraph(input=women_adj,
                        labels=colnames(women_adj),
-                       # groups=groups,
+                       groups=groups,
                        DoNotPlot=TRUE,
                        borders=FALSE,
                        palette="colorblind",
                        label.font='sans',
                        posCol="#009E73",  # colour of positive edges
                        negCol="#D55E00",  # colour of negative edges
-                       # color=colours,     # colour of groups
+                       color=colours,     # colour of groups
                        # shape=shapes,      # shapes of groups
                        fade=FALSE,        # edge transparency based on weight
                        esize=2)

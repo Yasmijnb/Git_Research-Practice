@@ -332,6 +332,13 @@ ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) +
   # Remove the legend title
   theme(legend.title = element_blank())
 
+# Create table
+summary.table <- data.frame(row.names = short.names)
+summary.table$Age <- rep('', 21)
+summary.table$Age[which(adjusted.pvalues$sig == 'Significant' & adjusted.pvalues$diffcon > 0)] <- '+'
+summary.table$Age[which(adjusted.pvalues$sig == 'Significant' & adjusted.pvalues$diffcon < 0)] <- '-'
+
+
 ###############################################################################
 
 # Make network for young
@@ -343,25 +350,31 @@ young_adj <- age.pclrc$AdjMat1
 setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
 write.xlsx(young_adj, 'Adjacency_matrix_young.xlsx')
 
+# Make groups of lipoprotein main fractions
+groups <- c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
+            rep('Free Cholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5))
+colours <- c(rep('red', 4), rep('blue', 4), rep('cyan', 4), rep ('green', 4), 
+             rep ('grey', 5))
+
 # Remove disconnected nodes
 disconnected.nodes <- which(apply(young_adj, 1, function(x){all(x==0)}))
 if (length(disconnected.nodes)!=0) {
   young_adj <- young_adj[-disconnected.nodes,-disconnected.nodes]
-  # groups <- groups[-disconnected.nodes]
+  groups <- groups[-disconnected.nodes]
   # shapes <- shapes[-disconnected.nodes]
-  # colours <- colours[-disconnected.nodes]
+  colours <- colours[-disconnected.nodes]
 }
 # Create a qgraph with layout options
 young_qgraph <- qgraph(input=young_adj,
                        labels=colnames(young_adj),
-                       # groups=groups,
+                       groups=groups,
                        DoNotPlot=TRUE,
                        borders=FALSE,
                        palette="colorblind",
                        label.font='sans',
                        posCol="#009E73",  # colour of positive edges
                        negCol="#D55E00",  # colour of negative edges
-                       # color=colours,     # colour of groups
+                       color=colours,     # colour of groups
                        # shape=shapes,      # shapes of groups
                        fade=FALSE,        # edge transparency based on weight
                        esize=2)
@@ -388,25 +401,31 @@ old_adj <- age.pclrc$AdjMat2
 setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
 write.xlsx(old_adj, 'Adjacency_matrix_old.xlsx')
 
+# Make groups of lipoprotein main fractions
+groups <- c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
+            rep('Free Cholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5))
+colours <- c(rep('red', 4), rep('blue', 4), rep('cyan', 4), rep ('green', 4), 
+             rep ('grey', 5))
+
 # Remove disconnected nodes
 disconnected.nodes <- which(apply(old_adj, 1, function(x){all(x==0)}))
 if (length(disconnected.nodes)!=0) {
   old_adj <- old_adj[-disconnected.nodes,-disconnected.nodes]
-  # groups <- groups[-disconnected.nodes]
+  groups <- groups[-disconnected.nodes]
   # shapes <- shapes[-disconnected.nodes]
-  # colours <- colours[-disconnected.nodes]
+  colours <- colours[-disconnected.nodes]
 }
 # Create a qgraph with layout options
 old_qgraph <- qgraph(input=old_adj,
                      labels=colnames(old_adj),
-                     # groups=groups,
+                     groups=groups,
                      DoNotPlot=TRUE,
                      borders=FALSE,
                      palette="colorblind",
                      label.font='sans',
                      posCol="#009E73",  # colour of positive edges
                      negCol="#D55E00",  # colour of negative edges
-                     # color=colours,     # colour of groups
+                     color=colours,     # colour of groups
                      # shape=shapes,      # shapes of groups
                      fade=FALSE,        # edge transparency based on weight
                      esize=2)
