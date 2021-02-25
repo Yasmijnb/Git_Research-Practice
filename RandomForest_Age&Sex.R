@@ -221,7 +221,7 @@ RForest = function(x.data, y.class, unbalance = TRUE, perc.unbal = 0.85,
                                       as.factor(y.class.perm))
       acc.perm = conf.mat.perm$overall["Accuracy"]
       sens.perm = conf.mat.perm$byClass["Sensitivity"]
-      spec.perm = conf.mat$.perm$byClass["Specificity"]
+      spec.perm = conf.mat.perm$byClass["Specificity"]
       auc.perm = colAUC(rf.perm$votes[,2],y.class.perm,plotROC=F)
       
       ACCURACY.perm[i] = acc.perm
@@ -284,7 +284,8 @@ age_groups[which(data$Age > quantile(data$Age, probs = 2/3))] <- 'old'
 age.data <- data[which(age_groups == 'young' | age_groups == 'old'),]
 group.data <- age_groups[which(age_groups == 'young' | age_groups == 'old')]
 
-age.forest <- RForest(x.data = age.data[,23:43], y.class = group.data)
+age.forest <- RForest(x.data = age.data[,23:43], y.class = group.data, 
+                      unbalance = FALSE)
 age.forest$ModelStatistics
 
 ###############################################################################
@@ -303,7 +304,8 @@ women.age_groups[which(women$Age > quantile(women$Age, probs = 2/3))] <- 'old'
 women.age.data <- data[which(women.age_groups == 'young' | women.age_groups == 'old'),]
 women.group.data <- women.age_groups[which(women.age_groups == 'young' | women.age_groups == 'old')]
 
-women.forest <- RForest(x.data = women.age.data[,23:43], y.class = women.group.data)
+women.forest <- RForest(x.data = women.age.data[,23:43], y.class = women.group.data, 
+                        unbalance = FALSE)
 women.forest$ModelStatistics
 
 ###############################################################################
@@ -322,6 +324,14 @@ men.age_groups[which(men$Age > quantile(men$Age, probs = 2/3))] <- 'old'
 men.age.data <- data[which(men.age_groups == 'young' | men.age_groups == 'old'),]
 men.group.data <- men.age_groups[which(men.age_groups == 'young' | men.age_groups == 'old')]
 
-men.forest <- RForest(x.data = men.age.data[,23:43], y.class = men.group.data)
+men.forest <- RForest(x.data = men.age.data[,23:43], y.class = men.group.data, 
+                      unbalance = FALSE)
 men.forest$ModelStatistics
 
+###############################################################################
+
+# Print all results again
+sex.forest$ModelStatistics
+age.forest$ModelStatistics
+women.forest$ModelStatistics
+men.forest$ModelStatistics
