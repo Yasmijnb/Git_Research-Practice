@@ -19,7 +19,7 @@ COVSCAinput = [Ad1 Ad2 Ad3 Ad4 Ad5 Ad6 Ad7 Ad8];
 nanal = 1000; % Larger number will give more accurate resutls
 
 % The number of loadings for each component
-Q = [2 2]';
+Q = [2 2 2]';
 % The number of dimensions
 L = length(Q);
 
