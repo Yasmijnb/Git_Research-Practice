@@ -230,13 +230,13 @@ RForest = function(x.data, y.class, unbalance = TRUE, perc.unbal = 0.85,
       AUC.perm[i] = auc.perm
     }
     
-    print(AUC.perm)
+    # print(AUC.perm)
     #Calculate p-value
     
-    ACCURACY.perm =  read.table("C:\\Users\\Francesca\\Dropbox\\Forestone\\P_vs_C\\RFaccuracyPerm_PC.csv", sep = ",")
-    model.acc = read.table("C:\\Users\\Francesca\\Dropbox\\Forestone\\P_vs_C\\RFaccuracy_PC.csv", sep = ",")
+    # ACCURACY.perm =  read.table("C:\\Users\\Francesca\\Dropbox\\Forestone\\P_vs_C\\RFaccuracyPerm_PC.csv", sep = ",")
+    # model.acc = read.table("C:\\Users\\Francesca\\Dropbox\\Forestone\\P_vs_C\\RFaccuracy_PC.csv", sep = ",")
     
-    Pval.acc = (length(which(ACCURACY.perm$V2 > model.acc)) + 1)/max.perm 
+    Pval.acc = (length(which(ACCURACY.perm > model.acc)) + 1)/max.perm 
     Pval.spec = (length(which(SPECIFICITY.perm > model.spec)) + 1)/max.perm 
     Pval.sens = (length(which(SENSITIVITY.perm > model.sens)) + 1)/max.perm 
     Pval.auc = (length(which(AUC.perm > model.auc[1])) + 1)/max.perm 
