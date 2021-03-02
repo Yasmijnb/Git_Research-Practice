@@ -449,7 +449,8 @@ young <- data[which(data$Age < quantile(data$Age, probs = 1/3)),]
 old <- data[which(data$Age > quantile(data$Age, probs = 2/3)),]
 
 age.pclrc <- Diff.Conn.PCLRC.gmm(young[,23:43], old[,23:43], verbose = TRUE, 
-                                 adjust.diff = 'bonferroni')
+                                 adjust.diff = 'bonferroni',
+                                 prob.threshold = 0.99))
 
 ###############################################################################
 
