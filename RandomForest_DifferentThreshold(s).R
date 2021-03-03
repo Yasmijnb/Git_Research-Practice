@@ -3,8 +3,8 @@
 # Yasmijn Balder
 # 02-03-2021
 
-# Perform random forest to distinguish age between sex groups with the age
-# groups based on the complete dataset
+# Use different thresholds for young and old to find which gives the most
+# accurate devision.
 
 # Output
 # The accuracy, sentivitiy, specificity, and AUC of the model
@@ -273,7 +273,6 @@ summary.table <- data.frame('Model', 'Threshold Young', 'Threshold Old',
                               'Group size Young', 'Group size Old', 'Accuracy')
 colnames(summary.table) <- summary.table[1,]
 
-i <- 1
 for (young in 32:38) {
   for (old in 43:49) {
     print(i)
@@ -312,14 +311,24 @@ for (young in 32:38) {
     men.model <- RForest(x.data = men[which(men$Age < young | men$Age > old), 23:43], 
                    y.class = age.men[which(age.men == 'young' | age.men == 'old')], 
                    unbalance = T, verbose = F, max.perm = 1)
-    summary.table <- rbind(summary.table, c('Women', young, old, length(age.men[which(age.men == 'young')]),
+    summary.table <- rbind(summary.table, c('Men', young, old, length(age.men[which(age.men == 'young')]),
                            length(age.men[which(age.men == 'old')]), round(men.model$ModelStatistics[1,1],3)))
     # print('Men')
     # print(paste('Young =', young, 'Old =', old, 'Accuracy =', round(men.model$ModelStatistics[1,1],3)))
     # print('Group sizes')
     # print(paste('Young =', length(age.men[which(age.men == 'young')]), 'Old =', 
     #             length(age.men[which(age.men == 'old')])))
-    i <- i + 1
   }
-  
 }
+
+###############################################################################
+
+# Make 3D graph
+library("plot3D")
+x <- as.numeric(summary.table$`Threshold Young`[2:148])
+y <- as.numeric(summary.table$`Threshold Old`[2:148])
+z <- as.numeric(summary.table$Accuracy[2:148])
+
+scatter3D(x, y, z, bty = "f", colvar = NULL, col = 'blue', main = "Accuracy for different age thresholds",
+          pch = 19, cex = 0.5, xlab = "Threshold Young",
+          ylab ="Threshold Old", zlab = "Accuracy", ticktype = "detailed")
