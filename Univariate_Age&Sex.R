@@ -56,8 +56,8 @@ for (lipid in 23:43) {
 ## Age
 
 # Splits the data into young and old
-young <- data[which(data$Age < quantile(data$Age, probs = 1/3)),]
-old <- data[which(data$Age > quantile(data$Age, probs = 2/3)),]
+young <- data[which(data$Age < 33),]
+old <- data[which(data$Age > 48),]
 
 # Perform a Wilcoxon rank-sum test for every lipid comparing young and old
 for (lipid in 23:43) {
@@ -73,8 +73,8 @@ for (lipid in 23:43) {
 ## Age + men
 
 # Splits the data into young men and old men
-young.men <- men[men$Age < quantile(men$Age, probs = 1/3),]
-old.men <- men[men$Age > quantile(men$Age, probs = 2/3),]
+young.men <- men[men$Age < 32,]
+old.men <- men[men$Age > 49,]
 
 # Perform a Wilcoxon rank-sum test for every lipid comparing young and old
 # for (lipid in 4:ncol(data)) { # All lipid measurements
@@ -90,8 +90,8 @@ for (lipid in 23:43) {
 ## Age + women
 
 # Splits the data into young women and old women
-young.women <- women[women$Age < quantile(women$Age, probs = 1/3),]
-old.women <- women[women$Age > quantile(women$Age, probs = 2/3),]
+young.women <- women[women$Age < 37,]
+old.women <- women[women$Age > 49,]
 
 # Perform a Wilcoxon rank-sum test for every lipid comparing young and old
 # for (lipid in 4:ncol(data)) { # All lipid measurements

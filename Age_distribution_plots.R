@@ -35,7 +35,7 @@ hist(data$Age[which(data$Gender == 'woman')],
      xlab = 'Age (years)', ylab = 'Number of individuals', col = 'magenta',
      main = 'Age distribution of women')
 abline(v = 37, col = 'blue')
-abline(v = 48, col = 'blue')
+abline(v = 49, col = 'blue')
 
 ggplot(data[which(data$Gender == 'woman'),], aes(x = Age)) + 
   geom_histogram(binwidth = 1, color = 'white', fill = 'magenta') + 
@@ -53,8 +53,8 @@ hist(data$Age[which(data$Gender == 'man')],
      breaks = length(unique(data$Age[which(data$Gender == 'man')])), 
      xlab = 'Age (years)', ylab = 'Number of individuals', col = 'blue',
      main = 'Age distribution of men')
-abline(v = 35, col = 'red')
-abline(v = 45, col = 'red')
+abline(v = 32, col = 'red')
+abline(v = 49, col = 'red')
 
 ggplot(data[which(data$Gender == 'man'),], aes(x = Age)) + 
   geom_histogram(binwidth = 1, color = 'white', fill = 'cyan') + 
