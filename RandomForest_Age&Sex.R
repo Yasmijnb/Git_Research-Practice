@@ -278,7 +278,7 @@ sex.forest$ModelStatistics
 # Make young and old groups
 age_groups <- rep(0, nrow(data))
 age_groups[which(data$Age < quantile(data$Age, probs = 1/3))] <- 'young'
-age_groups[which(data$Age > quantile(data$Age, probs = 1/3))] <- 'old'
+age_groups[which(data$Age > quantile(data$Age, probs = 2/3))] <- 'old'
 
 # Use only young and old, not the middle
 age.data <- data[which(age_groups == 'young' | age_groups == 'old'),]
@@ -298,7 +298,7 @@ women <- data[which(data$Gender == 'woman'),]
 # Make young and old groups
 women$AgeGroup <- rep(0, nrow(women))
 women$AgeGroup[which(women$Age < quantile(women$Age, probs = 1/3))] <- 'young'
-women$AgeGroup[which(women$Age > quantile(women$Age, probs = 1/3))] <- 'old'
+women$AgeGroup[which(women$Age > quantile(women$Age, probs = 2/3))] <- 'old'
 
 # Use only young and old, not the middle
 women <- women[which(women$AgeGroup == 'young' | women$AgeGroup == 'old'),]
