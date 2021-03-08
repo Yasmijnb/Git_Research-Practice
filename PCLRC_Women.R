@@ -446,8 +446,8 @@ data[,1] <- NULL
 
 # Split the data based on sex
 women <- data[which(data$Gender=='woman'),]
-young.women <- women[women$Age < 37,]
-old.women <- women[women$Age > 49,]
+young.women <- women[women$Age < quantile(women$Age, probs = 1/3),]
+old.women <- women[women$Age > quantile(women$Age, probs = 2/3),]
 
 women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43], 
                                    verbose = TRUE, adjust.diff = 'bonferroni',
