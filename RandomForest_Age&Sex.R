@@ -8,7 +8,7 @@
 # women vs. old women
 
 # Output
-# The accuracy, sentivitiy, specificity, and AUC of each model
+# The accuracy, sensitivity, specificity, and AUC of each model
 
 ###############################################################################
 
@@ -277,8 +277,8 @@ sex.forest$ModelStatistics
 
 # Make young and old groups
 age_groups <- rep(0, nrow(data))
-age_groups[which(data$Age < 33)] <- 'young'
-age_groups[which(data$Age > 48)] <- 'old'
+age_groups[which(data$Age < quantile(data$Age, probs = 1/3))] <- 'young'
+age_groups[which(data$Age > quantile(data$Age, probs = 1/3))] <- 'old'
 
 # Use only young and old, not the middle
 age.data <- data[which(age_groups == 'young' | age_groups == 'old'),]
@@ -296,15 +296,15 @@ age.forest$ModelStatistics
 women <- data[which(data$Gender == 'woman'),]
 
 # Make young and old groups
-women.age_groups <- rep(0, nrow(data))
-women.age_groups[which(women$Age < 37)] <- 'young'
-women.age_groups[which(women$Age > 49)] <- 'old'
+women$AgeGroup <- rep(0, nrow(women))
+women$AgeGroup[which(women$Age < quantile(women$Age, probs = 1/3))] <- 'young'
+women$AgeGroup[which(women$Age > quantile(women$Age, probs = 1/3))] <- 'old'
 
 # Use only young and old, not the middle
-women.age.data <- data[which(women.age_groups == 'young' | women.age_groups == 'old'),]
-women.group.data <- women.age_groups[which(women.age_groups == 'young' | women.age_groups == 'old')]
+women <- women[which(women$AgeGroup == 'young' | women$AgeGroup == 'old'),]
+# women.group.data <- women.age_groups[which(women.age_groups == 'young' | women.age_groups == 'old')]
 
-women.forest <- RForest(x.data = women.age.data[,23:43], y.class = women.group.data, 
+women.forest <- RForest(x.data = women[,23:43], y.class = women$AgeGroup, 
                         unbalance = FALSE)
 women.forest$ModelStatistics
 
@@ -316,15 +316,15 @@ women.forest$ModelStatistics
 men <- data[which(data$Gender == 'man'),]
 
 # Make young and old groups
-men.age_groups <- rep(0, nrow(data))
-men.age_groups[which(men$Age < 32)] <- 'young'
-men.age_groups[which(men$Age > 49)] <- 'old'
+men$AgeGroup <- rep(0, nrow(men))
+men$AgeGroup[which(men$Age < quantile(men$Age, probs = 1/3))] <- 'young'
+men$AgeGroup[which(men$Age > quantile(men$Age, probs = 2/3))] <- 'old'
 
 # Use only young and old, not the middle
-men.age.data <- data[which(men.age_groups == 'young' | men.age_groups == 'old'),]
-men.group.data <- men.age_groups[which(men.age_groups == 'young' | men.age_groups == 'old')]
+men <- men[which(men$AgeGroup == 'young' | men$AgeGroup == 'old'),]
+# men.group.data <- men.age_groups[which(men.age_groups == 'young' | men.age_groups == 'old')]
 
-men.forest <- RForest(x.data = men.age.data[,23:43], y.class = men.group.data, 
+men.forest <- RForest(x.data = men[,23:43], y.class = men$AgeGroup, 
                       unbalance = FALSE)
 men.forest$ModelStatistics
 
