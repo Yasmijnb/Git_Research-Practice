@@ -479,6 +479,8 @@ adjusted.pvalues$sig[which(adjusted.pvalues$P.values <= 0.01)] <- 'Significant'
 # Create a bar plot
 ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) + 
   geom_bar(stat = "identity") +
+  # Add a title
+  ggtitle('Young men vs Old men') +
   # Use nicer colours
   scale_fill_manual(values = c("orange", "steelblue")) + 
   # Change the axis labels
