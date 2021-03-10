@@ -444,55 +444,16 @@ setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
 data <- read.csv("Data/Lipids_age_sex.csv", check.names = FALSE)
 data[,1] <- NULL
 
+###############################################################################
+
 # Split the data based on sex
 men <- data[which(data$Gender=='man'),]
 women <- data[which(data$Gender=='woman'),]
 
-# Perform PCLRC + ggm
+# Perform PCLRC
 sex.pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE, 
                                  adjust.diff = 'bonferroni',
                                  prob.threshold = 0.99)
-
-###############################################################################
-
-# Create figure
-
-# Create a dataframe with the adjusted p-values
-adjusted.pvalues <- as.data.frame(sex.pclrc$Pval_adj)
-# Change the name of the p-values column
-colnames(adjusted.pvalues)[1] <- 'P.values'
-# Shorten the names of the lipids
-short.names <- NULL
-for (long.name in rownames(adjusted.pvalues)) {
-  short.name <- str_split(long.name, ', ')[[1]][2:3]
-  combined <- paste(short.name, collapse = ' & ')
-  short.names <- c(short.names, combined)
-}
-# Add the lipid names as a column
-adjusted.pvalues$lipids <- short.names
-# Add the differential connectivity as a column
-adjusted.pvalues$diffcon <- sex.pclrc$Diff_Conn
-# Create a column with significance based on the adjusted p-values
-adjusted.pvalues$sig <- rep("Not significant", 21)
-adjusted.pvalues$sig[which(adjusted.pvalues$P.values <= 0.01)] <- 'Significant'
-
-# Create a bar plot
-ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) + 
-  geom_bar(stat = "identity") +
-  # Add a title
-  ggtitle('Men vs Women') +
-  # Use nicer colours
-  scale_fill_manual(values = c("orange", "steelblue")) + 
-  # Change the axis labels
-  xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
-  # Remove the legend title
-  theme(legend.title = element_blank())
-
-# Create table
-summary.table <- data.frame(row.names = short.names)
-summary.table$Age <- rep('', 21)
-summary.table$Age[which(adjusted.pvalues$sig == 'Significant' & adjusted.pvalues$diffcon > 0)] <- '+'
-summary.table$Age[which(adjusted.pvalues$sig == 'Significant' & adjusted.pvalues$diffcon < 0)] <- '-'
 
 ###############################################################################
 
@@ -528,101 +489,70 @@ men_network <- VisualiseNetwork(A = men_adj, Group = TRUE, G = groups)
 women_network <- VisualiseNetwork(A = women_adj, Group = TRUE, G = groups)
 
 ###############################################################################
-# 
-# # Make network for men
-# 
-# # Retrieve the adjacency matrix
-# men_adj <- sex.pclrc$AdjMat1
-# 
-# # Save the adjacency matrix for COVSCA
-# setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
-# write.xlsx(men_adj, 'Adjacency_matrix_men.xlsx')
-# 
-# # Make groups of lipoprotein main fractions
-# groups <- c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
-#             rep('Free Cholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5))
-# colours <- c(rep('red', 4), rep('blue', 4), rep('cyan', 4), rep ('green', 4), 
-#              rep ('grey', 5))
-# 
-# # Remove disconnected nodes
-# disconnected.nodes <- which(apply(men_adj, 1, function(x){all(x==0)}))
-# if (length(disconnected.nodes)!=0) {
-#   men_adj <- men_adj[-disconnected.nodes,-disconnected.nodes]
-#   groups <- groups[-disconnected.nodes]
-#   # shapes <- shapes[-disconnected.nodes]
-#   colours <- colours[-disconnected.nodes]
-# }
-# 
-# # Create a qgraph with layout options
-# men_qgraph <- qgraph(input=men_adj,
-#                          labels=colnames(men_adj),
-#                          groups=groups,
-#                          DoNotPlot=TRUE,
-#                          borders=FALSE,
-#                          palette="colorblind",
-#                          label.font='sans',
-#                          posCol="#009E73",  # colour of positive edges
-#                          negCol="#D55E00",  # colour of negative edges
-#                          color=colours,     # colour of groups
-#                          # shape=shapes,      # shapes of groups
-#                          fade=FALSE,        # edge transparency based on weight
-#                          esize=2)
-# 
-# # Convert qgraph to igraph object
-# men_igraph <- as.igraph(men_qgraph, attributes = TRUE)
-# V(men_igraph)$name <- colnames(men_adj)
-# 
-# # Connect to cytoscape (Make sure cytoscape is opened)
-# cytoscapePing()
-# # Create the network
-# createNetworkFromIgraph(igraph = men_igraph,
-#                         title=paste0("Men"),
-#                         collection="PCLRC Men vs. Women")
-# 
-# ###############################################################################
-# 
-# # Make network for women
-# 
-# # Retrieve the adjancy matrix
-# women_adj <- sex.pclrc$AdjMat2
-# 
-# # Save the adjacency matrix for COVSCA
-# setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Data/")
-# write.xlsx(women_adj, 'Adjacency_matrix_women.xlsx')
-# 
-# # Make groups of lipoprotein main fractions
-# groups <- c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
-#             rep('Free Cholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5))
-# colours <- c(rep('red', 4), rep('blue', 4), rep('cyan', 4), rep ('green', 4), 
-#              rep ('grey', 5))
-# 
-# disconnected.nodes <- which(apply(women_adj, 1, function(x){all(x==0)}))
-# if (length(disconnected.nodes)!=0) {
-#   women_adj <- women_adj[-disconnected.nodes,-disconnected.nodes]
-#   groups <- groups[-disconnected.nodes]
-#   # shapes <- shapes[-disconnected.nodes]
-#   colours <- colours[-disconnected.nodes]
-# }
-# 
-# women_qgraph <- qgraph(input=women_adj,
-#                        labels=colnames(women_adj),
-#                        groups=groups,
-#                        DoNotPlot=TRUE,
-#                        borders=FALSE,
-#                        palette="colorblind",
-#                        label.font='sans',
-#                        posCol="#009E73",  # colour of positive edges
-#                        negCol="#D55E00",  # colour of negative edges
-#                        color=colours,     # colour of groups
-#                        # shape=shapes,      # shapes of groups
-#                        fade=FALSE,        # edge transparency based on weight
-#                        esize=2)
-# 
-# women_igraph <- as.igraph(women_qgraph, attributes = TRUE)
-# V(women_igraph)$name <- colnames(women_adj)
-# 
-# createNetworkFromIgraph(igraph = women_igraph,
-#                         title=paste0("Women"),
-#                         collection="PCLRC Men vs. Women")
-# 
-# ###############################################################################
+
+# Create figure
+
+# Create a dataframe with the p-values
+pvalues <- as.data.frame(sex.pclrc$Pval)
+# Change the name of the p-values column
+colnames(pvalues)[1] <- 'P.values'
+# Shorten the names of the lipids
+short.names <- NULL
+for (long.name in rownames(pvalues)) {
+  short.name <- str_split(long.name, ', ')[[1]][2:3]
+  combined <- paste(short.name, collapse = ' & ')
+  short.names <- c(short.names, combined)
+}
+# Add the lipid names as a column
+pvalues$lipids <- short.names
+# Add the differential connectivity as a column
+pvalues$diffcon <- sex.pclrc$Diff_Conn
+
+# Use various multiple testing corrections
+pvalues$BH <- p.adjust(pvalues$P.values, method = 'BH')
+pvalues$bonferroni <- p.adjust(pvalues$P.values, method = 'bonferroni')
+
+# Decide significance based on the adjusted p-values
+pvalues$BH1 <- rep("Not significant", 21)
+pvalues$BH1[which(pvalues$BH <= 0.01)] <- 'Significant'
+pvalues$BH5 <- rep("Not significant", 21)
+pvalues$BH5[which(pvalues$BH <= 0.05)] <- 'Significant'
+pvalues$bonferroni1 <- rep("Not significant", 21)
+pvalues$bonferroni1[which(pvalues$bonferroni <= 0.01)] <- 'Significant'
+pvalues$bonferroni5 <- rep("Not significant", 21)
+pvalues$bonferroni5[which(pvalues$bonferroni <= 0.05)] <- 'Significant'
+pvalues$storey1 <- qvalue(pvalues$P.values, fdr.level = 0.01, lambda = 0)$significant
+pvalues$storey1[which(pvalues$storey1 == 'TRUE')] <- 'Significant'
+pvalues$storey1[which(pvalues$storey1 == 'FALSE')] <- 'Not significant'
+pvalues$storey5 <- qvalue(pvalues$P.values, fdr.level = 0.05, lambda = 0)$significant
+pvalues$storey5[which(pvalues$storey5 == 'TRUE')] <- 'Significant'
+pvalues$storey5[which(pvalues$storey5 == 'FALSE')] <- 'Not significant'
+
+# For loop for plots
+testing <- c('BH', 'BH', 'bonferroni', 'bonferroni', 'storey', 'storey')
+thresholds <- c('0.01', '0.05', '0.01', '0.05', '0.01', '0.05')
+nm <- names(pvalues)
+# Change working directory to save the plots
+setwd("C:/Users/Yasmijn/Pictures/Research practice")
+for (i in 1:6) {
+  g <- ggplot(data = pvalues, aes_string(x = nm[3], y = nm[2], fill = nm[5+i])) + 
+    geom_bar(stat = "identity") +
+    # Add a title
+    ggtitle(paste('Men vs Women\nMT =', testing[i], '\np-value threshold =', thresholds[i])) +
+    # Use nicer colours
+    scale_fill_manual(values = c("orange", "steelblue")) + 
+    # Change the axis labels
+    xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
+    # Remove the legend title
+    theme(legend.title = element_blank())
+  print(g)
+  ggsave(filename = paste0('PCLRC_Sex_',testing[i], '_p-threshold=', thresholds[i], '.png'), 
+         plot = g)
+}
+
+# First: CHOOSE MULTIPLE TESTING
+# Create table; 
+# summary.table <- data.frame(row.names = short.names)
+# summary.table$Age <- rep('', 21)
+# summary.table$Age[which(pvalues$sig == 'Significant' & pvalues$diffcon > 0)] <- '+'
+# summary.table$Age[which(pvalues$sig == 'Significant' & pvalues$diffcon < 0)] <- '-'
