@@ -486,8 +486,14 @@ rownames(men_adj) <- colnames(men_adj) <-
                                                   "ApoB_VLDL","ApoB_IDL",        
                                                   "ApoB_LDL")
 
+# Visualise the networks in cytoscape (make sure it is opened)
 men_network <- VisualiseNetwork(A = men_adj, Group = TRUE, G = groups)
 women_network <- VisualiseNetwork(A = women_adj, Group = TRUE, G = groups)
+
+# Save adjacency matrices
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
+write.csv(men_adj, file = 'Adjacency_matrix_men.csv')
+write.csv(women_adj, file = 'Adjacency_matrix_women.csv')
 
 ###############################################################################
 

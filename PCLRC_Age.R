@@ -486,8 +486,14 @@ rownames(old_adj) <- colnames(old_adj) <-
                                                 "ApoB_VLDL","ApoB_IDL",        
                                                 "ApoB_LDL")
 
+# Visualise the networks in cytoscape (make sure it is opened)
 young_network <- VisualiseNetwork(A = young_adj, Group = TRUE, G = groups, type = 3)
 old_network <- VisualiseNetwork(A = old_adj, Group = TRUE, G = groups, type = 3)
+
+# Save adjacency matrices
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
+write.csv(young_adj, file = 'Adjacency_matrix_young.csv')
+write.csv(old_adj, file = 'Adjacency_matrix_old.csv')
 
 ###############################################################################
 
