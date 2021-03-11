@@ -486,8 +486,8 @@ rownames(old_adj) <- colnames(old_adj) <-
                                                 "ApoB_VLDL","ApoB_IDL",        
                                                 "ApoB_LDL")
 
-young_network <- VisualiseNetwork(A = young_adj, Group = TRUE, G = groups)
-old_network <- VisualiseNetwork(A = old_adj, Group = TRUE, G = groups)
+young_network <- VisualiseNetwork(A = young_adj, Group = TRUE, G = groups, type = 3)
+old_network <- VisualiseNetwork(A = old_adj, Group = TRUE, G = groups, type = 3)
 
 ###############################################################################
 
@@ -528,14 +528,17 @@ pvalues$storey1[which(pvalues$storey1 == 'FALSE')] <- 'Not significant'
 pvalues$storey5 <- qvalue(pvalues$P.values, fdr.level = 0.05, lambda = 0)$significant
 pvalues$storey5[which(pvalues$storey5 == 'TRUE')] <- 'Significant'
 pvalues$storey5[which(pvalues$storey5 == 'FALSE')] <- 'Not significant'
+pvalues$storey05 <- qvalue(pvalues$P.values, fdr.level = 0.005, lambda = 0)$significant
+pvalues$storey05[which(pvalues$storey05 == 'TRUE')] <- 'Significant'
+pvalues$storey05[which(pvalues$storey05 == 'FALSE')] <- 'Not significant'
 
 # For loop for plots
-testing <- c('BH', 'BH', 'bonferroni', 'bonferroni', 'storey', 'storey')
-thresholds <- c('0.01', '0.05', '0.01', '0.05', '0.01', '0.05')
+testing <- c('BH', 'BH', 'bonferroni', 'bonferroni', 'storey', 'storey', 'storey')
+thresholds <- c('0.01', '0.05', '0.01', '0.05', '0.01', '0.05', '0.005')
 nm <- names(pvalues)
 # Change working directory to save the plots
 setwd("C:/Users/Yasmijn/Pictures/Research practice")
-for (i in 1:6) {
+for (i in 1:7) {
   g <- ggplot(data = pvalues, aes_string(x = nm[3], y = nm[2], fill = nm[5+i])) + 
     geom_bar(stat = "identity") +
     # Add a title
