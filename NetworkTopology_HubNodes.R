@@ -66,4 +66,30 @@ colnames(hub.nodes) <- c('Network','Lipid')
 
 View(hub.nodes)
 
+###############################################################################
 
+# What is the difference between the cc's per network?
+cc.diff <- data.frame(row.names = women$name)
+cc.diff$sex <- women$ClusteringCoefficient - men$ClusteringCoefficient
+cc.diff$age <- young$ClusteringCoefficient - old$ClusteringCoefficient
+cc.diff$men <- young.men$ClusteringCoefficient - old.men$ClusteringCoefficient
+cc.diff$women <- young.women$ClusteringCoefficient - old.women$ClusteringCoefficient
+
+View(cc.diff)
+
+# Which change from < 0.03 to > 0.03?
+cc.thrs <- data.frame(row.names = women$name)
+cc.thrs$sex <- rep('', 21)
+cc.thrs$sex[which(women$ClusteringCoefficient < 0.03 & men$ClusteringCoefficient > 0.03)] <- 'women'
+cc.thrs$sex[which(women$ClusteringCoefficient > 0.03 & men$ClusteringCoefficient < 0.03)] <- 'men'
+cc.thrs$age <- rep('', 21)
+cc.thrs$age[which(young$ClusteringCoefficient < 0.03 & old$ClusteringCoefficient > 0.03)] <- 'young'
+cc.thrs$age[which(young$ClusteringCoefficient > 0.03 & old$ClusteringCoefficient < 0.03)] <- 'old'
+cc.thrs$men <- rep('', 21)
+cc.thrs$men[which(young.men$ClusteringCoefficient < 0.03 & old.men$ClusteringCoefficient > 0.03)] <- 'young'
+cc.thrs$men[which(young.men$ClusteringCoefficient > 0.03 & old.men$ClusteringCoefficient < 0.03)] <- 'old'
+cc.thrs$women <- rep('', 21)
+cc.thrs$women[which(young.women$ClusteringCoefficient < 0.03 & old.women$ClusteringCoefficient > 0.03)] <- 'young'
+cc.thrs$women[which(young.women$ClusteringCoefficient > 0.03 & old.women$ClusteringCoefficient < 0.03)] <- 'old'
+
+View(cc.thrs)
