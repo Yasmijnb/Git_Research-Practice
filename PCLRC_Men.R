@@ -285,8 +285,40 @@ Diff.Conn.PCLRC.gmm <- function(X1, X2, corr.type = 'pearson',
 }
 # Function from Sanjee
 VisualiseNetwork <- function(A, Group = TRUE, G, type = 1) {
+  #Required packages:
+  #   library(dplyr)
+  #   library(RCy3)
+  #Keep cytoscape open in the background
+  #Inputs
+  #   A is an adjacency matrix with the 1st column containing the column names and 1st row containing the row names and 
+  #       the matrix containing numerical values corresponding to the variable relationships in the columns and rows
+  #   A can also be a list of matrices.
+  #   Group is boolean asking if certain variables are to be clustered together as neighbours in the figure. 
+  #   Incase certain variables are to be clustered together in groups in the visualisation,
+  #   G is a vector containing the label names of the "Groups to be clustered together" 
+  #For visualising the Edge Weights,
+  #   Choose "type = 1" for grading the edges based on partial correlation values
+  #   Choose "type = 2" for grading the edges based on Pearson or Spearman correlation values
+  #   Choose "type = 3" for grading the edges on a ranked percentile system (such that the edges are ranked and on an exponential scale
+  #   the gradient of the width and colour of edges are assigned. for eg. 98th percentile with the highest width, 95th percentile with the next width etc.)
+  #
+  #
+  #Example:
+  #	source("VisualiseNetwork.R")
+  #	library(dplyr)
+  #	library(RCy3)
+  #
+  #	setwd("full path to working directory")
+  #	Mat1 <- read.table("Adjacency_Matrix1.txt", header = TRUE, row.names = 1)
+  #       Mat2 <- read.table("Adjacency_Matrix2.txt", header = TRUE, row.names = 1)
+  #       mat3 <- read.table("Adjacency_Matrix3.txt", header = TRUE, row.names = 1)
+  #
+  #	A <- list(Mat1, Mat2, Mat3)
+  #	G <- as.vector(c(label1, label2, label3...., labeln))
+  #
+  #	Visual <- VisualiseNetwork(A, Group = TRUE, G, type = 3)
   
-  #Require(dplyr)
+  require(dplyr)
   while(inherits(A, "data.frame") == TRUE || inherits(A, "matrix") == TRUE){A <- list(A)}
   
   AdjMatrix = NULL
@@ -303,6 +335,8 @@ VisualiseNetwork <- function(A, Group = TRUE, G, type = 1) {
     
     if(ncol(Adjacency) != nrow(Adjacency)) stop("Adjacency matrix should be a square matrix with equal number of rows and columns")
     if(nrow(Adjacency) != length(G)) stop("The number of nodes/variables in the groups table should be the same as in the adjacency matrix")
+    
+    
     
     if(Group == FALSE){
       Adj <- Adjacency
@@ -338,6 +372,7 @@ VisualiseNetwork <- function(A, Group = TRUE, G, type = 1) {
     Interaction <- as.vector(rep("interacts", length(Weight)))
     EdgeTable <- as.data.frame(cbind(Source, Target, Weight, Interaction))
     EdgeTable$Weight <- as.numeric(as.character(EdgeTable$Weight))
+    
     
     X = NULL
     Y = NULL
@@ -384,6 +419,7 @@ VisualiseNetwork <- function(A, Group = TRUE, G, type = 1) {
     
     ifelse(type == 1, EdgeTable <- mutate(EdgeTable, Stroke = ifelse(Weight > 0.5, "#DC1C13", ifelse(Weight < -0.5, "#1F1FFF", ifelse(Weight < 0.5 & Weight > 0.4, "#EA4C46", ifelse(Weight > -0.5 & Weight < -0.4, "#4949FF", ifelse(Weight < 0.4 & Weight > 0.3, "#F07470", ifelse(Weight > -0.4 & Weight < -0.3, "#7879FF", ifelse(Weight < 0.3 & Weight > 0.2, "#F1959B", ifelse(Weight > -0.3 & Weight < -0.2, "#A3A3FF", ifelse(Weight < 0.2 & Weight > 0.15, "#F6BDC0", ifelse(Weight > -0.2 & Weight < -0.15, "#BFBFFF", ifelse(Weight < 0.15 & Weight > 0.1, "#F6BDC0", ifelse(Weight > -0.15 & Weight < -0.1, "#BFBFFF", "#A6A6A6"))))))))))))), ifelse(type == 2, EdgeTable <- mutate(EdgeTable, Stroke = ifelse(Weight > 0.9, "#DC1C13", ifelse(Weight < -0.9, "#1F1FFF", ifelse(Weight < 0.9 & Weight > 0.8, "#EA4C46", ifelse(Weight > -0.9 & Weight < -0.8, "#4949FF", ifelse(Weight < 0.8 & Weight > 0.7, "#F07470", ifelse(Weight > -0.8 & Weight < -0.7, "#7879FF", ifelse(Weight < 0.7 & Weight > 0.6, "#F1959B", ifelse(Weight > -0.7 & Weight < -0.6, "#A3A3FF", ifelse(Weight < 0.6 & Weight > 0.5, "#F6BDC0", ifelse(Weight > -0.6 & Weight < -0.5, "#BFBFFF", ifelse(Weight < 0.5 & Weight > 0.4, "#F6BDC0", ifelse(Weight > -0.5 & Weight < -0.4, "#BFBFFF", "#A6A6A6"))))))))))))), ifelse(type == 3, EdgeTable <- mutate(EdgeTable, Stroke = ifelse(width == 10 & Weight > 0, "#DC1C13", ifelse(width == 10 & Weight < 0, "#1F1FFF", ifelse(width == 8 & Weight > 0, "#EA4C46", ifelse(width == 8 & Weight < 0, "#4949FF", ifelse(width == 4 & Weight > 0, "#F07470", ifelse(width == 4 & Weight < 0, "#7879FF", ifelse(width == 2 & Weight > 0, "#F1959B", ifelse(width == 2 & Weight < 0, "#A3A3FF", ifelse(width == 1 & Weight > 0, "#F6BDC0", ifelse(width == 1 & Weight < 0, "#BFBFFF", ifelse(width == 0.5 & Weight > 0, "#F6BDC0", ifelse(width == 0.5 & Weight < 0, "#BFBFFF", "#A6A6A6"))))))))))))), "type not selected")))
     
+    
     EdgeTable$sharedname <- paste(EdgeTable$Source, "(interacts)", EdgeTable$Target)
     
     Network_name = sprintf("Visual_Network_%i", matrix)
@@ -396,6 +432,7 @@ VisualiseNetwork <- function(A, Group = TRUE, G, type = 1) {
     edges <- data.frame(source=as.vector(EdgeTable$Source), target=as.vector(EdgeTable$Target), interaction=as.vector(EdgeTable$Interaction), weight=as.vector(EdgeTable$Weight), stringsAsFactors = FALSE)
     
     createNetworkFromDataFrames(nodes, edges, title=Network_name, collection=Network_Collection, style.name = "SanjeeNetworkStyle")
+    
     
     Colour_palette <- as.vector(c("#0073C2", "#EFC000", "#868686", "#CD534C", "#7AA6DC", "#003C6799", "#8F7700", "#3B3B3B", "#A73030", "#4A6990"))
     
@@ -429,10 +466,13 @@ VisualiseNetwork <- function(A, Group = TRUE, G, type = 1) {
     Network_save = sprintf("Cytoscape_Network_%i", matrix)
     full.path.cps = paste(getwd(), Network_save, sep="/")
     closeSession(save.before.closing = TRUE, filename = full.path.cps)
+    
   }
-  Network = list(AdjMatrix, NodesNetwork, EdgesNetwork)
   
+  
+  Network = list(AdjMatrix, NodesNetwork, EdgesNetwork)
   return(Network)
+  
 }
 
 ###############################################################################
@@ -464,8 +504,13 @@ groups <- as.vector(c(rep('Triglycerides', 4), rep('Cholesterol', 4),
                       rep('FreeCholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5)))
 
 # Retrieve the adjacency matrix
-young_adj <- as.data.frame(men.pclrc$AdjMat1)
-old_adj <- as.data.frame(men.pclrc$AdjMat2)
+# young_adj <- as.data.frame(men.pclrc$AdjMat1)
+# old_adj <- as.data.frame(men.pclrc$AdjMat2)
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
+young_adj <- read.csv('Adjacency_matrix_young.csv')
+young_adj <- young_adj[,-1]
+old_adj <- read.csv('Adjacency_matrix_old.csv')
+old_adj <- old_adj[,-1]
 rownames(old_adj) <- colnames(old_adj) <- 
   rownames(young_adj) <- colnames(young_adj) <- c("Triglycerides_VLDL", 
                                                   "Triglycerides_IDL", 
@@ -492,9 +537,8 @@ young_network <- VisualiseNetwork(A = young_adj, Group = TRUE, G = groups)
 old_network <- VisualiseNetwork(A = old_adj, Group = TRUE, G = groups)
 
 # Save adjacency matrices
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
-write.csv(young_adj, file = 'Adjacency_matrix_youngmen.csv')
-write.csv(old_adj, file = 'Adjacency_matrix_oldmen.csv')
+# write.csv(young_adj, file = 'Adjacency_matrix_youngmen.csv')
+# write.csv(old_adj, file = 'Adjacency_matrix_oldmen.csv')
 
 ###############################################################################
 
