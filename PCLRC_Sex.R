@@ -506,10 +506,10 @@ groups <- as.vector(c(rep('Triglycerides', 4), rep('Cholesterol', 4),
 # men_adj <- as.data.frame(sex.pclrc$AdjMat1)
 # women_adj <- as.data.frame(sex.pclrc$AdjMat2)
 setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
-young_adj <- read.csv('Adjacency_matrix_young.csv')
-young_adj <- young_adj[,-1]
-old_adj <- read.csv('Adjacency_matrix_old.csv')
-old_adj <- old_adj[,-1]
+men_adj <- read.csv('Adjacency_matrix_men.csv')
+men_adj <- men_adj[,-1]
+women_adj <- read.csv('Adjacency_matrix_women.csv')
+women_adj <- women_adj[,-1]
 rownames(men_adj) <- colnames(men_adj) <- 
   rownames(women_adj) <- colnames(women_adj) <- c("Triglycerides_VLDL", 
                                                   "Triglycerides_IDL", 
