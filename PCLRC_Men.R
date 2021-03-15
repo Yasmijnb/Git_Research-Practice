@@ -499,6 +499,13 @@ men.pclrc <- Diff.Conn.PCLRC.gmm(young.men[,23:43], old.men[,23:43],
 
 ###############################################################################
 
+# Save as xlsx for COVSCA
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
+write.xlsx(men.pclrc$AdjMat1, 'Adjacency_matrix_youngmen.xlsx')
+write.xlsx(men.pclrc$AdjMat2, 'Adjacency_matrix_oldmen.xlsx')
+
+###############################################################################
+
 # Make groups of lipoprotein main fractions
 groups <- as.vector(c(rep('Triglycerides', 4), rep('Cholesterol', 4), 
                       rep('FreeCholesterol', 4), rep ('Phospholipids', 4), rep ('Apo', 5)))
