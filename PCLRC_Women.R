@@ -499,6 +499,10 @@ women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43],
 
 ###############################################################################
 
+# Save the PCLRC output
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
+saveRDS(women.pclrc, 'women.pclrc')
+
 # Save as xlsx for COVSCA
 setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
 write.xlsx(women.pclrc$AdjMat1, 'Adjacency_matrix_youngwomen.xlsx')

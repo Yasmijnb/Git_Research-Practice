@@ -498,6 +498,10 @@ sex.pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE,
 
 ###############################################################################
 
+# Save the PCLRC output
+setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
+saveRDS(women.pclrc, 'women.pclrc')
+
 # Save as xlsx for COVSCA
 setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
 write.xlsx(sex.pclrc$AdjMat1, 'Adjacency_matrix_men.xlsx')
