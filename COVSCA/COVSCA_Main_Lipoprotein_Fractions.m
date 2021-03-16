@@ -19,7 +19,7 @@ COVSCAinput = [Ad1 Ad2 Ad5 Ad6 Ad7 Ad8];
 nanal = 1000; % Larger number will give more accurate resutls
 
 % The number of loadings for each component
-Q = [2 2 2]';
+Q = [2 2]';
 % The number of dimensions
 L = length(Q);
 
@@ -46,7 +46,9 @@ legtitle = get(leg, 'Title');
 set(legtitle,'String','Gender')
 xlabel('1st COVSCA component','FontSize',13);
 ylabel('2nd COVSCA component','FontSize',13);
-title('COVSCA scores (weights)','FontSize',16);
+% title(sprintf('COVSCA Q = %d', Q),'FontSize',16);
+title('COVSCA; Q = [' + strjoin(string(Q)) + ']', 'FontSize',16);
+
 
 %% Plot scores and Loadings
 
@@ -63,35 +65,25 @@ variable_labels = {'Triglycerides, VLDL', 'Triglycerides, IDL', ...
 % Show two loadings at a time
 figure(2)
 set(gcf, 'color', 'w');
-title('COVSCA loadings','FontSize',16);
 xlabel('Variables','FontSize',13);
-% First
-subplot(2,1,1)
-bar(loadings(:,1)');
-ylabel('Loadings 1st comp','FontSize',13);
+bar(abs(loadings(:,1:2)), 'grouped');
+ylabel('Absolute value of loadings','FontSize',13);
 set(gca, 'xtick', [1:21], 'xticklabel', variable_labels);
 xtickangle(45);
-% Second
-subplot(2,1,2)
-bar(loadings(:,2)');
-ylabel('Loadings 2nd comp','FontSize',13);
-set(gca, 'xtick', [1:21], 'xticklabel', variable_labels);
-xtickangle(45);
+leg = legend('First', 'Second');
+legtitle = get(leg, 'Title');
+set(legtitle,'String','Loadings')
+title('Loadings of first component','FontSize',16);
 
 % Show two loadings at a time
 figure(3)
 set(gcf, 'color', 'w');
-title('COVSCA loadings','FontSize',16);
 xlabel('Variables','FontSize',13);
-% First
-subplot(2,1,1)
-bar(loadings(:,3)');
-ylabel('Loadings 1st comp','FontSize',13);
+bar(abs(loadings(:,3:4)), 'grouped');
+ylabel('Absolute value of loadings','FontSize',13);
 set(gca, 'xtick', [1:21], 'xticklabel', variable_labels);
 xtickangle(45);
-% Second
-subplot(2,1,2)
-bar(loadings(:,4)');
-ylabel('Loadings 2nd comp','FontSize',13);
-set(gca, 'xtick', [1:21], 'xticklabel', variable_labels);
-xtickangle(45);
+leg = legend('First', 'Second');
+legtitle = get(leg, 'Title');
+set(legtitle,'String','Loadings')
+title('Loadings of second component','FontSize',16);
