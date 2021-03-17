@@ -494,7 +494,7 @@ old.men <- men[men$Age > quantile(men$Age, probs = 2/3),]
 
 # Perform PCLRC
 men.pclrc <- Diff.Conn.PCLRC.gmm(young.men[,23:43], old.men[,23:43], 
-                                 verbose = TRUE, adjust.diff = 'bonferroni',
+                                 verbose = TRUE, adjust.diff = 'BH',
                                  prob.threshold = 0.99)
 
 ###############################################################################

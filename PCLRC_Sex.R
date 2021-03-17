@@ -493,7 +493,7 @@ women <- data[which(data$Gender=='woman'),]
 
 # Perform PCLRC
 sex.pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE, 
-                                 adjust.diff = 'bonferroni',
+                                 adjust.diff = 'BH',
                                  prob.threshold = 0.99)
 
 ###############################################################################

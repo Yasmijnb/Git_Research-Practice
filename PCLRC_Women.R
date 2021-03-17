@@ -494,7 +494,7 @@ old.women <- women[women$Age > quantile(women$Age, probs = 2/3),]
 
 # Perform PCLRC
 women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43], 
-                                   verbose = TRUE, adjust.diff = 'bonferroni',
+                                   verbose = TRUE, adjust.diff = 'BH',
                                    prob.threshold = 0.99)
 
 ###############################################################################
