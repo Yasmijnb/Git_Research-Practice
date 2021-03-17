@@ -501,7 +501,7 @@ women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43],
 
 # Save the PCLRC output
 setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
-saveRDS(women.pclrc, 'women.pclrc')
+saveRDS(women.pclrc, 'women.pclrc.rds')
 
 # Save as xlsx for COVSCA
 setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
