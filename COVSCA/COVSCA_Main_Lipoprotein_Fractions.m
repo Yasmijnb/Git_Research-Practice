@@ -1,5 +1,5 @@
 clear all
-close all
+% close all
 
 %% Retrieve the adjacency matrices
 Ad1 = readmatrix('\Adjacency_matrix_men.xlsx');
@@ -46,7 +46,6 @@ legtitle = get(leg, 'Title');
 set(legtitle,'String','Gender')
 xlabel('1st COVSCA component','FontSize',13);
 ylabel('2nd COVSCA component','FontSize',13);
-% title(sprintf('COVSCA Q = %d', Q),'FontSize',16);
 title('COVSCA; Q = [' + strjoin(string(Q)) + ']', 'FontSize',16);
 
 
@@ -62,28 +61,37 @@ variable_labels = {'Triglycerides, VLDL', 'Triglycerides, IDL', ...
     'Phospholipids, HDL', 'Apo-A1, HDL', 'Apo-A2, HDL', 'Apo-B, VLDL', ...
     'Apo-B, IDL', ' Apo-B, LDL'};
 
+loadings = abs(loadings);
+
+% Reduce small entries
+threshold1 = mean(loadings(:,1)) + std(loadings(:,1));
+threshold2 = mean(loadings(:,2)) + std(loadings(:,2));
+threshold3 = mean(loadings(:,3)) + std(loadings(:,3));
+threshold4 = mean(loadings(:,4)) + std(loadings(:,4));
+
+loadings(loadings(:,1) < threshold1, 1)=NaN;
+loadings(loadings(:,2) < threshold2, 2)=NaN;
+loadings(loadings(:,3) < threshold3, 3)=NaN;
+loadings(loadings(:,4) < threshold4, 4)=NaN;
+
 % Show two loadings at a time
 figure(2)
 set(gcf, 'color', 'w');
 xlabel('Variables','FontSize',13);
-bar(abs(loadings(:,1:2)), 'grouped');
-ylabel('Absolute value of loadings','FontSize',13);
+bar(loadings(:,1:2), 'grouped');
+ylabel('Loadings','FontSize',13);
 set(gca, 'xtick', [1:21], 'xticklabel', variable_labels);
 xtickangle(45);
 leg = legend('First', 'Second');
-legtitle = get(leg, 'Title');
-set(legtitle,'String','Loadings')
 title('Loadings of first component','FontSize',16);
 
 % Show two loadings at a time
 figure(3)
 set(gcf, 'color', 'w');
 xlabel('Variables','FontSize',13);
-bar(abs(loadings(:,3:4)), 'grouped');
-ylabel('Absolute value of loadings','FontSize',13);
+bar(loadings(:,3:4), 'grouped');
+ylabel('Loadings','FontSize',13);
 set(gca, 'xtick', [1:21], 'xticklabel', variable_labels);
 xtickangle(45);
 leg = legend('First', 'Second');
-legtitle = get(leg, 'Title');
-set(legtitle,'String','Loadings')
 title('Loadings of second component','FontSize',16);
