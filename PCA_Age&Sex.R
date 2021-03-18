@@ -65,10 +65,16 @@ summary(pca)$importance[2:3,1:3]*100
 pca$rotation[,1]^2
 pca$rotation[,2]^2
 
-# Create plot
-autoplot(pca, data = data, colour = 'Gender')
-autoplot(pca, data = data, colour = 'Age')
-autoplot(pca, data = data, colour = 'Groups')
+# Create plots
+autoplot(pca, data = data, colour = 'Gender') +
+  # Make the plot with a white background
+  theme_bw()
+autoplot(pca, data = data, colour = 'Age') +
+  # Make the plot with a white background
+  theme_bw()
+autoplot(pca, data = data, colour = 'Groups') +
+  # Make the plot with a white background
+  theme_bw()
 
 ###############################################################################
 
@@ -84,7 +90,16 @@ summary(pca)$importance[2:3,1:4]*100
 pca$rotation[,1]^2
 pca$rotation[,2]^2
 
-# Create plot
-autoplot(pca, data = data, colour = 'Gender')
-autoplot(pca, data = data, colour = 'Age')
-autoplot(pca, data = data, colour = 'Groups')
+# Create plots 
+autoplot(pca, data = data, colour = 'Gender') +
+  scale_colour_manual(values=c('blue', 'red')) +
+  # Make the plot with a white background
+  theme_bw()
+# autoplot(pca, data = data, colour = 'Age') +
+  # scale_colour_manual(values=c('darkblue', 'cyan')) +
+  # Make the plot with a white background
+  # theme_bw()
+autoplot(pca, data = data, colour = 'Groups') +
+  scale_colour_manual(values=c('blue', 'darkblue', 'darkred', 'red', 'cyan', 'pink')) +
+  # Make the plot with a white background
+  theme_bw()
