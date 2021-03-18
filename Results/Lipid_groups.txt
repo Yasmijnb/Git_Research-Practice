@@ -1,0 +1,22 @@
+Long name	Short name	Group
+Lipoprotein Main Fractions, Triglycerides, VLDL	Triglycerides, VLDL	Triglycerides
+Lipoprotein Main Fractions, Triglycerides, IDL	Triglycerides, IDL	Triglycerides
+Lipoprotein Main Fractions, Triglycerides, LDL	Triglycerides, LDL	Triglycerides
+Lipoprotein Main Fractions, Triglycerides, HDL	Triglycerides, HDL	Triglycerides
+Lipoprotein Main Fractions, Cholesterol, VLDL	Cholesterol, VLDL	Cholesterol
+Lipoprotein Main Fractions, Cholesterol, IDL	Cholesterol, IDL	Cholesterol
+Lipoprotein Main Fractions, Cholesterol, LDL	Cholesterol, LDL	Cholesterol
+Lipoprotein Main Fractions, Cholesterol, HDL	Cholesterol, HDL	Cholesterol
+Lipoprotein Main Fractions, Free Cholesterol, VLDL	Free Cholesterol, VLDL	FreeCholesterol
+Lipoprotein Main Fractions, Free Cholesterol, IDL	Free Cholesterol, IDL	FreeCholesterol
+Lipoprotein Main Fractions, Free Cholesterol, LDL	Free Cholesterol, LDL	FreeCholesterol
+Lipoprotein Main Fractions, Free Cholesterol, HDL	Free Cholesterol, HDL	FreeCholesterol
+Lipoprotein Main Fractions, Phospholipids, VLDL	Phospholipids, VLDL	Phospholipids
+Lipoprotein Main Fractions, Phospholipids, IDL	Phospholipids, IDL	Phospholipids
+Lipoprotein Main Fractions, Phospholipids, LDL	Phospholipids, LDL	Phospholipids
+Lipoprotein Main Fractions, Phospholipids, HDL	Phospholipids, HDL	Phospholipids
+Lipoprotein Main Fractions, Apo-A1, HDL	Apo-A1, HDL	Apo
+Lipoprotein Main Fractions, Apo-A2, HDL	Apo-A2, HDL	Apo
+Lipoprotein Main Fractions, Apo-B, VLDL	Apo-B, VLDL	Apo
+Lipoprotein Main Fractions, Apo-B, IDL	Apo-B, IDL	Apo
+Lipoprotein Main Fractions, Apo-B, LDL	Apo-B, LDL	Apo
