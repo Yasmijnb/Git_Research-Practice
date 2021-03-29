@@ -17,7 +17,7 @@
 # Set working directory
 setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
 # Load data
-data <- read.csv("Data/Lipids_age_sex.csv", check.names = TRUE)
+data <- read.csv("Data/LipidsAgeSex_SqrtNormalization.csv", check.names = TRUE)
 data[,1] <- NULL
 
 ###############################################################################
@@ -276,17 +276,17 @@ sex.forest$ModelStatistics
 ## Age
 
 # Make young and old groups
-age_groups <- rep(0, nrow(data))
-age_groups[which(data$Age < quantile(data$Age, probs = 1/3))] <- 'young'
-age_groups[which(data$Age > quantile(data$Age, probs = 2/3))] <- 'old'
-
-# Use only young and old, not the middle
-age.data <- data[which(age_groups == 'young' | age_groups == 'old'),]
-group.data <- age_groups[which(age_groups == 'young' | age_groups == 'old')]
-
-age.forest <- RForest(x.data = age.data[,23:43], y.class = group.data, 
-                      unbalance = FALSE)
-age.forest$ModelStatistics
+# age_groups <- rep(0, nrow(data))
+# age_groups[which(data$Age < quantile(data$Age, probs = 1/3))] <- 'young'
+# age_groups[which(data$Age > quantile(data$Age, probs = 2/3))] <- 'old'
+# 
+# # Use only young and old, not the middle
+# age.data <- data[which(age_groups == 'young' | age_groups == 'old'),]
+# group.data <- age_groups[which(age_groups == 'young' | age_groups == 'old')]
+# 
+# age.forest <- RForest(x.data = age.data[,23:43], y.class = group.data, 
+#                       unbalance = FALSE)
+# age.forest$ModelStatistics
 
 ###############################################################################
 
@@ -332,6 +332,6 @@ men.forest$ModelStatistics
 
 # Print all results again
 sex.forest$ModelStatistics
-age.forest$ModelStatistics
+# age.forest$ModelStatistics
 women.forest$ModelStatistics
 men.forest$ModelStatistics
