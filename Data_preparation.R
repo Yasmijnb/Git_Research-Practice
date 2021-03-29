@@ -12,6 +12,7 @@
 
 library(stringr)    # Used to split the row names
 library(readxl)     # Used to read excel files
+library(RNOmni)     # Used to normalize the data
 
 ###############################################################################
 
@@ -46,6 +47,10 @@ levels(clinic$Gender) <- c('man', 'woman')
 # Merge the data sets into one
 data.age.sex <- merge(clinic[,c(1, 2, 13)], lipids, by.x = 'ID', 
                       by.y = 'row.names')
+# Normalize the data
+for (colnum in 4:117) {
+  data.age.sex[,colnum] <- RankNorm(data.age.sex[,colnum])
+}
 # Save the data set
 write.csv(data.age.sex, file = "Data/Lipids_age_sex.csv")
 
@@ -57,6 +62,10 @@ write.csv(data.age.sex, file = "Data/Lipids_age_sex.csv")
 
 # Merge the data sets into one
 complete.data <- merge(clinic, lipids, by.x = 'ID', by.y = 'row.names')
+# Normalize the data
+# for (colnum in 4:117) {
+#   complete.data[,colnum] <- RankNorm(complete.data[,colnum])
+# }
 # Save the data set
 write.csv(complete.data, file = "Data/Lipids_all.csv")
 
