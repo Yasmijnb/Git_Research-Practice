@@ -123,8 +123,7 @@ mean.summary[,4] <- colMeans(old.men[,23:43])
 mean.summary[,5] <- colMeans(young.women[,23:43])
 mean.summary[,6] <- colMeans(old.women[,23:43])
 
-# Adjust the p-values
-adjusted.P.values <- p.adjust(P.values, method = 'bonferroni')
+mean.summary <- round(mean.summary, 3)
 
 ###############################################################################
 
