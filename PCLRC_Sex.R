@@ -148,20 +148,21 @@ PCLRC.gmm <- function(datamatrix, prob.threshold = 0.95, Niter = 1000,
 } 
 
 Diff.Conn.PCLRC.gmm <- function(X1, X2, corr.type = 'pearson', 
-                                prob.threshold = 0.95, adjust.diff = 'BH', 
-                                Niter = 1000, MaxPerm = 1000, frac = 0.75, 
-                                rank.thr = 0.3, verbose = FALSE){
+                                prob.threshold = 0.95, corr.threshold = 0, 
+                                adjust.diff = 'BH', Niter = 1000, MaxPerm = 1000, 
+                                frac=0.75, rank.thr=0.3, verbose = FALSE){
   
-  # Calculate differential connectivity between the two networks calculated
-  # with PCLRC using partial correlation form data matrix X1 and X2
+  # Calculate differential connectivity between the two networks calculated with PCLRC 
+  # using partial correlation form data matrix X1 and X2
   #
   # Peform permutation test to assess statistical significance of the differential connectivity
-  
   # Arguments:
-  #   X1:             numeric matrix with the objects measurements.
-  #   X2:             numeric matrix with the objects measurements.
+  
+  #   X1:   numeric matrix with the objects measurements.
+  #   X1:   numeric matrix with the objects measurements.
   #   corr.type:      Type of correlation to be used
   #   prob.threshold: Probality treshold calculated by PCLRC on which to filter correlations. Default 0.95
+  #   corr.threshold: Treshold on correlation to retain: default 1, so all correlation are kept
   #   Niter:          Integer value with the number of iterations. Default is 1000
   #   frac:           Fraction of the samples to be considered at each iteration.
   #                   Default is 0.75 (75%)            
@@ -184,24 +185,25 @@ Diff.Conn.PCLRC.gmm <- function(X1, X2, corr.type = 'pearson',
   
   #
   
-  if(ncol(X1) != ncol(X2)) 
-    stop('X1 and X2 must have the same number of columns!')
+  if(ncol(X1) != ncol(X2)) stop('X1 and X2 must have the same number of columns!')
   
-  RES1 =   PCLRC.gmm(datamatrix = X1,  prob.threshold = prob.threshold, 
-                     Niter = Niter, frac = frac, rank.thr = rank.thr)
-  RES2 =   PCLRC.gmm(datamatrix = X2,  prob.threshold = prob.threshold, 
-                     Niter = Niter, frac = frac, rank.thr = rank.thr)
+  RES1 =   PCLRC.gmm(datamatrix = X1,  prob.threshold = prob.threshold, Niter=Niter, frac=frac, rank.thr=rank.thr)
+  RES2 =   PCLRC.gmm(datamatrix = X2,  prob.threshold = prob.threshold, Niter=Niter, frac=frac, rank.thr=rank.thr)
   
   
   #CONNECTIVITY based on PCLRC
   W1C = RES1$CorrMatFiltered
   W2C = RES2$CorrMatFiltered
   
+  #FILTER ON Correlation threshold. By default is 0
+  W1C[which(abs(W1C)<corr.threshold)] = 0
+  W2C[which(abs(W2C)<corr.threshold)] = 0
+  
   G1C = abs(W1C) ##W1 is the correlation or mutual info for data set 1
   G2C = abs(W2C) ##W2 is the correlation or mutual info for data set 2
   
-  Conn1_0C = rowSums(G1C) - 1
-  Conn2_0C = rowSums(G2C) - 1
+  Conn1_0C = rowSums(G1C)-1
+  Conn2_0C = rowSums(G2C)-1
   
   
   #Calculate Differential connectivity
@@ -222,7 +224,7 @@ Diff.Conn.PCLRC.gmm <- function(X1, X2, corr.type = 'pearson',
   
   for (ii in 1:MaxPerm) {
     if(verbose)
-      print(sprintf('Permutation %i of %i', ii, MaxPerm))
+      print(sprintf('Permutation %i of %i',ii,MaxPerm))
     X1p = NULL
     X2p = NULL
     for (jj in 1:dim(X1)[2])  {
@@ -234,37 +236,39 @@ Diff.Conn.PCLRC.gmm <- function(X1, X2, corr.type = 'pearson',
     
     # Calculate Corr
     
-    RES1p = PCLRC.gmm(X1p, prob.threshold = prob.threshold, Niter = Niter, 
-                      frac = frac, rank.thr = rank.thr)
-    RES2p = PCLRC.gmm(X2p, prob.threshold = prob.threshold, Niter = Niter, 
-                      frac = frac, rank.thr = rank.thr)
+    RES1p =   PCLRC.gmm(X1p, prob.threshold = prob.threshold, Niter=Niter, frac=frac, rank.thr=rank.thr)
+    RES2p =   PCLRC.gmm(X2p, prob.threshold = prob.threshold, Niter=Niter, frac=frac, rank.thr=rank.thr)
     
     
     W1pC = RES1p$CorrMatFiltered 
     W2pC = RES2p$CorrMatFiltered 
     
+    #FILTER ON Correlation threshold. By default is 0
+    W1pC[which(abs(W1pC)<corr.threshold)] = 0
+    W2pC[which(abs(W2pC)<corr.threshold)] = 0
     
-    # Calculate Connectivity based on CORR
-    Conn_1C = rowSums(abs(W1pC)) - 1 
-    Conn_2C = rowSums(abs(W2pC)) - 1 
     
-    diffp_C = abs(Conn_1C - Conn_2C)
-    DIFFP_C = cbind(DIFFP_C, diffp_C)
+    #Calculate Connectivity based on CORR
+    Conn_1C = rowSums(abs(W1pC))-1 
+    Conn_2C = rowSums(abs(W2pC))-1 
+    
+    diffp_C = abs(Conn_1C- Conn_2C)
+    DIFFP_C = cbind(DIFFP_C,diffp_C)
     
   }
   
   
-  # Calculate P-value
+  #Calculate Pvalue
   PVAL_C = NULL
   
   for(k in 1:dim(DIFFP_C)[1]) {
     
-    LLC = length(which(DIFFP_C[k,] > diff0C[k]))
-    PVAL_C[k] = (1 + LLC) / MaxPerm
+    LLC = length(which(DIFFP_C[k,]>diff0C[k]))
+    PVAL_C[k] = (1+LLC )/MaxPerm
   }
   
   # Adjust p-value of differential connectivity
-  PVAL_C_ADJ = p.adjust(PVAL_C, method = adjust.diff)
+  PVAL_C_ADJ = p.adjust(PVAL_C,method = adjust.diff)
   
   
   names(Conn1_0C) = colnames(X1)
@@ -274,10 +278,7 @@ Diff.Conn.PCLRC.gmm <- function(X1, X2, corr.type = 'pearson',
   names(PVAL_C) = colnames(X1)
   names(PVAL_C_ADJ) = colnames(X1)
   
-  results = list(Conn_X1 = Conn1_0C, Conn_X2 = Conn2_0C, Diff_Conn = diff0C, 
-                 Pval = PVAL_C, Pval_adj = PVAL_C_ADJ, AdjMat1 = W1C, 
-                 AdjMat2 = W2C, Permutations = DIFFP_C, 
-                 adjust.diff =  adjust.diff)
+  results = list(Conn_X1 = Conn1_0C, Conn_X2 = Conn2_0C, Diff_Conn = diff0C, Pval = PVAL_C, Pval_adj= PVAL_C_ADJ, AdjMat1 = W1C, AdjMat2 = W2C, Permutations = DIFFP_C, adjust.diff =  adjust.diff)
   
   
   return(results)
@@ -491,9 +492,20 @@ data[,1] <- NULL
 men <- data[which(data$Gender=='man'),]
 women <- data[which(data$Gender=='woman'),]
 
+# Decide correlation threshold
+men.corr <- PCLRC.gmm(men[,23:43])$CorrMat
+men.corr <- men.corr[upper.tri(men.corr, diag = FALSE)]
+men.75 <- quantile(abs(men.corr), probs = 0.75)
+
+women.corr <- PCLRC.gmm(women[,23:43])$CorrMat
+women.corr <- women.corr[upper.tri(women.corr, diag = FALSE)]
+women.75 <- quantile(abs(women.corr), probs = 0.75)
+
+threshold <- min(men.75, women.75)
+
 # Perform PCLRC
 sex.pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE, 
-                                 adjust.diff = 'BH',
+                                 adjust.diff = 'BH', corr.threshold = threshold,
                                  prob.threshold = 0.99)
 
 ###############################################################################
