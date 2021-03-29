@@ -41,9 +41,7 @@ plot(scores(1,1),scores(1,2),'b.', ...
     'MarkerSize',22);
 text(scores(:,1),scores(:,2),labels,'VerticalAlignment','bottom',...
     'HorizontalAlignment','left')
-leg = legend('men', 'women');
-legtitle = get(leg, 'Title');
-set(legtitle,'String','Gender')
+legend('men', 'women');
 xlabel('1st COVSCA component','FontSize',13);
 ylabel('2nd COVSCA component','FontSize',13);
 title('COVSCA; Q = [' + strjoin(string(Q)) + ']', 'FontSize',16);
