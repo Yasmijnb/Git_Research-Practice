@@ -47,12 +47,20 @@ levels(clinic$Gender) <- c('man', 'woman')
 # Merge the data sets into one
 data.age.sex <- merge(clinic[,c(1, 2, 13)], lipids, by.x = 'ID', 
                       by.y = 'row.names')
-# Normalize the data
-for (colnum in 4:117) {
-  data.age.sex[,colnum] <- RankNorm(data.age.sex[,colnum])
-}
 # Save the data set
-write.csv(data.age.sex, file = "Data/Lipids_age_sex.csv")
+write.csv(data.age.sex, file = "Data/LipidsAgeSex_NoNormalization.csv")
+
+# Normalize the data with RankNorm
+data.age.sex[,4:117] <- apply(data.age.sex[,4:117], 2, RankNorm)
+# Save the data set
+write.csv(data.age.sex, file = "Data/LipidsAgeSex_RankNorm.csv")
+
+# Normalize the data with sqrt
+data.age.sex <- merge(clinic[,c(1, 2, 13)], lipids, by.x = 'ID', 
+                      by.y = 'row.names')
+data.age.sex[,4:117] <- apply(data.age.sex[,4:117], 2, sqrt)
+# Save the data set
+write.csv(data.age.sex, file = "Data/LipidsAgeSex_SqrtNormalization.csv")
 
 ###############################################################################
 
@@ -62,10 +70,7 @@ write.csv(data.age.sex, file = "Data/Lipids_age_sex.csv")
 
 # Merge the data sets into one
 complete.data <- merge(clinic, lipids, by.x = 'ID', by.y = 'row.names')
-# Normalize the data
-# for (colnum in 4:117) {
-#   complete.data[,colnum] <- RankNorm(complete.data[,colnum])
-# }
+
 # Save the data set
 write.csv(complete.data, file = "Data/Lipids_all.csv")
 
