@@ -44,7 +44,7 @@ ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) +
   # Use nicer colours
   scale_fill_manual(values = "steelblue") + 
   # Change the axis labels
-  xlab('Differenrial connectivity') + ylab('Lipoprotein Main Fractions') + 
+  xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
   theme_bw() +
   # Remove the legend title
@@ -72,7 +72,7 @@ ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) +
   # Use nicer colours
   scale_fill_manual(values = c("orange", "steelblue")) + 
   # Change the axis labels
-  xlab('Differenrial connectivity') + ylab('Lipoprotein Main Fractions') + 
+  xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
   theme_bw() +
   # Remove the legend title
@@ -98,9 +98,9 @@ adjusted.pvalues$sig[which(adjusted.pvalues$P.values <= 0.05)] <- 'Significant'
 ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = "steelblue") + 
+  scale_fill_manual(values = c("orange", "steelblue")) + 
   # Change the axis labels
-  xlab('Differenrial connectivity') + ylab('Lipoprotein Main Fractions') + 
+  xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
   theme_bw() +
   # Remove the legend title
