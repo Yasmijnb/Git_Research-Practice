@@ -81,24 +81,34 @@ WOMEN.pca <- prcomp(WOMEN[,c(2:7, 12:13, 16, 20:21)], scale = T)
 #   theme(legend.title = element_blank())
 
 # Make figures that colour network and number lipids
-autoplot(SEX.pca, data = SEX, colour = 'network', main = 'Sex', label = T, shape = F) + 
+autoplot(SEX.pca, data = SEX, colour = 'network', label = T, shape = F) + 
+  # Add a confidence interval ellipse
   stat_ellipse(level = 0.95, aes(group = SEX$network, color = SEX$network), type = "norm") +
+  # Set the colours
   scale_colour_manual(values=c('blue', 'red')) +
+  # Make the plot with a white background
   theme_bw() + 
+  # Remove the legend title
   theme(legend.title = element_blank())
-autoplot(MEN.pca, data = MEN, colour = 'network', main = 'Men', label = T, shape = F) + 
+
+autoplot(MEN.pca, data = MEN, colour = 'network', label = T, shape = F) + 
+  # Add a confidence interval ellipse
   stat_ellipse(level = 0.95, aes(group = MEN$network, color = MEN$network), type = "norm") +
+  # Set the colours
   scale_colour_manual(values=c('darkblue', 'cyan')) +
+  # Make the plot with a white background
   theme_bw() + 
+  # Remove legend title
   theme(legend.title = element_blank())
-autoplot(WOMEN.pca, data = WOMEN, colour = 'network', main = 'Women', label = T, shape = F) + 
+
+autoplot(WOMEN.pca, data = WOMEN, colour = 'network', label = T, shape = F) + 
   # Add a confidence interval ellipse
   stat_ellipse(level = 0.95, aes(group = WOMEN$network, color = WOMEN$network), type = "norm") +
   # Set the colours
   scale_colour_manual(values=c('red', 'orange')) +
   # Make the plot with a white background
   theme_bw() + 
-  # 
+  # Remove legend title
   theme(legend.title = element_blank())
 
 ###############################################################################
