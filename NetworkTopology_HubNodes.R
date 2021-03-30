@@ -18,9 +18,6 @@
 men <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_Men.csv')
 women <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_Women.csv')
 
-young <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_Young.csv')
-old <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_Old.csv')
-
 young.men <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_YoungMen.csv')
 old.men <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_OldMen.csv')
 
@@ -33,7 +30,7 @@ old.women <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second 
 hub.nodes <- data.frame()
 
 # Make list of all networks
-networks <- list('men' = men, 'women' = women, 'young' = young, 'old' = old, 
+networks <- list('men' = men, 'women' = women, 
                  'young.men' = young.men, 'old.men' = old.men, 
                  'young.women' = young.women, 'old.women' = old.women)
 
@@ -44,9 +41,6 @@ cc.thrs <- data.frame(row.names = women$name)
 cc.thrs$sex <- rep('', 21)
 cc.thrs$sex[which(women$ClusteringCoefficient < 0.03 & men$ClusteringCoefficient > 0.03)] <- 'women'
 cc.thrs$sex[which(women$ClusteringCoefficient > 0.03 & men$ClusteringCoefficient < 0.03)] <- 'men'
-cc.thrs$age <- rep('', 21)
-cc.thrs$age[which(young$ClusteringCoefficient < 0.03 & old$ClusteringCoefficient > 0.03)] <- 'young'
-cc.thrs$age[which(young$ClusteringCoefficient > 0.03 & old$ClusteringCoefficient < 0.03)] <- 'old'
 cc.thrs$men <- rep('', 21)
 cc.thrs$men[which(young.men$ClusteringCoefficient < 0.03 & old.men$ClusteringCoefficient > 0.03)] <- 'young'
 cc.thrs$men[which(young.men$ClusteringCoefficient > 0.03 & old.men$ClusteringCoefficient < 0.03)] <- 'old'
@@ -55,3 +49,4 @@ cc.thrs$women[which(young.women$ClusteringCoefficient < 0.03 & old.women$Cluster
 cc.thrs$women[which(young.women$ClusteringCoefficient > 0.03 & old.women$ClusteringCoefficient < 0.03)] <- 'old'
 
 View(cc.thrs)
+
