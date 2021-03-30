@@ -20,11 +20,7 @@
 ###############################################################################
 
 # Load data
-
-# Set working directory
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
-# Load data
-data <- read.csv("Data/LipidsAgeSex_SqrtNormalization.csv", check.names = FALSE)
+data <- read.csv("../Data/LipidsAgeSex_SqrtNormalization.csv", check.names = FALSE)
 data[,1] <- NULL
 
 ###############################################################################
@@ -155,7 +151,5 @@ length(which(adjusted.P.values <= 0.01))
 plot(P.values, adjusted.P.values)
 abline(h = 0.01, col = 'red'); abline(v = 0.01, col = 'red')
 
-# Set different working directory results
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results")
 # Write the summary to csv file
-write.csv(wilcoxon.summary, file = 'Wilcoxon_results.csv')
+write.csv(wilcoxon.summary, file = 'Results/Wilcoxon_results.csv')

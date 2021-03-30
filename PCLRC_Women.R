@@ -479,11 +479,7 @@ VisualiseNetwork <- function(A, Group = TRUE, G, type = 1) {
 ###############################################################################
 
 # Load data
-
-# Set working directory
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
-# Load data
-data <- read.csv("Data/LipidsAgeSex_SqrtNormalization.csv", check.names = FALSE)
+data <- read.csv("../Data/LipidsAgeSex_SqrtNormalization.csv", check.names = FALSE)
 data[,1] <- NULL
 
 ###############################################################################
@@ -512,13 +508,11 @@ women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43],
 ###############################################################################
 
 # Save the PCLRC output
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
-saveRDS(women.pclrc, 'women.pclrc.rds')
+saveRDS(women.pclrc, 'Results/women.pclrc.rds')
 
 # Save as xlsx for COVSCA
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
-write.xlsx(women.pclrc$AdjMat1, 'Adjacency_matrix_youngwomen.xlsx')
-write.xlsx(women.pclrc$AdjMat2, 'Adjacency_matrix_oldwomen.xlsx')
+write.xlsx(women.pclrc$AdjMat1, 'COVSCA/Adjacency_matrix_youngwomen.xlsx')
+write.xlsx(women.pclrc$AdjMat2, 'COVSCA/Adjacency_matrix_oldwomen.xlsx')
 
 ###############################################################################
 
@@ -529,10 +523,9 @@ groups <- as.vector(c(rep('Triglycerides', 4), rep('Cholesterol', 4),
 # Retrieve the adjacency matrix
 # young_adj <- as.data.frame(women.pclrc$AdjMat1)
 # old_adj <- as.data.frame(women.pclrc$AdjMat2)
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
-young_adj <- read.csv('Adjacency_matrix_youngwomen.csv')
+young_adj <- read.csv('Results/Adjacency_matrix_youngwomen.csv')
 young_adj <- young_adj[,-1]
-old_adj <- read.csv('Adjacency_matrix_oldwomen.csv')
+old_adj <- read.csv('Results/Adjacency_matrix_oldwomen.csv')
 old_adj <- old_adj[,-1]
 rownames(old_adj) <- colnames(old_adj) <- 
   rownames(young_adj) <- colnames(young_adj) <- c("Triglycerides_VLDL", 
@@ -611,7 +604,7 @@ testing <- c('BH', 'BH', 'bonferroni', 'bonferroni', 'storey', 'storey', 'storey
 thresholds <- c('0.01', '0.05', '0.01', '0.05', '0.01', '0.05', '0.005')
 nm <- names(pvalues)
 # Change working directory to save the plots
-setwd("C:/Users/Yasmijn/Pictures/Research practice")
+setwd("Results")
 for (i in 1:7) {
   g <- ggplot(data = pvalues, aes_string(x = nm[3], y = nm[2], fill = nm[5+i])) + 
     geom_bar(stat = "identity") +

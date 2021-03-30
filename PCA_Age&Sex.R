@@ -17,11 +17,7 @@ library(ggfortify)
 ###############################################################################
 
 # Load data
-
-# Set working directory
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
-# Load data
-data <- read.csv("Data/Lipids_age_sex.csv", check.names = FALSE)
+data <- read.csv("../Data/Lipids_age_sex.csv", check.names = FALSE)
 data[,1] <- NULL
 
 ###############################################################################

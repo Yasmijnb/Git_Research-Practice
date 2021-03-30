@@ -18,18 +18,15 @@ library(RNOmni)     # Used to normalize the data
 
 # Load data
 
-# Set working directory
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
-
 # Load IVDr_lipo (NMR estimation of lipidomes)
-lipids <- read.csv("Data/IVDr_lipo.txt", sep = ' ', check.names = FALSE)
+lipids <- read.csv("../Data/IVDr_lipo.txt", sep = ' ', check.names = FALSE)
 # Change the rownames to match (stringr package needed)
 for (row in 1:nrow(lipids)) {
   new.name <- str_split(rownames(lipids)[row], '/')[[1]][2]
   rownames(lipids)[row] <- new.name
 }
 # Load AVIS_2020
-clinic <- as.data.frame(read_excel("Data/AVIS_2020.xlsx", sheet = 3))
+clinic <- as.data.frame(read_excel("../Data/AVIS_2020.xlsx", sheet = 3))
 # Change certain columns to numeric
 for (column in c(2:14,18:42)) {
   clinic[,column] <- as.numeric(clinic[,column])
@@ -48,19 +45,19 @@ levels(clinic$Gender) <- c('man', 'woman')
 data.age.sex <- merge(clinic[,c(1, 2, 13)], lipids, by.x = 'ID', 
                       by.y = 'row.names')
 # Save the data set
-write.csv(data.age.sex, file = "Data/LipidsAgeSex_NoNormalization.csv")
+write.csv(data.age.sex, file = "../Data/LipidsAgeSex_NoNormalization.csv")
 
 # Normalize the data with RankNorm
 data.age.sex[,4:117] <- apply(data.age.sex[,4:117], 2, RankNorm)
 # Save the data set
-write.csv(data.age.sex, file = "Data/LipidsAgeSex_RankNorm.csv")
+write.csv(data.age.sex, file = "../Data/LipidsAgeSex_RankNorm.csv")
 
 # Normalize the data with sqrt
 data.age.sex <- merge(clinic[,c(1, 2, 13)], lipids, by.x = 'ID', 
                       by.y = 'row.names')
 data.age.sex[,4:117] <- apply(data.age.sex[,4:117], 2, sqrt)
 # Save the data set
-write.csv(data.age.sex, file = "Data/LipidsAgeSex_SqrtNormalization.csv")
+write.csv(data.age.sex, file = "../Data/LipidsAgeSex_SqrtNormalization.csv")
 
 ###############################################################################
 
@@ -72,7 +69,7 @@ write.csv(data.age.sex, file = "Data/LipidsAgeSex_SqrtNormalization.csv")
 complete.data <- merge(clinic, lipids, by.x = 'ID', by.y = 'row.names')
 
 # Save the data set
-write.csv(complete.data, file = "Data/Lipids_all.csv")
+write.csv(complete.data, file = "../Data/Lipids_all.csv")
 
 ###############################################################################
 

@@ -1,3 +1,16 @@
+###############################################################################
+
+# Yasmijn Balder
+# 16-03-2021
+
+# Make differential connectivity plot with -log10(p-value)
+
+# Output:
+# Graph per differential connectivity result
+
+###############################################################################
+
+# Load function from Tuuli
 diffcon_plot <- function(res_path){
   #
   # Script for visualizing fatty acid significance in differential connectivity
@@ -91,6 +104,11 @@ diffcon_plot <- function(res_path){
   
 }
 
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
+###############################################################################
 
-diffcon_plot("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
+# Move to results folder
+setwd("Results/")
+# Perform function
+diffcon_plot()
+
+###############################################################################

@@ -19,17 +19,17 @@ library(RNOmni)         # Used to add confidence interval ellipses
 ###############################################################################
 
 # Load the data
-men <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_Men.csv')
-women <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_Women.csv')
+men <- read.csv('Results/NetworkTopology_Men.csv')
+women <- read.csv('Results/NetworkTopology_Women.csv')
 
-young <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_Young.csv')
-old <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_Old.csv')
+young <- read.csv('Results/NetworkTopology_Young.csv')
+old <- read.csv('Results/NetworkTopology_Old.csv')
 
-young.men <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_YoungMen.csv')
-old.men <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_OldMen.csv')
+young.men <- read.csv('/Results/NetworkTopology_YoungMen.csv')
+old.men <- read.csv('Results/NetworkTopology_OldMen.csv')
 
-young.women <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_YoungWomen.csv')
-old.women <- read.csv('C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/NetworkTopology_OldWomen.csv')
+young.women <- read.csv('Results/NetworkTopology_YoungWomen.csv')
+old.women <- read.csv('Results/NetworkTopology_OldWomen.csv')
 
 ###############################################################################
 

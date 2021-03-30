@@ -11,9 +11,9 @@
 ###############################################################################
 
 # Load the data
-sex.pclrc <- readRDS("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/sex.pclrc.rds")
-men.pclrc <- readRDS("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/men.pclrc.rds")
-women.pclrc <- readRDS("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/women.pclrc.rds")
+sex.pclrc <- readRDS("Results/sex.pclrc.rds")
+men.pclrc <- readRDS("Results/men.pclrc.rds")
+women.pclrc <- readRDS("Results/women.pclrc.rds")
 
 ###############################################################################
 

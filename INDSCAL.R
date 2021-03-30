@@ -18,21 +18,17 @@ library(stringr)            # Used to split the names
 ###############################################################################
 
 # Load data
-
-# Set working directory
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
-# Load data
-men <- read.xlsx("Git_Research-Practice/COVSCA/Adjacency_matrix_men.xlsx")
-old <- read.xlsx("Git_Research-Practice/COVSCA/Adjacency_matrix_old.xlsx")
-old.men <- read.xlsx("Git_Research-Practice/COVSCA/Adjacency_matrix_old_men.xlsx")
-old.women <- read.xlsx("Git_Research-Practice/COVSCA/Adjacency_matrix_old_women.xlsx")
-women <- read.xlsx("Git_Research-Practice/COVSCA/Adjacency_matrix_women.xlsx")
-young <- read.xlsx("Git_Research-Practice/COVSCA/Adjacency_matrix_young.xlsx")
-young.men <- read.xlsx("Git_Research-Practice/COVSCA/Adjacency_matrix_young_men.xlsx")
-young.women <- read.xlsx("Git_Research-Practice/COVSCA/Adjacency_matrix_young_women.xlsx")
+men <- read.xlsx("COVSCA/Adjacency_matrix_men.xlsx")
+old <- read.xlsx("COVSCA/Adjacency_matrix_old.xlsx")
+old.men <- read.xlsx("COVSCA/Adjacency_matrix_old_men.xlsx")
+old.women <- read.xlsx("COVSCA/Adjacency_matrix_old_women.xlsx")
+women <- read.xlsx("COVSCA/Adjacency_matrix_women.xlsx")
+young <- read.xlsx("COVSCA/Adjacency_matrix_young.xlsx")
+young.men <- read.xlsx("COVSCA/Adjacency_matrix_young_men.xlsx")
+young.women <- read.xlsx("COVSCA/Adjacency_matrix_young_women.xlsx")
 
 # Load data
-data <- read.csv("Data/Lipids_age_sex.csv", check.names = FALSE)
+data <- read.csv("../Data/Lipids_age_sex.csv", check.names = FALSE)
 data[,1] <- NULL
 
 ###############################################################################

@@ -12,11 +12,7 @@
 ###############################################################################
 
 # Load data
-
-# Set working directory
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
-# Load data
-data <- read.csv("Data/Lipids_all.csv", check.names = FALSE)
+data <- read.csv("../Data/Lipids_all.csv", check.names = FALSE)
 data[,1] <- NULL
 
 ###############################################################################
@@ -116,4 +112,3 @@ plot(data$`LDL-Chol`,
      main = paste0('Correlation between measured and estimated LDL\n(',
                    round(LDL.cor, 2), ')'),
      xlab = 'Direct Enzymatic Essay', ylab = 'NMR')
-

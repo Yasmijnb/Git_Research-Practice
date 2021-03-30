@@ -17,11 +17,7 @@ library(ggplot2)
 ###############################################################################
 
 # Load data
-
-# Set working directory
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
-# Load data
-data <- read.csv("Data/LipidsAgeSex_NoNormalization.csv", check.names = FALSE)
+data <- read.csv("../Data/LipidsAgeSex_NoNormalization.csv", check.names = FALSE)
 data[,1] <- NULL
 
 ###############################################################################
@@ -113,6 +109,3 @@ o.women.number; o.women.age
 men.number; men.age
 y.men.number; y.men.age
 o.men.number; o.men.age
-
-
-

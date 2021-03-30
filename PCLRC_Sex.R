@@ -479,11 +479,7 @@ VisualiseNetwork <- function(A, Group = TRUE, G, type = 1) {
 ###############################################################################
 
 # Load data
-
-# Set working directory
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
-# Load data
-data <- read.csv("Data/LipidsAgeSex_SqrtNormalization.csv", check.names = FALSE)
+data <- read.csv("../Data/LipidsAgeSex_SqrtNormalization.csv", check.names = FALSE)
 data[,1] <- NULL
 
 ###############################################################################
@@ -511,13 +507,11 @@ sex.pclrc <- Diff.Conn.PCLRC.gmm(men[,23:43], women[,23:43], verbose = TRUE,
 ###############################################################################
 
 # Save the PCLRC output
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
-saveRDS(sex.pclrc, 'sex.pclrc.rds')
+saveRDS(sex.pclrc, 'Results/sex.pclrc.rds')
 
 # Save as xlsx for COVSCA
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
-write.xlsx(sex.pclrc$AdjMat1, 'Adjacency_matrix_men.xlsx')
-write.xlsx(sex.pclrc$AdjMat2, 'Adjacency_matrix_women.xlsx')
+write.xlsx(sex.pclrc$AdjMat1, 'COVSCA/Adjacency_matrix_men.xlsx')
+write.xlsx(sex.pclrc$AdjMat2, 'COVSCA/Adjacency_matrix_women.xlsx')
 
 ###############################################################################
 
@@ -528,10 +522,9 @@ groups <- as.vector(c(rep('Triglycerides', 4), rep('Cholesterol', 4),
 # Retrieve the adjacency matrix
 # men_adj <- as.data.frame(sex.pclrc$AdjMat1)
 # women_adj <- as.data.frame(sex.pclrc$AdjMat2)
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
-men_adj <- read.csv('Adjacency_matrix_men.csv')
+men_adj <- read.csv('Results/Adjacency_matrix_men.csv')
 men_adj <- men_adj[,-1]
-women_adj <- read.csv('Adjacency_matrix_women.csv')
+women_adj <- read.csv('Results/Adjacency_matrix_women.csv')
 women_adj <- women_adj[,-1]
 rownames(men_adj) <- colnames(men_adj) <- 
   rownames(women_adj) <- colnames(women_adj) <- c("Triglycerides_VLDL", 
@@ -610,7 +603,7 @@ testing <- c('BH', 'BH', 'bonferroni', 'bonferroni', 'storey', 'storey', 'storey
 thresholds <- c('0.01', '0.05', '0.01', '0.05', '0.01', '0.05', '0.005')
 nm <- names(pvalues)
 # Change working directory to save the plots
-setwd("C:/Users/Yasmijn/Pictures/Research practice")
+setwd("Results")
 for (i in 1:7) {
   g <- ggplot(data = pvalues, aes_string(x = nm[3], y = nm[2], fill = nm[5+i])) + 
     geom_bar(stat = "identity") +

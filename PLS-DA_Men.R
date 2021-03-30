@@ -11,11 +11,7 @@
 ###############################################################################
 
 # Load data
-
-# Set working directory
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
-# Load data
-data <- read.csv("Data/Lipids_age_sex.csv", check.names = TRUE)
+data <- read.csv("../Data/Lipids_age_sex.csv", check.names = TRUE)
 data[,1] <- NULL
 
 ###############################################################################
