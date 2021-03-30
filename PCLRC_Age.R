@@ -478,11 +478,7 @@ VisualiseNetwork <- function(A, Group = TRUE, G, type = 1) {
 ###############################################################################
 
 # Load data
-
-# Set working directory
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/")
-# Load data
-data <- read.csv("Data/Lipids_age_sex.csv", check.names = FALSE)
+data <- read.csv("../Data/Lipids_age_sex.csv", check.names = FALSE)
 data[,1] <- NULL
 
 ###############################################################################
@@ -499,13 +495,11 @@ age.pclrc <- Diff.Conn.PCLRC.gmm(young[,23:43], old[,23:43], verbose = TRUE,
 ###############################################################################
 
 # Save the PCLRC output
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
-saveRDS(age.pclrc, 'age.pclrc.rds')
+saveRDS(age.pclrc, 'Results/age.pclrc.rds')
 
 # Save as xlsx for COVSCA
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/COVSCA/")
-write.xlsx(age.pclrc$AdjMat1, 'Adjacency_matrix_young.xlsx')
-write.xlsx(age.pclrc$AdjMat2, 'Adjacency_matrix_old.xlsx')
+write.xlsx(age.pclrc$AdjMat1, 'COVSCA/Adjacency_matrix_young.xlsx')
+write.xlsx(age.pclrc$AdjMat2, 'COVSCA/Adjacency_matrix_old.xlsx')
 
 ###############################################################################
 
@@ -516,10 +510,9 @@ groups <- as.vector(c(rep('Triglycerides', 4), rep('Cholesterol', 4),
 # Retrieve the adjacency matrix
 # young_adj <- as.data.frame(age.pclrc$AdjMat1)
 # old_adj <- as.data.frame(age.pclrc$AdjMat2)
-setwd("C:/Users/Yasmijn/Documents/School/WUR/SSB-80324 - Second Thesis/Git_Research-Practice/Results/")
-young_adj <- read.csv('Adjacency_matrix_young.csv')
+young_adj <- read.csv('Results/Adjacency_matrix_young.csv')
 young_adj <- young_adj[,-1]
-old_adj <- read.csv('Adjacency_matrix_old.csv')
+old_adj <- read.csv('Results/Adjacency_matrix_old.csv')
 old_adj <- old_adj[,-1]
 rownames(old_adj) <- colnames(old_adj) <- 
   rownames(young_adj) <- colnames(young_adj) <- c("Triglycerides_VLDL", 
@@ -598,7 +591,7 @@ testing <- c('BH', 'BH', 'bonferroni', 'bonferroni', 'storey', 'storey', 'storey
 thresholds <- c('0.01', '0.05', '0.01', '0.05', '0.01', '0.05', '0.005')
 nm <- names(pvalues)
 # Change working directory to save the plots
-setwd("C:/Users/Yasmijn/Pictures/Research practice")
+setwd("Results")
 for (i in 1:7) {
   g <- ggplot(data = pvalues, aes_string(x = nm[3], y = nm[2], fill = nm[5+i])) + 
     geom_bar(stat = "identity") +
