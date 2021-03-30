@@ -44,7 +44,7 @@ text(scores(:,1),scores(:,2),labels,'VerticalAlignment','bottom',...
 legend('men', 'women');
 xlabel('1st COVSCA component','FontSize',13);
 ylabel('2nd COVSCA component','FontSize',13);
-title('COVSCA; Q = [' + strjoin(string(Q)) + ']', 'FontSize',16);
+% title('COVSCA; Q = [' + strjoin(string(Q)) + ']', 'FontSize',16);
 
 
 %% Plot scores and Loadings
@@ -81,7 +81,7 @@ ylabel('Loadings','FontSize',13);
 set(gca, 'xtick', [1:21], 'xticklabel', variable_labels);
 xtickangle(45);
 leg = legend('First', 'Second');
-title('Loadings of first component','FontSize',16);
+% title('Loadings of first component','FontSize',16);
 
 % Show two loadings at a time
 figure(3)
@@ -92,4 +92,4 @@ ylabel('Loadings','FontSize',13);
 set(gca, 'xtick', [1:21], 'xticklabel', variable_labels);
 xtickangle(45);
 leg = legend('First', 'Second');
-title('Loadings of second component','FontSize',16);
+% title('Loadings of second component','FontSize',16);
