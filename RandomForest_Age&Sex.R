@@ -370,11 +370,12 @@ men <- men[which(men$AgeGroup == 'young' | men$AgeGroup == 'old'),]
 # Run single random forests
 single.sex.forest <- randomForest(data[,23:43], as.factor(data$Gender), 
                                   importance = T, strata = as.factor(data$Gender), 
-                                  sampsize = c(nsize,nsize), replace = F)
+                                  sampsize = c(nsize,nsize), replace = F,
+                                  proximity = T)
 single.women.forest <- randomForest(women[,23:43], as.factor(women$AgeGroup), 
-                                    importance = T)
+                                    importance = T, proximity = T)
 single.men.forest <- randomForest(men[,23:43], as.factor(men$AgeGroup), 
-                                  importance = T)
+                                  importance = T, proximity = T)
 
 # View importance
 varImpPlot(single.sex.forest)
@@ -385,3 +386,11 @@ varImpPlot(single.men.forest)
 varImpPlot(single.sex.forest, sort = F)
 varImpPlot(single.women.forest, sort = F)
 varImpPlot(single.men.forest, sort = F)
+
+###############################################################################
+
+# Proximity distance plots
+
+MDSplot(single.sex.forest, as.factor(data$Gender), palette = c('blue', 'red'))
+MDSplot(single.women.forest, as.factor(women$AgeGroup), palette = c('darkred','pink'))
+MDSplot(single.men.forest, as.factor(men$AgeGroup), palette = c('darkblue', 'cyan'))
