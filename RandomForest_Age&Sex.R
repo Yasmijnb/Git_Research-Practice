@@ -13,7 +13,7 @@
 ###############################################################################
 
 # Load data
-data <- read.csv("../Data/LipidsAgeSex_SqrtNormalization.csv", check.names = TRUE)
+data <- read.csv("../Data/LipidsAgeSex_SqrtNormalization.csv", check.names = T)
 data[,1] <- NULL
 
 ###############################################################################
@@ -331,3 +331,57 @@ sex.forest$ModelStatistics
 # age.forest$ModelStatistics
 women.forest$ModelStatistics
 men.forest$ModelStatistics
+
+###############################################################################
+
+## Run a single random forest to get an idea of the importance
+
+# Shorten colnames
+library(stringr)            # Used to split and shorten the lipid names
+# Shorten the names of the lipids
+data <- read.csv("../Data/LipidsAgeSex_SqrtNormalization.csv", check.names = F)
+data[,1] <- NULL
+short.names <- NULL
+long.names <- colnames(data)[23:43]
+for (index in long.names) {
+  short.name <- str_split(index, ', ')[[1]][2:3]
+  combined <- paste(short.name, collapse = ' & ')
+  short.names <- c(short.names, combined)
+}
+colnames(data)[23:43] <- short.names
+
+# Take care of the unbalance in gender
+n1 = sum(as.factor(data$Gender) == 'man')
+n2 = sum(as.factor(data$Gender) == 'woman')
+nsize = round(min(n1,n2)*0.85)
+# Prepare for women
+women <- data[which(data$Gender == 'woman'),]
+women$AgeGroup <- rep(0, nrow(women))
+women$AgeGroup[which(women$Age < quantile(women$Age, probs = 1/3))] <- 'young'
+women$AgeGroup[which(women$Age > quantile(women$Age, probs = 2/3))] <- 'old'
+women <- women[which(women$AgeGroup == 'young' | women$AgeGroup == 'old'),]
+# Prepare for men
+men <- data[which(data$Gender == 'man'),]
+men$AgeGroup <- rep(0, nrow(men))
+men$AgeGroup[which(men$Age < quantile(men$Age, probs = 1/3))] <- 'young'
+men$AgeGroup[which(men$Age > quantile(men$Age, probs = 2/3))] <- 'old'
+men <- men[which(men$AgeGroup == 'young' | men$AgeGroup == 'old'),]
+
+# Run single random forests
+single.sex.forest <- randomForest(data[,23:43], as.factor(data$Gender), 
+                                  importance = T, strata = as.factor(data$Gender), 
+                                  sampsize = c(nsize,nsize), replace = F)
+single.women.forest <- randomForest(women[,23:43], as.factor(women$AgeGroup), 
+                                    importance = T)
+single.men.forest <- randomForest(men[,23:43], as.factor(men$AgeGroup), 
+                                  importance = T)
+
+# View importance
+varImpPlot(single.sex.forest)
+varImpPlot(single.women.forest)
+varImpPlot(single.men.forest)
+
+# View importance
+varImpPlot(single.sex.forest, sort = F)
+varImpPlot(single.women.forest, sort = F)
+varImpPlot(single.men.forest, sort = F)
