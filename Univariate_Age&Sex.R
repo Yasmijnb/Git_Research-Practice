@@ -107,6 +107,15 @@ for (lipid in 23:43) {
 ###############################################################################
 
 # Compile the results
+data <- read.csv("../Data/LipidsAgeSex_NoNormalization.csv", check.names = FALSE)
+data[,1] <- NULL
+men <- data[which(data$Gender=='man'),]
+women <- data[which(data$Gender=='woman'),]
+young.men <- men[men$Age < quantile(men$Age, probs = 1/3),]
+old.men <- men[men$Age > quantile(men$Age, probs = 2/3),]
+young.women <- women[women$Age < quantile(women$Age, probs = 1/3),]
+old.women <- women[women$Age > quantile(women$Age, probs = 2/3),]
+
 mean.summary <- matrix(ncol = 6, nrow = 21)
 colnames(mean.summary) <- c('Men', 'Women', 'Young men', 'Old men', 
                                 'Young women', 'Old women')
@@ -153,3 +162,4 @@ abline(h = 0.01, col = 'red'); abline(v = 0.01, col = 'red')
 
 # Write the summary to csv file
 write.csv(wilcoxon.summary, file = 'Results/Wilcoxon_results.csv')
+
