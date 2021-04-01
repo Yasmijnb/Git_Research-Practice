@@ -49,64 +49,76 @@ ggplot(data = men, aes(x = ClusteringCoefficient, y = name, fill = sig)) +
   # Use nicer colours
   scale_fill_manual(values = c("steelblue", "orange")) + 
   # Change the axis labels
-  xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
+  xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
   theme_bw() +
   # Remove the legend title
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  # Set the x lim, so they are the same for each plot
+  xlim(0, 1)
 
 ggplot(data = women, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
   scale_fill_manual(values = c("steelblue", "orange")) + 
   # Change the axis labels
-  xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
+  xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
   theme_bw() +
   # Remove the legend title
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  # Set the x lim, so they are the same for each plot
+  xlim(0, 1)
 
 ggplot(data = young.men, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
   scale_fill_manual(values = c("steelblue", "orange")) + 
   # Change the axis labels
-  xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
+  xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
   theme_bw() +
   # Remove the legend title
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  # Set the x lim, so they are the same for each plot
+  xlim(0, 1)
 
 ggplot(data = old.men, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
   scale_fill_manual(values = c("steelblue", "orange")) + 
   # Change the axis labels
-  xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
+  xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
   theme_bw() +
   # Remove the legend title
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  # Set the x lim, so they are the same for each plot
+  xlim(0, 1)
 
 ggplot(data = young.women, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
   scale_fill_manual(values = c("steelblue", "orange")) + 
   # Change the axis labels
-  xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
+  xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
   theme_bw() +
   # Remove the legend title
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  # Set the x lim, so they are the same for each plot
+  xlim(0, 1)
 
 ggplot(data = old.women, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
   scale_fill_manual(values = c("steelblue", "orange")) + 
   # Change the axis labels
-  xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
+  xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
   theme_bw() +
   # Remove the legend title
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  # Set the x lim, so they are the same for each plot
+  xlim(0, 1)
 
