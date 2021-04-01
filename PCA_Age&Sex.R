@@ -17,7 +17,7 @@ library(ggfortify)
 ###############################################################################
 
 # Load data
-data <- read.csv("../Data/Lipids_age_sex.csv", check.names = FALSE)
+data <- read.csv("../Data/LipidsAgeSex_SqrtNormalization.csv", check.names = FALSE)
 data[,1] <- NULL
 
 ###############################################################################
@@ -99,3 +99,38 @@ autoplot(pca, data = data, colour = 'Groups') +
   scale_colour_manual(values=c('blue', 'darkblue', 'darkred', 'red', 'cyan', 'pink')) +
   # Make the plot with a white background
   theme_bw()
+
+###############################################################################
+
+# Prepare data frames
+men <- data[which(data$Gender == 'man'),]
+men <- men[which(men$Age < 35 | men$Age > 45),]
+women <- data[which(data$Gender == 'woman'),]
+women <- women[which(women$Age < 37 | women$Age > 48),]
+
+# Make three separate PCAs
+sex.pca <- prcomp(data[,23:43])
+men.pca <- prcomp(men[,23:43])
+women.pca <- prcomp(women[,23:43])
+
+# Create plots 
+autoplot(sex.pca, data = data, colour = 'Gender') + 
+  scale_colour_manual(values=c('blue', 'red')) +
+  # Make the plot with a white background and make font size bigger
+  theme_bw(base_size = 17) + 
+  # Remove legend title
+  theme(legend.title = element_blank())
+  
+autoplot(men.pca, data = men, colour = 'Groups') +
+  scale_colour_manual(values=c('darkblue', 'cyan')) +
+  # Make the plot with a white background and make font size bigger
+  theme_bw(base_size = 17) +
+  # Remove legend title
+  theme(legend.title = element_blank())
+
+autoplot(women.pca, data = women, colour = 'Groups') +
+  scale_colour_manual(values=c('darkred', 'orange')) +
+  # Make the plot with a white background and make font size bigger
+  theme_bw(base_size = 17) +
+  # Remove legend title
+  theme(legend.title = element_blank())
