@@ -95,6 +95,7 @@ for (lipid in 23:43) {
   sex.stats <- rbind(sex.stats, stats)
 }
 
+sex.stats <- as.data.frame(sex.stats)
 colnames(sex.stats) <- c('AUC', 'CI.AUC Lower', 'CI.AUC Upper', 'Threshold', 
                          'Accuracy', 'Specificity', 'Sensitivity', 'P-value')
 rownames(sex.stats) <- short.names
@@ -123,6 +124,7 @@ for (lipid in 23:43) {
   men.stats <- rbind(men.stats, stats)
 }
 
+men.stats <- as.data.frame(men.stats)
 colnames(men.stats) <- c('AUC', 'CI.AUC Lower', 'CI.AUC Upper', 'Threshold', 
                          'Accuracy', 'Specificity', 'Sensitivity', 'P-value')
 rownames(men.stats) <- short.names
@@ -151,9 +153,19 @@ for (lipid in 23:43) {
   women.stats <- rbind(women.stats, stats)
 }
 
+women.stats <- as.data.frame(women.stats)
 colnames(women.stats) <- c('AUC', 'CI.AUC Lower', 'CI.AUC Upper', 'Threshold', 
                          'Accuracy', 'Specificity', 'Sensitivity', 'P-value')
 rownames(women.stats) <- short.names
+
+###############################################################################
+
+# Adjust the p-values
+pvalues <- c(sex.stats$`P-value`, men.stats$`P-value`, women.stats$`P-value`)
+adjusted <- p.adjust(pvalues, method = 'bonferroni')
+sex.stats$`Adjusted P-value` <- adjusted[1:21]
+men.stats$`Adjusted P-value` <- adjusted[22:42]
+women.stats$`Adjusted P-value` <- adjusted[43:63]
 
 ###############################################################################
 
