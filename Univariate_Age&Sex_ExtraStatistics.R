@@ -169,6 +169,10 @@ women.stats$`Adjusted P-value` <- adjusted[43:63]
 
 ###############################################################################
 
-View(sex.stats)
-View(men.stats)
-View(women.stats)
+sex.stats <- round(sex.stats, 3)
+men.stats <- round(men.stats, 3)
+women.stats <- round(women.stats, 3)
+
+write.csv(sex.stats, 'Results/Wilcoxon_stats_Sex.csv')
+write.csv(men.stats, 'Results/Wilcoxon_stats_Men.csv')
+write.csv(women.stats, 'Results/Wilcoxon_stats_Women.csv')
