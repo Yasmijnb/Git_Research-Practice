@@ -3,10 +3,23 @@
 # Yasmijn Balder
 # 01-04-2021
 
-# ???
+# More stats are compiled from the three comparisons per lipid. 
+# Comparisons:
+  # Men vs. Women
+  # Young vs. old men
+  # Young vs. old women
+# Stats:
+  # AUC
+  # CI.AUC
+  # threshold
+  # accuracy
+  # specificity
+  # sensitivity
+  # p-value
+  # Adjusted p-value
 
 # Output
-# ???
+# Three tables are saved as .csv 
 
 ###############################################################################
 
