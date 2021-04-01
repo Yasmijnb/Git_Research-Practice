@@ -134,3 +134,22 @@ autoplot(women.pca, data = women, colour = 'Groups') +
   theme_bw(base_size = 17) +
   # Remove legend title
   theme(legend.title = element_blank())
+
+###############################################################################
+
+# Make 3D PCAs
+library('pca3d')
+sex.col <- data$Gender
+sex.col[which(sex.col == 'man')] <- 'blue'
+sex.col[which(sex.col == 'woman')] <- 'red'
+pca3d(sex.pca, col = sex.col)
+
+men.col <- men$Groups
+men.col[which(men.col == 'old man')] <- 'darkblue'
+men.col[which(men.col == 'young man')] <- 'cyan'
+pca3d(men.pca, col = men.col)
+
+women.col <- women$Groups
+women.col[which(women.col == 'old woman')] <- 'darkred'
+women.col[which(women.col == 'young woman')] <- 'orange'
+pca3d(women.pca, col = women.col)
