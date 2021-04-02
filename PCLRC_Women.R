@@ -58,7 +58,7 @@ threshold <- min(young.women.75, old.women.75)
 # Perform PCLRC
 women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43], 
                                    verbose = TRUE, adjust.diff = 'BH',
-                                   prob.threshold = 0.99)
+                                   prob.threshold = 0.99, corr.threshold = threshold)
 
 ###############################################################################
 

@@ -58,7 +58,7 @@ threshold <- min(young.men.75, old.men.75)
 # Perform PCLRC
 men.pclrc <- Diff.Conn.PCLRC.gmm(young.men[,23:43], old.men[,23:43], 
                                  verbose = TRUE, adjust.diff = 'BH',
-                                 prob.threshold = 0.99)
+                                 prob.threshold = 0.99, corr.threshold = threshold)
 
 ###############################################################################
 
