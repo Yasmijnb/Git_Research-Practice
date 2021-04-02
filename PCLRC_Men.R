@@ -61,10 +61,9 @@ men.pclrc <- Diff.Conn.PCLRC.gmm(young.men[,23:43], old.men[,23:43],
                                  prob.threshold = 0.95, corr.threshold = 0,
                                  MaxPerm = 1000, Niter = 1000)
 
-dd =  men.pclrc$Diff_Conn
-
-zscore = abs(dd-mean(dd))/sd(dd)
-print(dd[dd>2*zscore]) #those will be in yellow in your barplot
+dd <- men.pclrc$Diff_Conn
+zscore <- abs(dd-mean(dd))/sd(dd)
+print(dd[zscore>1])
 
 ###############################################################################
 

@@ -61,10 +61,9 @@ women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43],
                                    prob.threshold = 0.95, corr.threshold = 0,
                                    MaxPerm = 1000, Niter = 1000)
 
-dd =  women.pclrc$Diff_Conn
-
-zscore = abs(dd-mean(dd))/sd(dd)
-print(dd[dd>2*zscore])
+dd <- women.pclrc$Diff_Conn
+zscore <- abs(dd-mean(dd))/sd(dd)
+print(dd[zscore>1])
 
 ###############################################################################
 

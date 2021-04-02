@@ -19,90 +19,85 @@ women.pclrc <- readRDS("Results/women.pclrc.rds")
 
 # Create figure for sex
 
-# Create a dataframe with the adjusted p-values
-adjusted.pvalues <- as.data.frame(sex.pclrc$Pval_adj)
-# Change the name of the p-values column
-colnames(adjusted.pvalues)[1] <- 'P.values'
-# Shorten the names of the lipids
-short.names <- NULL
-for (long.name in rownames(adjusted.pvalues)) {
-  short.name <- str_split(long.name, ', ')[[1]][2:3]
-  combined <- paste(short.name, collapse = ' & ')
-  short.names <- c(short.names, combined)
-}
+# Create a dataframe with the diff conn values
+diff.conn <- as.data.frame(sex.pclrc$Diff_Conn)
+# Change the name of the column
+colnames(diff.conn)[1] <- 'Diff_Conn'
 # Add the lipid names as a column
-adjusted.pvalues$lipids <- short.names
-# Add the differential connectivity as a column
-adjusted.pvalues$diffcon <- sex.pclrc$Diff_Conn
-# Create a column with significance based on the adjusted p-values
-adjusted.pvalues$sig <- rep("Not significant", 21)
-adjusted.pvalues$sig[which(adjusted.pvalues$P.values <= 0.05)] <- 'Significant'
+diff.conn$lipids <- short.names
+# Create a column with significance based on the zscore
+dd <- sex.pclrc$Diff_Conn
+zscore <- abs(dd-mean(dd))/sd(dd)
+diff.conn$sig <- rep("Not significant", 21)
+diff.conn$sig[which(zscore > 1)] <- 'Significant'
 
 # Create a bar plot
-ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) + 
+ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = "steelblue") + 
+  scale_fill_manual(values = c("orange", "steelblue")) + 
   # Change the axis labels
   xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
-  theme_bw() +
+  theme_bw(base_size = 17) +
   # Remove the legend title
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  xlim(0, 1)
 
 ###############################################################################
 
 # Create figure for men
 
-# Create a dataframe with the adjusted p-values
-adjusted.pvalues <- as.data.frame(men.pclrc$Pval_adj)
-# Change the name of the p-values column
-colnames(adjusted.pvalues)[1] <- 'P.values'
+# Create a dataframe with the diff conn values
+diff.conn <- as.data.frame(men.pclrc$Diff_Conn)
+# Change the name of the column
+colnames(diff.conn)[1] <- 'Diff_Conn'
 # Add the lipid names as a column
-adjusted.pvalues$lipids <- short.names
-# Add the differential connectivity as a column
-adjusted.pvalues$diffcon <- men.pclrc$Diff_Conn
-# Create a column with significance based on the adjusted p-values
-adjusted.pvalues$sig <- rep("Not significant", 21)
-adjusted.pvalues$sig[which(adjusted.pvalues$P.values <= 0.05)] <- 'Significant'
+diff.conn$lipids <- short.names
+# Create a column with significance based on the zscore
+dd <- men.pclrc$Diff_Conn
+zscore <- abs(dd-mean(dd))/sd(dd)
+diff.conn$sig <- rep("Not significant", 21)
+diff.conn$sig[which(zscore > 1)] <- 'Significant'
 
 # Create a bar plot
-ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) + 
+ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
   scale_fill_manual(values = c("orange", "steelblue")) + 
   # Change the axis labels
   xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
-  theme_bw() +
+  theme_bw(base_size = 17) +
   # Remove the legend title
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  xlim(0, 1)
 
 ###############################################################################
 
 # Create figure for women
 
-# Create a dataframe with the adjusted p-values
-adjusted.pvalues <- as.data.frame(women.pclrc$Pval_adj)
-# Change the name of the p-values column
-colnames(adjusted.pvalues)[1] <- 'P.values'
+# Create a dataframe with the diff conn values
+diff.conn <- as.data.frame(women.pclrc$Diff_Conn)
+# Change the name of the column
+colnames(diff.conn)[1] <- 'Diff_Conn'
 # Add the lipid names as a column
-adjusted.pvalues$lipids <- short.names
-# Add the differential connectivity as a column
-adjusted.pvalues$diffcon <- women.pclrc$Diff_Conn
-# Create a column with significance based on the adjusted p-values
-adjusted.pvalues$sig <- rep("Not significant", 21)
-adjusted.pvalues$sig[which(adjusted.pvalues$P.values <= 0.05)] <- 'Significant'
+diff.conn$lipids <- short.names
+# Create a column with significance based on the zscore
+dd <- women.pclrc$Diff_Conn
+zscore <- abs(dd-mean(dd))/sd(dd)
+diff.conn$sig <- rep("Not significant", 21)
+diff.conn$sig[which(zscore > 1)] <- 'Significant'
 
 # Create a bar plot
-ggplot(data = adjusted.pvalues, aes(x = diffcon, y = lipids, fill = sig)) + 
+ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
   scale_fill_manual(values = c("orange", "steelblue")) + 
   # Change the axis labels
   xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
-  theme_bw() +
+  theme_bw(base_size = 17) +
   # Remove the legend title
-  theme(legend.title = element_blank())
-
+  theme(legend.title = element_blank()) +
+  xlim(0, 1)
