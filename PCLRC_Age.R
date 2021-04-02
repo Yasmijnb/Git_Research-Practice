@@ -45,8 +45,13 @@ old <- data[which(data$Age > quantile(data$Age, probs = 2/3)),]
 
 # Perform PCLRC
 age.pclrc <- Diff.Conn.PCLRC.gmm(young[,23:43], old[,23:43], verbose = TRUE, 
-                                 adjust.diff = 'BH',
-                                 prob.threshold = 0.99)
+                                 adjust.diff = 'BH', MaxPerm = 1, Niter = 1000, 
+                                 prob.threshold = 0.95)
+
+dd <- age.pclrc$Diff_Conn
+
+zscore <- abs(dd-mean(dd))/sd(dd)
+print(dd[dd>2*zscore])
 
 ###############################################################################
 

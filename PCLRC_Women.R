@@ -58,7 +58,13 @@ threshold <- min(young.women.75, old.women.75)
 # Perform PCLRC
 women.pclrc <- Diff.Conn.PCLRC.gmm(young.women[,23:43], old.women[,23:43], 
                                    verbose = TRUE, adjust.diff = 'BH',
-                                   prob.threshold = 0.99, corr.threshold = threshold)
+                                   prob.threshold = 0.95, corr.threshold = 0,
+                                   MaxPerm = 1000, Niter = 1000)
+
+dd =  women.pclrc$Diff_Conn
+
+zscore = abs(dd-mean(dd))/sd(dd)
+print(dd[dd>2*zscore])
 
 ###############################################################################
 
