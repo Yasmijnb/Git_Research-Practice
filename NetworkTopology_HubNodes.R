@@ -40,12 +40,12 @@ networks <- list('men' = men, 'women' = women,
 cc.thrs <- data.frame(row.names = women$name)
 cc.thrs$sex <- rep('', 21)
 cc.thrs$sex[which(women$ClusteringCoefficient < 0.03 & men$ClusteringCoefficient > 0.03)] <- 'women'
-cc.thrs$sex[which(women$ClusteringCoefficient > 0.03 & men$ClusteringCoefficient < 0.03)] <- 'men'
+# cc.thrs$sex[which(women$ClusteringCoefficient > 0.03 & men$ClusteringCoefficient < 0.03)] <- 'men'
 cc.thrs$men <- rep('', 21)
-cc.thrs$men[which(young.men$ClusteringCoefficient < 0.03 & old.men$ClusteringCoefficient > 0.03)] <- 'young'
+# cc.thrs$men[which(young.men$ClusteringCoefficient < 0.03 & old.men$ClusteringCoefficient > 0.03)] <- 'young'
 cc.thrs$men[which(young.men$ClusteringCoefficient > 0.03 & old.men$ClusteringCoefficient < 0.03)] <- 'old'
 cc.thrs$women <- rep('', 21)
-cc.thrs$women[which(young.women$ClusteringCoefficient < 0.03 & old.women$ClusteringCoefficient > 0.03)] <- 'young'
+# cc.thrs$women[which(young.women$ClusteringCoefficient < 0.03 & old.women$ClusteringCoefficient > 0.03)] <- 'young'
 cc.thrs$women[which(young.women$ClusteringCoefficient > 0.03 & old.women$ClusteringCoefficient < 0.03)] <- 'old'
 
 View(cc.thrs)
