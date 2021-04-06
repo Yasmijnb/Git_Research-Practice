@@ -10,10 +10,26 @@
 
 ###############################################################################
 
+# Load the packages
+library(stringr)            # Used to split and shorten the lipid names
+library(ggplot2)            # Used to make pretty plots
+
+###############################################################################
+
 # Load the data
 sex.pclrc <- readRDS("Results/sex.pclrc.rds")
 men.pclrc <- readRDS("Results/men.pclrc.rds")
 women.pclrc <- readRDS("Results/women.pclrc.rds")
+
+###############################################################################
+
+# Shorten the names of the lipids
+short.names <- NULL
+for (long.name in names(sex.pclrc$Diff_Conn)) {
+  short.name <- str_split(long.name, ', ')[[1]][2:3]
+  combined <- paste(short.name, collapse = ' & ')
+  short.names <- c(short.names, combined)
+}
 
 ###############################################################################
 
@@ -29,13 +45,14 @@ diff.conn$lipids <- short.names
 dd <- sex.pclrc$Diff_Conn
 zscore <- abs(dd-mean(dd))/sd(dd)
 diff.conn$sig <- rep("Not significant", 21)
-diff.conn$sig[which(zscore > 1)] <- 'Significant'
+diff.conn$sig[which(zscore > 1)] <- 'zscore > 1'
+diff.conn$sig[which(zscore > 2)] <- 'zscore > 2'
 
 # Create a bar plot
 ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = c("orange", "steelblue")) + 
+  scale_fill_manual(values = c("steelblue", "orange", "red")) + 
   # Change the axis labels
   xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
@@ -58,13 +75,14 @@ diff.conn$lipids <- short.names
 dd <- men.pclrc$Diff_Conn
 zscore <- abs(dd-mean(dd))/sd(dd)
 diff.conn$sig <- rep("Not significant", 21)
-diff.conn$sig[which(zscore > 1)] <- 'Significant'
+diff.conn$sig[which(zscore > 1)] <- 'zscore > 1'
+diff.conn$sig[which(zscore > 2)] <- 'zscore > 2'
 
 # Create a bar plot
 ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = c("orange", "steelblue")) + 
+  scale_fill_manual(values = c("steelblue", "orange", "red")) + 
   # Change the axis labels
   xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
@@ -87,13 +105,14 @@ diff.conn$lipids <- short.names
 dd <- women.pclrc$Diff_Conn
 zscore <- abs(dd-mean(dd))/sd(dd)
 diff.conn$sig <- rep("Not significant", 21)
-diff.conn$sig[which(zscore > 1)] <- 'Significant'
+diff.conn$sig[which(zscore > 1)] <- 'zscore > 1'
+diff.conn$sig[which(zscore > 2)] <- 'zscore > 2'
 
 # Create a bar plot
 ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = c("orange", "steelblue")) + 
+  scale_fill_manual(values = c("steelblue", "red")) + 
   # Change the axis labels
   xlab('Differential connectivity') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
@@ -101,3 +120,4 @@ ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) +
   # Remove the legend title
   theme(legend.title = element_blank()) +
   xlim(0, 1)
+

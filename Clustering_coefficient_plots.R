@@ -47,7 +47,7 @@ old.women$sig[which(old.women$ClusteringCoefficient < 0.03)] <- 'Significant'
 ggplot(data = men, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = c("steelblue", "orange")) + 
+  scale_fill_manual(values = c("steelblue", "palegreen4")) + 
   # Change the axis labels
   xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
@@ -60,7 +60,7 @@ ggplot(data = men, aes(x = ClusteringCoefficient, y = name, fill = sig)) +
 ggplot(data = women, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = c("steelblue", "orange")) + 
+  scale_fill_manual(values = c("steelblue", "palegreen4")) + 
   # Change the axis labels
   xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
@@ -73,7 +73,7 @@ ggplot(data = women, aes(x = ClusteringCoefficient, y = name, fill = sig)) +
 ggplot(data = young.men, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = c("steelblue", "orange")) + 
+  scale_fill_manual(values = c("steelblue", "palegreen4")) + 
   # Change the axis labels
   xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
@@ -86,7 +86,7 @@ ggplot(data = young.men, aes(x = ClusteringCoefficient, y = name, fill = sig)) +
 ggplot(data = old.men, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = c("steelblue", "orange")) + 
+  scale_fill_manual(values = c("steelblue", "palegreen4")) + 
   # Change the axis labels
   xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
@@ -99,7 +99,7 @@ ggplot(data = old.men, aes(x = ClusteringCoefficient, y = name, fill = sig)) +
 ggplot(data = young.women, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = c("steelblue", "orange")) + 
+  scale_fill_manual(values = c("steelblue", "palegreen4")) + 
   # Change the axis labels
   xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
@@ -112,7 +112,7 @@ ggplot(data = young.women, aes(x = ClusteringCoefficient, y = name, fill = sig))
 ggplot(data = old.women, aes(x = ClusteringCoefficient, y = name, fill = sig)) + 
   geom_bar(stat = "identity") +
   # Use nicer colours
-  scale_fill_manual(values = c("steelblue", "orange")) + 
+  scale_fill_manual(values = c("steelblue", "palegreen4")) + 
   # Change the axis labels
   xlab('Clustering coefficient') + ylab('Lipoprotein Main Fractions') + 
   # Make plot black and white
