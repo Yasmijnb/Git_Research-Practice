@@ -25,7 +25,7 @@ women <- read.csv('Results/NetworkTopology_Women.csv')
 young <- read.csv('Results/NetworkTopology_Young.csv')
 old <- read.csv('Results/NetworkTopology_Old.csv')
 
-young.men <- read.csv('/Results/NetworkTopology_YoungMen.csv')
+young.men <- read.csv('Results/NetworkTopology_YoungMen.csv')
 old.men <- read.csv('Results/NetworkTopology_OldMen.csv')
 
 young.women <- read.csv('Results/NetworkTopology_YoungWomen.csv')
@@ -87,7 +87,7 @@ autoplot(SEX.pca, data = SEX, colour = 'network', label = T, shape = F) +
   # Set the colours
   scale_colour_manual(values=c('blue', 'red')) +
   # Make the plot with a white background
-  theme_bw() + 
+  theme_bw(base_size = 17) + 
   # Remove the legend title
   theme(legend.title = element_blank())
 
@@ -97,7 +97,7 @@ autoplot(MEN.pca, data = MEN, colour = 'network', label = T, shape = F) +
   # Set the colours
   scale_colour_manual(values=c('darkblue', 'cyan')) +
   # Make the plot with a white background
-  theme_bw() + 
+  theme_bw(base_size = 17) + 
   # Remove legend title
   theme(legend.title = element_blank())
 
@@ -107,7 +107,7 @@ autoplot(WOMEN.pca, data = WOMEN, colour = 'network', label = T, shape = F) +
   # Set the colours
   scale_colour_manual(values=c('red', 'orange')) +
   # Make the plot with a white background
-  theme_bw() + 
+  theme_bw(base_size = 17) + 
   # Remove legend title
   theme(legend.title = element_blank())
 
