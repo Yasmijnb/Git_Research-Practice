@@ -22,8 +22,8 @@ library(RNOmni)         # Used to add confidence interval ellipses
 men <- read.csv('Results/NetworkTopology_Men.csv')
 women <- read.csv('Results/NetworkTopology_Women.csv')
 
-young <- read.csv('Results/NetworkTopology_Young.csv')
-old <- read.csv('Results/NetworkTopology_Old.csv')
+# young <- read.csv('Results/NetworkTopology_Young.csv')
+# old <- read.csv('Results/NetworkTopology_Old.csv')
 
 young.men <- read.csv('Results/NetworkTopology_YoungMen.csv')
 old.men <- read.csv('Results/NetworkTopology_OldMen.csv')
@@ -34,9 +34,9 @@ old.women <- read.csv('Results/NetworkTopology_OldWomen.csv')
 ###############################################################################
 
 # Make a PCA for age
-AGE <- rbind(young, old)
-AGE$network <- c(rep('young', nrow(young)), rep('old', nrow(old)))
-AGE.pca <- prcomp(AGE[,c(2:7, 12:13, 16, 20:21)], scale = T)
+# AGE <- rbind(young, old)
+# AGE$network <- c(rep('young', nrow(young)), rep('old', nrow(old)))
+# AGE.pca <- prcomp(AGE[,c(2:7, 12:13, 16, 20:21)], scale = T)
 
 # Make a PCA for sex
 SEX <- rbind(men, women)
