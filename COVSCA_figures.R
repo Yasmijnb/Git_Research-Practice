@@ -8,8 +8,8 @@
 # Output
 # Three figures. 
   # 1. Scores plot of COVSCA
-  # 2. Loadings plot of first COVSCA component
-  # 3. Loadings plot of second COVSCA component
+  # 2. Loadings plot of first COVSCA prototype
+  # 3. Loadings plot of second COVSCA prototype
 
 ###############################################################################
 
@@ -26,13 +26,13 @@ loadings <- read.csv('COVSCA/COVSCA_loadings.csv', header = FALSE)
 ###############################################################################
 
 # Change the colnames of the scores
-colnames(scores) <- c('1st COVSCA component', '2nd COVSCA component')
+colnames(scores) <- c('1st COVSCA prototype', '2nd COVSCA prototype')
 scores$age <- c('all','all','young','old','young','old')
 scores$gender <- c('man', 'woman', 'man', 'woman', 'woman', 'woman')
 scores$age_gender <- c('men','women','young men','old men','young women','old women')
 
 # COVSCA scores plot
-ggplot(scores, aes(x = `1st COVSCA component`, y = `2nd COVSCA component`, 
+ggplot(scores, aes(x = `1st COVSCA prototype`, y = `2nd COVSCA prototype`, 
                    color = age_gender)) + 
   geom_point(size = 3) +
   # Use manual colours
