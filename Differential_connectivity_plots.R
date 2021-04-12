@@ -41,12 +41,12 @@ diff.conn <- as.data.frame(sex.pclrc$Diff_Conn)
 colnames(diff.conn)[1] <- 'Diff_Conn'
 # Add the lipid names as a column
 diff.conn$lipids <- short.names
-# Create a column with significance based on the zscore
+# Create a column with significance based on the Z-score
 dd <- sex.pclrc$Diff_Conn
 zscore <- abs(dd-mean(dd))/sd(dd)
-diff.conn$sig <- rep("Not significant", 21)
-diff.conn$sig[which(zscore > 1)] <- 'zscore > 1'
-diff.conn$sig[which(zscore > 2)] <- 'zscore > 2'
+diff.conn$sig <- rep("Z-score < 1", 21)
+diff.conn$sig[which(zscore > 1)] <- 'Z-score > 1'
+diff.conn$sig[which(zscore > 2)] <- 'Z-score > 2'
 
 # Create a bar plot
 ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
@@ -71,12 +71,12 @@ diff.conn <- as.data.frame(men.pclrc$Diff_Conn)
 colnames(diff.conn)[1] <- 'Diff_Conn'
 # Add the lipid names as a column
 diff.conn$lipids <- short.names
-# Create a column with significance based on the zscore
+# Create a column with significance based on the Z-score
 dd <- men.pclrc$Diff_Conn
 zscore <- abs(dd-mean(dd))/sd(dd)
-diff.conn$sig <- rep("Not significant", 21)
-diff.conn$sig[which(zscore > 1)] <- 'zscore > 1'
-diff.conn$sig[which(zscore > 2)] <- 'zscore > 2'
+diff.conn$sig <- rep("Z-score < 1", 21)
+diff.conn$sig[which(zscore > 1)] <- 'Z-score > 1'
+diff.conn$sig[which(zscore > 2)] <- 'Z-score > 2'
 
 # Create a bar plot
 ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
@@ -101,12 +101,12 @@ diff.conn <- as.data.frame(women.pclrc$Diff_Conn)
 colnames(diff.conn)[1] <- 'Diff_Conn'
 # Add the lipid names as a column
 diff.conn$lipids <- short.names
-# Create a column with significance based on the zscore
+# Create a column with significance based on the Z-score
 dd <- women.pclrc$Diff_Conn
 zscore <- abs(dd-mean(dd))/sd(dd)
-diff.conn$sig <- rep("Not significant", 21)
-diff.conn$sig[which(zscore > 1)] <- 'zscore > 1'
-diff.conn$sig[which(zscore > 2)] <- 'zscore > 2'
+diff.conn$sig <- rep("Z-score < 1", 21)
+diff.conn$sig[which(zscore > 1)] <- 'Z-score > 1'
+diff.conn$sig[which(zscore > 2)] <- 'Z-score > 2'
 
 # Create a bar plot
 ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
