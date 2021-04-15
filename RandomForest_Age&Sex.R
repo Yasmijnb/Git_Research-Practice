@@ -154,14 +154,14 @@ permute.sex.forest <- rfPermute(
   data[,23:43], as.factor(data$Gender), importance = T, proximity = T,
   strata = as.factor(data$Gender), sampsize = c(nsize,nsize), replace = F,
   # Use 1000 permutations 
-  nrep = 100,
+  nrep = 1000,
   # Use multiple cores
   num.cores = 5)
 permute.men.forest <- rfPermute(men[,23:43], as.factor(men$AgeGroup), 
-                                importance = T, proximity = T, nrep = 100, 
+                                importance = T, proximity = T, nrep = 1000, 
                                 num.cores = 5)
 permute.women.forest <- rfPermute(women[,23:43], as.factor(women$AgeGroup), 
-                                  importance = T, proximity = T, nrep = 100,
+                                  importance = T, proximity = T, nrep = 1000,
                                   num.cores = 5)
 
 # Prepare for gg plot
