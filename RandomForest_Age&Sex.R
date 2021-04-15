@@ -169,16 +169,25 @@ imp.sex.forest <- as.data.frame(rp.importance(permute.sex.forest))
 imp.sex.forest$Lipids <- rownames(imp.sex.forest)
 imp.sex.forest$sig <- rep("Not significant", 21)
 imp.sex.forest$sig[which(imp.sex.forest$MeanDecreaseGini.pval < 0.05)] <- 'Significant'
+imp.sex.forest <- imp.sex.forest[order(imp.sex.forest$Lipids, decreasing = T),]
+imp.sex.forest$Lipids <- as.factor(imp.sex.forest$Lipids)
+imp.sex.forest$Lipids <- factor(imp.sex.forest$Lipids, levels = rev(levels(imp.sex.forest$Lipids)))
 
 imp.men.forest <- as.data.frame(rp.importance(permute.men.forest))
 imp.men.forest$Lipids <- rownames(imp.men.forest)
 imp.men.forest$sig <- rep("Not significant", 21)
 imp.men.forest$sig[which(imp.men.forest$MeanDecreaseGini.pval < 0.05)] <- 'Significant'
+imp.men.forest <- imp.men.forest[order(imp.men.forest$Lipids, decreasing = T),]
+imp.men.forest$Lipids <- as.factor(imp.men.forest$Lipids)
+imp.men.forest$Lipids <- factor(imp.men.forest$Lipids, levels = rev(levels(imp.men.forest$Lipids)))
 
 imp.women.forest <- as.data.frame(rp.importance(permute.women.forest))
 imp.women.forest$Lipids <- rownames(imp.women.forest)
 imp.women.forest$sig <- rep("Not significant", 21)
 imp.women.forest$sig[which(imp.women.forest$MeanDecreaseGini.pval < 0.05)] <- 'Significant'
+imp.women.forest <- imp.women.forest[order(imp.women.forest$Lipids, decreasing = T),]
+imp.women.forest$Lipids <- as.factor(imp.women.forest$Lipids)
+imp.women.forest$Lipids <- factor(imp.women.forest$Lipids, levels = rev(levels(imp.women.forest$Lipids)))
 
 # Plot importance
 ggplot(data = imp.sex.forest, aes(x = MeanDecreaseGini, y = Lipids, 
