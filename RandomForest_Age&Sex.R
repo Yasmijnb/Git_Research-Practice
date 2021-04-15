@@ -200,7 +200,8 @@ ggplot(data = imp.sex.forest, aes(x = MeanDecreaseGini, y = Lipids,
   # Make plot black and white
   theme_bw(base_size = 17) +
   # Remove the legend title
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  xlim(0, 20)
 
 ggplot(data = imp.men.forest, aes(x = MeanDecreaseGini, y = Lipids, 
                                   fill = sig)) + 
@@ -208,7 +209,8 @@ ggplot(data = imp.men.forest, aes(x = MeanDecreaseGini, y = Lipids,
   scale_fill_manual(values = c("steelblue", "orange")) + 
   xlab('Mean Decrease Gini') + ylab('Lipoprotein Main Fractions') + 
   theme_bw(base_size = 17) +
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  xlim(0, 20)
 
 ggplot(data = imp.women.forest, aes(x = MeanDecreaseGini, y = Lipids, 
                                   fill = sig)) + 
@@ -217,5 +219,5 @@ ggplot(data = imp.women.forest, aes(x = MeanDecreaseGini, y = Lipids,
   xlab('Mean Decrease Gini') + ylab('Lipoprotein Main Fractions') +
   theme_bw(base_size = 17) +
   theme(legend.title = element_blank()) +
-  xlim(0, 16)
+  xlim(0, 20)
 
