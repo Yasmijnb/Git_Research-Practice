@@ -44,9 +44,14 @@ diff.conn$lipids <- short.names
 # Create a column with significance based on the Z-score
 dd <- sex.pclrc$Diff_Conn
 zscore <- abs(dd-mean(dd))/sd(dd)
-diff.conn$sig <- rep("Z-score < 1", 21)
+diff.conn$sig <- rep("Z-score \U2264 1", 21)
 diff.conn$sig[which(zscore > 1)] <- 'Z-score > 1'
 diff.conn$sig[which(zscore > 2)] <- 'Z-score > 2'
+
+# Order data by lipids
+diff.conn <- diff.conn[order(diff.conn$lipids, decreasing = T),]
+diff.conn$lipids <- as.factor(diff.conn$lipids)
+diff.conn$lipids <- factor(diff.conn$lipids, levels = rev(levels(diff.conn$lipids)))
 
 # Create a bar plot
 ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
@@ -78,6 +83,11 @@ diff.conn$sig <- rep("Z-score < 1", 21)
 diff.conn$sig[which(zscore > 1)] <- 'Z-score > 1'
 diff.conn$sig[which(zscore > 2)] <- 'Z-score > 2'
 
+# Order data by lipids
+diff.conn <- diff.conn[order(diff.conn$lipids, decreasing = T),]
+diff.conn$lipids <- as.factor(diff.conn$lipids)
+diff.conn$lipids <- factor(diff.conn$lipids, levels = rev(levels(diff.conn$lipids)))
+
 # Create a bar plot
 ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
   geom_bar(stat = "identity") +
@@ -107,6 +117,11 @@ zscore <- abs(dd-mean(dd))/sd(dd)
 diff.conn$sig <- rep("Z-score < 1", 21)
 diff.conn$sig[which(zscore > 1)] <- 'Z-score > 1'
 diff.conn$sig[which(zscore > 2)] <- 'Z-score > 2'
+
+# Order data by lipids
+diff.conn <- diff.conn[order(diff.conn$lipids, decreasing = T),]
+diff.conn$lipids <- as.factor(diff.conn$lipids)
+diff.conn$lipids <- factor(diff.conn$lipids, levels = rev(levels(diff.conn$lipids)))
 
 # Create a bar plot
 ggplot(data = diff.conn, aes(x = Diff_Conn, y = lipids, fill = sig)) + 
