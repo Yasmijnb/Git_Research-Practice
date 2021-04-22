@@ -142,14 +142,26 @@ library('pca3d')
 sex.col <- data$Gender
 sex.col[which(sex.col == 'man')] <- 'blue'
 sex.col[which(sex.col == 'woman')] <- 'red'
-pca3d(sex.pca, col = sex.col)
+sex.PVE <- c(paste0('PC1 (', round(summary(sex.pca)$importance[2,1]*100, 1), '%)'),
+               paste0('PC2 (', round(summary(sex.pca)$importance[2,2]*100, 1), '%)'),
+               paste0('PC3 (', round(summary(sex.pca)$importance[2,3]*100, 1), '%)'))
+pca3d(sex.pca, col = sex.col, axe.titles = sex.PVE)
+snapshotPCA3d(file = "Results/PCA_Sex_3D.png")
 
 men.col <- men$Groups
 men.col[which(men.col == 'old man')] <- 'darkblue'
 men.col[which(men.col == 'young man')] <- 'cyan'
-pca3d(men.pca, col = men.col)
+men.PVE <- c(paste0('PC1 (', round(summary(men.pca)$importance[2,1]*100, 1), '%)'),
+               paste0('PC2 (', round(summary(men.pca)$importance[2,2]*100, 1), '%)'),
+               paste0('PC3 (', round(summary(men.pca)$importance[2,3]*100, 1), '%)'))
+pca3d(men.pca, col = men.col, axe.titles = men.PVE)
+snapshotPCA3d(file = "Results/PCA_Men_3D.png")
 
 women.col <- women$Groups
 women.col[which(women.col == 'old woman')] <- 'darkred'
 women.col[which(women.col == 'young woman')] <- 'orange'
-pca3d(women.pca, col = women.col)
+women.PVE <- c(paste0('PC1 (', round(summary(women.pca)$importance[2,1]*100, 1), '%)'),
+               paste0('PC2 (', round(summary(women.pca)$importance[2,2]*100, 1), '%)'),
+               paste0('PC3 (', round(summary(women.pca)$importance[2,3]*100, 1), '%)'))
+pca3d(women.pca, col = women.col, axe.titles = women.PVE)
+snapshotPCA3d(file = "Results/PCA_Women_3D.png")
