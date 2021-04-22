@@ -66,10 +66,15 @@ autoplot(SEX.pca, data = SEX, colour = 'network', label = T, shape = F) +
   scale_colour_manual(values=c('blue', 'red')) +
   # Add circles for clarity
   geom_point(shape=1, size = 8, colour = rep(c("blue","red"), each=21), stroke=1.5) +
+  # Change number of decimals of PVE
+  xlab(paste0('PC1 (', round(summary(SEX.pca)$importance[2,1]*100, 1), '%)')) +
+  ylab(paste0('PC1 (', round(summary(SEX.pca)$importance[2,2]*100, 1), '%)')) +
   # Make the plot with a white background
   theme_bw(base_size = 17) + 
-  # Remove the legend title
-  theme(legend.title = element_blank())
+  # Remove the legend
+  theme(legend.position = 'none') + 
+  # Make square plots
+  theme(aspect.ratio = 1)
 
 autoplot(MEN.pca, data = MEN, colour = 'network', label = T, shape = F) + 
   # Add a confidence interval ellipse
@@ -78,10 +83,15 @@ autoplot(MEN.pca, data = MEN, colour = 'network', label = T, shape = F) +
   scale_colour_manual(values=c('darkblue', 'cyan')) +
   # Add circles for clarity
   geom_point(shape=1, size = 8, colour = rep(c("cyan","darkblue"), each=21), stroke=1.5) +
+  # Change number of decimals of PVE
+  xlab(paste0('PC1 (', round(summary(MEN.pca)$importance[2,1]*100, 1), '%)')) +
+  ylab(paste0('PC1 (', round(summary(MEN.pca)$importance[2,2]*100, 1), '%)')) +
   # Make the plot with a white background
   theme_bw(base_size = 17) + 
-  # Remove legend title
-  theme(legend.title = element_blank())
+  # Remove legend
+  theme(legend.position = 'none') + 
+  # Make square plots
+  theme(aspect.ratio = 1)
 
 autoplot(WOMEN.pca, data = WOMEN, colour = 'network', label = T, shape = F) + 
   # Add a confidence interval ellipse
@@ -90,9 +100,14 @@ autoplot(WOMEN.pca, data = WOMEN, colour = 'network', label = T, shape = F) +
   scale_colour_manual(values=c('darkred', 'orange')) +
   # Add circles for clarity
   geom_point(shape=1, size = 8, colour = rep(c("orange","darkred"), each=21), stroke=1.5) +
+  # Change number of decimals of PVE
+  xlab(paste0('PC1 (', round(summary(WOMEN.pca)$importance[2,1]*100, 1), '%)')) +
+  ylab(paste0('PC1 (', format(round(summary(WOMEN.pca)$importance[2,2]*100, 1), nsmall = 1), '%)')) +
   # Make the plot with a white background
   theme_bw(base_size = 17) + 
-  # Remove legend title
-  theme(legend.title = element_blank())
+  # Remove legend
+  theme(legend.position = 'none') + 
+  # Make square plots
+  theme(aspect.ratio = 1)
 
 ###############################################################################
