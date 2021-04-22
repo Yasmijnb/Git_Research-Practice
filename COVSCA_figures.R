@@ -29,34 +29,36 @@ loadings <- read.csv('COVSCA/COVSCA_loadings.csv', header = FALSE)
 colnames(scores) <- c('1st COVSCA prototype', '2nd COVSCA prototype')
 scores$age <- c('all','all','young','old','young','old')
 scores$gender <- c('man', 'woman', 'man', 'woman', 'woman', 'woman')
-scores$age_gender <- c('men','women','young men','old men','young women','old women')
+scores$age_gender <- c('Men','Women','Young men','Old men','Young women','Old women')
 
 # COVSCA scores plot
 ggplot(scores, aes(x = `1st COVSCA prototype`, y = `2nd COVSCA prototype`, 
                    color = age_gender)) + 
   geom_point(size = 3) +
   # Use manual colours
-  scale_color_manual(values = c('blue','darkblue','darkred','red','cyan','orange')) + 
+  scale_color_manual(breaks = c('Men','Women','Young men','Old men','Young women','Old women'),
+                     values = c('blue','red','cyan','darkblue','orange','darkred')) + 
   # Add labels of age
   # geom_text(label=scores$age) +
   # Make plot black and white
   theme_bw(base_size = 17) +
   # Remove the legend title
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) 
+# + theme(legend.position="bottom")
 
 ###############################################################################
 
 # Use short names for the loadings plots
-loadings$X <- c("Triglycerides VLDL", "Triglycerides IDL", 
-                        "Triglycerides LDL", "Triglycerides HDL", 
-                        "Cholesterol VLDL", "Cholesterol IDL", 
-                        "Cholesterol LDL", "Cholesterol HDL",
-                        "FreeCholesterol VLDL", "FreeCholesterol IDL",
-                        "FreeCholesterol LDL", "FreeCholesterol HDL",
-                        "Phospholipids VLDL", "Phospholipids IDL",
-                        "Phospholipids LDL", "Phospholipids HDL",
-                        "ApoA1 HDL", "ApoA2 HDL", "ApoB VLDL", 
-                        "ApoB IDL", "ApoB LDL")
+loadings$X <- c("Triglycerides, VLDL", "Triglycerides, IDL", 
+                        "Triglycerides, LDL", "Triglycerides, HDL", 
+                        "Cholesterol, VLDL", "Cholesterol, IDL", 
+                        "Cholesterol, LDL", "Cholesterol, HDL",
+                        "FreeCholesterol, VLDL", "FreeCholesterol, IDL",
+                        "FreeCholesterol, LDL", "FreeCholesterol, HDL",
+                        "Phospholipids, VLDL", "Phospholipids, IDL",
+                        "Phospholipids, LDL", "Phospholipids, HDL",
+                        "Apo-A1, HDL", "Apo-A2, HDL", "Apo-B, VLDL", 
+                        "Apo-B, IDL", "Apo-B, LDL")
 
 # Split the loadings and change format for gg plot
 first_loadings <- data.frame(c(loadings$X, loadings$X), 
