@@ -93,7 +93,7 @@ short.names <- NULL
 long.names <- colnames(data)[23:43]
 for (index in long.names) {
   short.name <- str_split(index, ', ')[[1]][2:3]
-  combined <- paste(short.name, collapse = ' & ')
+  combined <- paste(short.name, collapse = ', ')
   short.names <- c(short.names, combined)
 }
 colnames(data)[23:43] <- short.names
