@@ -27,7 +27,7 @@ women.pclrc <- readRDS("Results/women.pclrc.rds")
 short.names <- NULL
 for (long.name in names(sex.pclrc$Diff_Conn)) {
   short.name <- str_split(long.name, ', ')[[1]][2:3]
-  combined <- paste(short.name, collapse = ' & ')
+  combined <- paste(short.name, collapse = ', ')
   short.names <- c(short.names, combined)
 }
 
