@@ -143,7 +143,7 @@ directions[which(adjusted.P.values <= 0.01)] <- '*'
 # Make an empty dataframe to store the results
 # wilcoxon.summary <- matrix(ncol = 4, nrow = 114) # All lipid measurements
 wilcoxon.summary <- matrix(ncol = 3, nrow = 21)
-colnames(wilcoxon.summary) <- c('Sex', 'Women', 'Men')
+colnames(wilcoxon.summary) <- c('Sex', 'Men', 'Women')
 # rownames(wilcoxon.summary) <- colnames(data)[4:117] # All lipid measurements
 rownames(wilcoxon.summary) <- colnames(data)[23:43]
 
@@ -151,7 +151,6 @@ rownames(wilcoxon.summary) <- colnames(data)[23:43]
 wilcoxon.summary[1:21,1] <- directions[1:21]
 wilcoxon.summary[1:21,2] <- directions[22:42]
 wilcoxon.summary[1:21,3] <- directions[43:63]
-wilcoxon.summary[1:21,4] <- directions[64:84]
 
 # How many lipids are significant before and after?
 length(which(P.values <= 0.01))
