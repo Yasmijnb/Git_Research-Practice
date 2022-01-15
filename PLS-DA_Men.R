@@ -70,7 +70,7 @@ for (comp in 1:21) {
   print(paste('AUC for', comp, 'components:', round(mean(auc.comp), 3)))
 }
 
-# # Use 3 components (Edoardo)
+# # Use 3 components
 # comp <- 3
 # 
 # # Outer loop 
